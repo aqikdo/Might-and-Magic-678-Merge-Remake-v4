@@ -10,7 +10,7 @@ local NewCode
 local function ProcessItemsExtraTxt()
 	local items_extra = {}
 	local table_file = "Data/Tables/ItemsExtra.txt"
-	local header = "Id\9Note\9Continent\9QuestItem\9LostQBit\9StartQBit\9EndQBit\9PostEnd"
+	local header = "Id\9Note\9Continent\9QuestItem\9LostQBit\9StartQBit\9EndQBit\9PostEnd\9Level"
 
 	local txt_table = io.open(table_file, "r")
 	if not txt_table then
@@ -31,7 +31,8 @@ local function ProcessItemsExtraTxt()
 						LostQBit  = tonumber(words[5]),
 						StartQBit = tonumber(words[6]),
 						EndQBit = tonumber(words[7]),
-						PostEnd = words[8] == "x"
+						PostEnd = words[8] == "x",
+						Level = words[9] and tonumber(words[9]) or nil
 					}
 				end
 			end

@@ -1,9 +1,169 @@
-Id	Note	Continent	QuestItem	LostQBit	StartQBit	EndQBit	PostEnd
-516	Eclipse	1	x	283		128	
-539	Ebonest	1	x	199		71	x
-540	Sword of Whistlebone	1	x	200		86	x
-541	Axe of Balthazar	1	x	201		77	x
-544	Sword-out-of-the-Stone	1	x		291	292	
+Id	Note	Continent	QuestItem	LostQBit	StartQBit	EndQBit	PostEnd	Level
+1	Longsword							1
+2	Trollish War Sword							27
+3	Dark Elven Longsword							78
+4	Templar's Sword							93
+5	Champion's Sword							87
+6	Two-Handed Sword							15
+7	Dark Elven Bastard Sword							47
+8	Minotaur Battlesword							63
+9	Dragonning Blade							95
+10	Headsman's Reaver							79
+11	Iron Broadsword							8
+12	Trollish Claymore							39
+13	Lizardman Broadsword							42
+14	Knightly Broadsword							68
+15	Archangel Broadsword							90
+16	Rusty Cutlass							3
+17	Goblin Scimitar							59
+18	Regnan Cutlass							73
+19	Regnan Falchion							75
+20	Captain's Cutlass							61
+21	Crude Dagger							5
+22	Crystal Dagger							63
+23	Merchantman's Dagger							47
+24	Master's Dagger							75
+25	Fanged Blade							85
+26	Long Dagger							24
+27	Alvarian Poignard							51
+28	Regnan Fighting Knife							71
+29	Twilight Kris							93
+30	Dueling Long Dagger							89
+31	Stone Axe
+32	Battle Hatchet
+33	Battleaxe
+34	Dwarven Battleaxe
+35	Minotaur Battleaxe
+56	Hunting Bow							20
+57	Recurve Bow							71
+58	Snakewood Bow							75
+59	Elven Warbow							79
+60	Devilbone Bow							91
+61	Light Crossbow							7
+62	Blood Drop Crossbow							36
+63	Hunting Crossbow							40
+64	Caravaner's Crossbow							56
+65	Regnan Crossbow							87
+84	Leather Jerkin							1
+85	Hardened Leather Vest							19
+86	Caravaner's Leather							40
+87	Regnan Leather							47
+88	Alvarian Leather							96
+137	Bronze Ring							1
+138	Gold Ring							21
+139	Pearl Ring							42
+140	Gemstone Ring							53
+141	Amethyst Ring							42
+142	Necromatic Ring							42
+143	Ruby Ring							53
+144	Vampire's Ring							74
+145	Sun Opal Ring							74
+146	Focal Ring							95
+803	Crude Longsword							5
+804	Elven Saber							21
+805	Keen Longsword							30
+806	Graceful Sword							36
+807	Duelist Blade							63
+808	Two-Handed Sword							23
+809	Great Sword							39
+810	Heroic Sword							55
+811	Broadsword							16
+812	Steel Broadsword							43
+813	Champion Sword							71
+814	Cutlass							11
+815	Goblin Cutlass							45
+816	Regnan Cutlass							53
+817	Dagger							1
+818	Dwarven Dagger							32
+819	Sharktooth Dagger							13
+820	Assassin's Dagger							59
+821	Mage Dagger							82
+822	Long Dagger							9
+823	Erathian Long Dagger							28
+824	Exquisite Long Dagger							67
+825	Crude Axe
+826	Battle Axe
+827	Dwarven Axe
+828	Steel Axe
+829	Minotaur Axe
+844	Crude Bow							10
+845	Longbow							16
+846	Elven Longbow							32
+847	Composite Bow							44
+848	Griffin Bow							83
+849	Crude Crossbow							1
+850	Heavy Crossbow							13
+851	Ideal Crossbow							48
+868	Crude Leather Armor							13
+869	Studded Leather							26
+870	Officer's Leather							54
+871	Regnan Leather							68
+872	Royal Leather							82
+922	Brass Ring							1
+923	Pearl Ring							1
+924	Platinum Ring							32
+925	Emerald Ring							32
+926	Sapphire Ring							32
+927	Warlock's Ring							64
+928	Enchanted Ring							64
+929	Dazzling Ring							95
+930	Wizard Ring							95
+931	Angel's Ring							85
+1603	Longsword							19
+1604	Warrior Sword							48
+1605	Crusader Sword							57
+1606	Champion Sword							81
+1607	Lionheart Sword							96
+1608	Two-Handed Sword							31
+1609	Great Sword							71
+1610	Heroic Sword							87
+1611	Broadsword							14
+1612	Steel Broadsword							51
+1613	Mighty Broadsword							65
+1614	Cutlass							24
+1615	Pirate Cutlass							55
+1616	Master Cutlass							84
+1617	Dagger							16
+1618	Blood Dagger							36
+1619	Shadow Dagger							40
+1620	Mage Dagger							55
+1621	Jeweled Dagger							78
+1622	Long Dagger							20
+1623	Piercing Dagger							43
+1624	Divine Dagger							97
+1625	Hand Axe
+1626	Battle Axe
+1627	War Axe
+1628	Dwarven Axe
+1629	Supreme Axe
+1644	Crude Longbow							24
+1645	Elven Bow							52
+1646	Precision Bow							63
+1647	Magic Bow							67
+1648	Stellar Bow							95
+1649	Crossbow							4
+1650	Accurate Crossbow							28
+1651	True Crossbow							59
+1668	Leather Armor							7
+1669	Studded Leather							33
+1670	Enchanted Leather							61
+1671	Dragon Leather							75
+1672	Imperial Leather							89
+1722	Fine Ring							11
+1723	Sparkling Ring							21
+1724	Lunar Ring							21
+1725	Witch Ring							11
+1726	Blessed Ring							11
+1727	Valuable Ring							53
+1728	Precious Ring							85
+1729	Ethereal Ring							85
+1730	Exquisite Ring							74
+1731	Scarab Ring							64
+516	Eclipse	1	x	283		128		
+539	Ebonest	1	x	199		71	x	
+540	Sword of Whistlebone	1	x	200		86	x	
+541	Axe of Balthazar	1	x	201		77	x	
+544	Sword-out-of-the-Stone	1	x		291	292		
 602	False Report	1	x	282
 603	Urn of Ashes	1	x	202
 604	Nightshade Brazier	1	x	203
@@ -31,9 +191,9 @@ Id	Note	Continent	QuestItem	LostQBit	StartQBit	EndQBit	PostEnd
 633	Dire Wolf Pelt	1
 637	Bone of Doom	1	x	247
 662	Cannonball of Dominion	1	x	224
-667	Bazalath's Egg	1	x		1720	1722	
-668	Beacon Ring	1	x		293	295	
-669	Letter to Ninegos	1	x		1729	1731	
+667	Bazalath's Egg	1	x		1720	1722		
+668	Beacon Ring	1	x		293	295		
+669	Letter to Ninegos	1	x		1729	1731		
 732	Certificate of Authentication	1	x			77
 741	Dadeross' Letter to Fellmoon	1	x	221
 742	Blackmail Letter	1	x	222

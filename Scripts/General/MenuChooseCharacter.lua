@@ -321,8 +321,9 @@ function events.GameInitialized2()
 	local function PrepareChar(RosterId, PartyId)
 		Log(Merge.Log.Info, "MenuChooseCharacter: PrepareChar: RosterId %d, PartyId %d",
 			RosterId, PartyId)
-		local ItemTypesBySkills	= {	[0]	= 30, 23, 24, 25, 26, 27, 28, 11, 5, 31, 32, 33}
-		local ItemsBySkills		= {	[12] = 401, [13] = 412, [14] = 423, [15] = 434, [16] = 445, [17] = 456, [18] = 467, [19] = 478, [20] = 489}
+		-- local ItemTypesBySkills	= {	[0]	= 30, 23, 24, 25, 26, 27, 28, 11, 5, 31, 32, 33}
+		local ItemTypesBySkills	= { }
+		local ItemsBySkills		= { [1] = 1, [5] = 849, [9] = 84, [12] = 401, [13] = 412, [14] = 423, [15] = 434, [16] = 445, [17] = 456, [18] = 467, [19] = 478, [20] = 489}
 
 		local Char = Party.PlayersArray[RosterId]
 		Char.Experience = 0
@@ -373,10 +374,10 @@ function events.GameInitialized2()
 				end
 			end
 		end
-		evt.GiveItem{1,16,0}
-		evt.GiveItem{1,45,0}
-		evt.GiveItem{1,0,220}
-		evt.GiveItem{1,45,0}
+		-- evt.GiveItem{1,16,0}
+		-- evt.GiveItem{1,45,0}
+		-- evt.GiveItem{1,0,220}
+		-- evt.GiveItem{1,45,0}
 		Mouse.Item.Number = 0
 		Game.CurrentPlayer = 0
 

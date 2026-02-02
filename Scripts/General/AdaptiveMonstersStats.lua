@@ -603,7 +603,7 @@ local function CalcResistance(res,BolsterMul)
 	if res > 10000 then
 		return const.MonsterImmune
 	else
-		return math.max(0,res - 10 + (BolsterMul - 1) * 40)
+		return math.max(0, res + (BolsterMul - 1) * 40)
 	end
 end
 
@@ -855,38 +855,41 @@ function PrepareMapMon(mon)
 		mon.Experience = 0
 	end
 	
-	mon.TreasureItemPercent = TxtMon.TreasureItemPercent
---	mon.TreasureItemPercent = 100
-	mon.TreasureItemLevel	= TxtMon.TreasureItem
+	-- mon.TreasureItemPercent = TxtMon.TreasureItemPercent
+	mon.TreasureItemPercent = 0
+	-- mon.TreasureItemLevel	= TxtMon.TreasureItem
+	mon.TreasureItemLevel	= 0
+	mon.TreasureDiceCount 	= 0
+	mon.TreasureDiceSides	= 0
 	
 	
-	if mon.Elite ~= 0 then
-		mon.TreasureItemPercent = 100
-		if TxtMon.TreasureItemLevel ~= 0 then
-			mon.TreasureItemLevel	= math.min(TxtMon.TreasureItemLevel + 3, 6)
-		else
-			mon.TreasureItemLevel	= math.min(math.floor(mon.Level) / 10 + 3, 6)
-		end
-	else 
-		if TxtMon.TreasureItemLevel >= 2 then
-			mon.TreasureItemLevel	= math.min(TxtMon.TreasureItemLevel + 2, 6)
-			local lv2 = GetOverallPartyLevel()
-			local lv3 = mon.Level
-			if mon.TreasureItemLevel == 4 then
-				if lv2 <= 30 then
-					mon.TreasureItemPercent = math.max(TxtMon.TreasureItemPercent, 50 * (2.7 ^ (-(lv3-15)*(lv3-15)/200)))
-				end
-			end
-			if mon.TreasureItemLevel == 5 then
-				if lv2 <= 50 then
-					mon.TreasureItemPercent = math.max(TxtMon.TreasureItemPercent, 75 * (2.7 ^ (-(lv3-30)*(lv3-30)/200)))
-				end
-			end
-			if mon.TreasureItemLevel == 6 then
-				mon.TreasureItemPercent = math.max(TxtMon.TreasureItemPercent, 100 * (2.7 ^ (-(lv3-50)*(lv3-50)/1000)))
-			end
-		end
-	end
+	-- if mon.Elite ~= 0 then
+	-- 	mon.TreasureItemPercent = 100
+	-- 	if TxtMon.TreasureItemLevel ~= 0 then
+	-- 		mon.TreasureItemLevel	= math.min(TxtMon.TreasureItemLevel + 3, 6)
+	-- 	else
+	-- 		mon.TreasureItemLevel	= math.min(math.floor(mon.Level) / 10 + 3, 6)
+	-- 	end
+	-- else 
+	-- 	if TxtMon.TreasureItemLevel >= 2 then
+	-- 		mon.TreasureItemLevel	= math.min(TxtMon.TreasureItemLevel + 2, 6)
+	-- 		local lv2 = GetOverallPartyLevel()
+	-- 		local lv3 = mon.Level
+	-- 		if mon.TreasureItemLevel == 4 then
+	-- 			if lv2 <= 30 then
+	-- 				mon.TreasureItemPercent = math.max(TxtMon.TreasureItemPercent, 50 * (2.7 ^ (-(lv3-15)*(lv3-15)/200)))
+	-- 			end
+	-- 		end
+	-- 		if mon.TreasureItemLevel == 5 then
+	-- 			if lv2 <= 50 then
+	-- 				mon.TreasureItemPercent = math.max(TxtMon.TreasureItemPercent, 75 * (2.7 ^ (-(lv3-30)*(lv3-30)/200)))
+	-- 			end
+	-- 		end
+	-- 		if mon.TreasureItemLevel == 6 then
+	-- 			mon.TreasureItemPercent = math.max(TxtMon.TreasureItemPercent, 100 * (2.7 ^ (-(lv3-50)*(lv3-50)/1000)))
+	-- 		end
+	-- 	end
+	-- end
 	
 	if TxtMon.FireResistance < 10000 then 
 		mon.FireResistance = math.max(TxtMon.FireResistance + elite_res_add + FixRandom(mon, 149, 151, 157, 11) + ArmorResAddbyBoost[mon.BoostType], 0)
@@ -1106,30 +1109,31 @@ local function PrepareTxtMon(i, PartyLevel, MapSettings, OnlyThis)
 		local Formula = Formulas[MonKind] or Formulas["def"]
 
 		--local lvadd = math.sqrt(math.max(math.log(lv),0)) * 72
-		local lvadd = 99.5 * math.log(lv * 2 / (lv + 1))
+		-- local lvadd = 99.5 * math.log(lv * 2 / (lv + 1))
+		local lvadd = 0
 
 		MonBolStep[monId] = BolStep
 
 		if MapSettings.Type ~= BolsterTypes.OriginalStats then
 
 			-- Base hitpoints
-			mon.FullHP = min(mon.FullHP * (1 + BolsterMul * 5.5) * HPMulByStyle[Style] * (lv + 1) * 0.5, 30000)
+			mon.FullHP = min(mon.FullHP * BolsterMul * (lv + 1) * 0.5, 30000)
 			BoostedHP  = mon.FullHP
 
 			-- Armor class
-			mon.ArmorClass = math.max(0, mon.ArmorClass + BolsterMul * 40 - 50) + lvadd
+			mon.ArmorClass = math.max(0, mon.ArmorClass + (BolsterMul - 1) * 40) + lvadd
 			
 			-- Attacks
 			MaxDamage = GetMaxDamage(mon.Attack1)
-			MaxDamage = MaxDamage * BolsterAdjust(BolsterMul) * (0.99 ^ (BolsterMul * 60 - 80)) * DamageMulByStyle[Style] * lv
+			MaxDamage = MaxDamage * BolsterMul *lv
 			SetAttackMaxDamage(mon.Attack1, MaxDamage)
-			mon.Attack1.DamageAdd 		= BolsterMul * 60
+			-- mon.Attack1.DamageAdd 		= BolsterMul * 60
 
 			if mon.Attack2Chance > 0 then
 				MaxDamage = GetMaxDamage(mon.Attack2)
-				MaxDamage = MaxDamage * BolsterAdjust(BolsterMul) * (0.99 ^ (BolsterMul * 60 - 80)) * DamageMulByStyle[Style] * lv
+				MaxDamage = MaxDamage * BolsterMul * lv
 				SetAttackMaxDamage(mon.Attack2, MaxDamage)
-				mon.Attack2.DamageAdd 		= BolsterMul * 60
+				-- mon.Attack2.DamageAdd 		= BolsterMul * 60
 			end
 
 			-- Base spells
@@ -1142,20 +1146,14 @@ local function PrepareTxtMon(i, PartyLevel, MapSettings, OnlyThis)
 			mon.Spell2Skill 	= JoinSkill(math.max(1,math.min(1000,Skill * MagicMulByStyle[Style] * lv)), SpMasMulByStyle[Style])
 			mon.Spell2Chance	= min(mon.Level * 0.2 * SpRateMulByStyle[Style] ^ 3 * BolsterMul, 25 * SpRateMulByStyle[Style] ^ 2)
 
-			
+			mon.SpellChance = 0
+			mon.Spell2Chance = 0
 		end
 
 		-- Move speed
 
 		MoveSpeed = mon.MoveSpeed
-		mon.MoveSpeed = mon.MoveSpeed * (1 + BolsterMul * 0.1)
-		if mon.Level < 20 then
-			mon.MoveSpeed = mon.MoveSpeed * 1 * SpeedMulByStyle[Style]
-		elseif mon.Level < 30 then
-			mon.MoveSpeed = mon.MoveSpeed * math.min(1.5, 1 + BolsterMul * 0.25) * SpeedMulByStyle[Style]
-		else
-			mon.MoveSpeed = mon.MoveSpeed * math.min(2, 1 + BolsterMul * 0.5) * SpeedMulByStyle[Style]
-		end
+		mon.MoveSpeed = mon.MoveSpeed
 		
 		-- Additional attacks
 		--[[
@@ -1196,19 +1194,18 @@ local function PrepareTxtMon(i, PartyLevel, MapSettings, OnlyThis)
 		
 		mon.Level = mon.Level * lv
 
-		mon.FireResistance = CalcResistance(mon.FireResistance,BolsterMul) + lvadd + ArmorResAddbyStyle[Style]
-		mon.AirResistance = CalcResistance(mon.AirResistance,BolsterMul) + lvadd + ArmorResAddbyStyle[Style]
-		mon.WaterResistance = CalcResistance(mon.WaterResistance,BolsterMul) + lvadd + ArmorResAddbyStyle[Style]
-		mon.EarthResistance = CalcResistance(mon.EarthResistance,BolsterMul) + lvadd + ArmorResAddbyStyle[Style]
-		mon.BodyResistance = CalcResistance(mon.BodyResistance,BolsterMul) + lvadd + ArmorResAddbyStyle[Style]
-		mon.MindResistance = CalcResistance(mon.MindResistance,BolsterMul) + lvadd + ArmorResAddbyStyle[Style]
-		mon.SpiritResistance = CalcResistance(mon.SpiritResistance,BolsterMul) + lvadd + ArmorResAddbyStyle[Style]
-		mon.LightResistance = CalcResistance(mon.LightResistance,BolsterMul) + lvadd + ArmorResAddbyStyle[Style]
-		mon.DarkResistance = CalcResistance(mon.DarkResistance,BolsterMul) + lvadd + ArmorResAddbyStyle[Style]
-		mon.PhysResistance = mon.PhysResistance + ArmorResAddbyStyle[Style]
+		mon.FireResistance = CalcResistance(mon.FireResistance,BolsterMul) + lvadd
+		mon.AirResistance = CalcResistance(mon.AirResistance,BolsterMul) + lvadd
+		mon.WaterResistance = CalcResistance(mon.WaterResistance,BolsterMul) + lvadd
+		mon.EarthResistance = CalcResistance(mon.EarthResistance,BolsterMul) + lvadd
+		mon.MindResistance = CalcResistance(mon.MindResistance,BolsterMul) + lvadd
+		mon.SpiritResistance = CalcResistance(mon.SpiritResistance,BolsterMul) + lvadd
+		mon.LightResistance = CalcResistance(mon.LightResistance,BolsterMul) + lvadd
+		mon.DarkResistance = CalcResistance(mon.DarkResistance,BolsterMul) + lvadd
+		mon.PhysResistance = mon.PhysResistance
 		
 		--Experience
-		mon.Experience = mon.Level * mon.Level * 1.25
+		-- mon.Experience = mon.Level * mon.Level * 1.25
 
 		-- Summons
 		--[[
@@ -1459,6 +1456,10 @@ function events.AfterLoadMap()
 	for _, pl in Party do
 		for i, val in pl.Skills do
 			if i==const.Skills.IdentifyMonster then
+				local skill, mastery = SplitSkill(val)
+				pl.Skills[i] = JoinSkill(60,  const.GM)
+			end
+			if i==const.Skills.IdentifyItem then
 				local skill, mastery = SplitSkill(val)
 				pl.Skills[i] = JoinSkill(60,  const.GM)
 			end

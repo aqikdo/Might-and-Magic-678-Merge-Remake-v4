@@ -16,6 +16,37 @@ local GetSlotByIndex = MF.GetSlotByIndex
 local spell_distance = 50
 
 ------------------------------------------------
+----		Utility Functions				----
+------------------------------------------------
+
+-- Calculate stat adjustment based on value ranges
+-- This function applies a tiered adjustment formula to any stat value
+-- @param value: The stat value to adjust (e.g., accuracy, might, etc.)
+-- @return: The adjustment value to apply
+local function CalculateStatAdjustment(value)
+	local adj = 0
+	if value <= 2 then
+		adj = -6
+	elseif value <= 21 then
+		adj = floor(value / 2) - 6 
+	elseif value <= 40 then
+		adj = floor(value / 5)
+	elseif value <= 300 then
+		adj = floor(value / 25) + 7
+	elseif value <= 399 then
+		adj = floor(value / 50) + 13
+	elseif value <= 499 then
+		adj = 25
+	else
+		adj = 30
+	end
+	return adj
+end
+
+-- Expose function globally for use in other files
+_G.CalculateStatAdjustment = CalculateStatAdjustment
+
+------------------------------------------------
 ----			Base events					----
 ------------------------------------------------
 
@@ -182,12 +213,52 @@ end
 local WearItemConditions = {}
 
 function events.CanWearItem(t)
-	local itm = Game.ItemsTxt[t.ItemId]
-	local isWeapon = (itm.EquipStat == 0) or (itm.EquipStat == 1) or (itm.EquipStat == 2) or (itm.EquipStat == 12)
-	local Cond = WearItemConditions[t.ItemId]
-	if Cond then
-		t.Available = Cond(t.PlayerId, t.Available)
+	local ItemId = t.ItemId
+	local PlayerId = t.PlayerId
+	local Player = Party[PlayerId]
+	local MT = Merge.Tables
+	
+	-- 检查物品等级要求
+	if MT.ItemsExtra and MT.ItemsExtra[ItemId] then
+		local itemExtra = MT.ItemsExtra[ItemId]
+		if itemExtra.Level then
+			local requiredLevel = itemExtra.Level
+			local playerLevel = Player.LevelBase
+			
+			if playerLevel < requiredLevel then
+				t.Available = false
+				-- 显示提示信息
+				local itemName = Game.ItemsTxt[ItemId].Name or ("item #" .. ItemId)
+				Game.ShowStatusText(string.format("Required level %d to equip %s", requiredLevel, itemName), 2)
+				Log(Merge.Log.Info, "%s: Player %d (Level %d) cannot equip item %d (requires Level %d)", 
+					LogId, PlayerId, playerLevel, ItemId, requiredLevel)
+				return
+			end
+		end
 	end
+	
+	-- Wetsuit 装备时的额外限制
+	local Pl = Party[PlayerId]
+	if Pl.ItemArmor > 0 and Pl.Items[Pl.ItemArmor].Number == 1406 then
+		local EqSt = Game.ItemsTxt[ItemId].EquipStat
+		t.Available = EqSt == 0 or EqSt == 3 or EqSt == 8 or EqSt == 10 or EqSt == 11
+		if not t.Available then
+			return
+		end
+	end
+	
+	-- 执行自定义装备条件检查
+	local Cond = WearItemConditions[ItemId]
+	if Cond then
+		t.Available = Cond(PlayerId, t.Available)
+		if not t.Available then
+			return
+		end
+	end
+	
+	-- 原有的法术施放后5分钟内不能装备非武器物品的限制
+	local itm = Game.ItemsTxt[ItemId]
+	local isWeapon = (itm.EquipStat == 0) or (itm.EquipStat == 1) or (itm.EquipStat == 2) or (itm.EquipStat == 12)
 	if vars.LastCastSpell ~= nil and Game.Time - vars.LastCastSpell < const.Minute * 5 and (not isWeapon) then
 		t.Available = false
 	end
@@ -425,23 +496,10 @@ function events.CalcStatBonusBySkills(t)
 	if t.Stat == const.Stats.MeleeAttack then -- ��ս����
 		local Pl = t.Player
 
-		local ac= Pl:GetAccuracy()
-		local acadj=0
-		if ac <= 2 then
-			acadj = -6
-		elseif ac <= 21 then
-			acadj = math.floor(ac / 2) - 6 
-		elseif ac <= 40 then
-			acadj = math.floor(ac / 5)
-		elseif ac <= 300 then
-			acadj = math.floor(ac / 25) + 7
-		elseif ac <= 399 then
-			acadj = math.floor(ac / 50) + 13
-		elseif ac <= 499 then
-			acadj = 25
-		else
-			acadj = 30
-		end
+		local ac = Pl:GetAccuracy()
+		local acadj = CalculateStatAdjustment(ac)
+		
+		local attack_interval_mul = 1.0
 		local result = 0
 
 		local PLT = PlayerEffects[Pl]
@@ -465,79 +523,101 @@ function events.CalcStatBonusBySkills(t)
 		if Pl.SpellBuffs[const.PlayerBuff.Haste].ExpireTime > Game.Time or Party.SpellBuffs[const.PartyBuff.Haste].ExpireTime > Game.Time then
 			result = result + 5
 		end
+
+		-- calculate attack interval multiplier by items
+		attack_interval_mul = attack_interval_mul / (1 + result * 0.01)
+
+		-- calculate attack interval multiplier by speed
 		local sp= Pl:GetSpeed()
-		sp = sp - sp * sp * 0.0005
+		attack_interval_mul = attack_interval_mul / (1 + sp * 0.01)
+
+		-- calculate attack interval multiplier by armor
+		result = 0
 		local it = Pl:GetActiveItem(const.ItemSlot.MainHand)
 		local armor = Pl:GetActiveItem(const.ItemSlot.Armor)
 		local shield = Pl:GetActiveItem(const.ItemSlot.ExtraHand)
 		if armor and armor:T().Skill == const.Skills.Leather then
 			local sk2, mas2 = SplitSkill(Pl:GetSkill(const.Skills.Leather))
 			if mas2 < const.Expert then
-				result = result - 10
+				result = result + 10
 			end
 		elseif armor and armor:T().Skill == const.Skills.Chain then
 			local sk2, mas2 = SplitSkill(Pl:GetSkill(const.Skills.Chain))
 			if mas2 < const.Expert then
-				result = result - 15
+				result = result + 15
 			end
 		elseif armor and armor:T().Skill == const.Skills.Plate then
 			local sk2, mas2 = SplitSkill(Pl:GetSkill(const.Skills.Plate))
 			if mas2 < const.Expert then
-				result = result - 20
+				result = result + 20
 			end
 		end
 		if shield and shield:T().Skill == const.Skills.Shield then
 			local sk2, mas2 = SplitSkill(Pl:GetSkill(const.Skills.Shield))
 			if mas2 < const.Expert then
-				result = result - 10
+				result = result + 10
 			end
 			if mas2 < const.GM then
-				result = result - 10
+				result = result + 10
 			end
 		end
+		attack_interval_mul = attack_interval_mul * (1 + result * 0.01)
+
+		-- calculate base attack interval and attack interval multiplier by skills
+		local base_attack_interval = 0
 		if it and it:T().Skill == const.Skills.Sword then  --100 btu
 			local sk, mas = SplitSkill(Pl:GetSkill(const.Skills.Sword))
 			local sk1, mas1 = SplitSkill(Pl:GetSkill(const.Skills.Armsmaster))
-			result = result + sp * 0.25 + sk + sk1 * mas1 * 0.25 + 40
+			base_attack_interval = 100
+			attack_interval_mul = attack_interval_mul / (1 + (sk + sk1 * mas1 * 0.25) * 0.01)
 			if mas >= 2 then
-				result = result + 5
+				attack_interval_mul = attack_interval_mul / 1.05
 			end
 		elseif it and it:T().Skill == const.Skills.Dagger then  --75 btu
 			local sk, mas = SplitSkill(Pl:GetSkill(const.Skills.Dagger))
 			local sk1, mas1 = SplitSkill(Pl:GetSkill(const.Skills.Armsmaster))
-			result = result + sp * 0.25 + sk + sk1 * mas1 * 0.25 + 69
+			base_attack_interval = 75
+			attack_interval_mul = attack_interval_mul / (1 + (sk + sk1 * mas1 * 0.25) * 0.01)
 		elseif it and it:T().Skill == const.Skills.Axe then
 			local sk, mas = SplitSkill(Pl:GetSkill(const.Skills.Axe)) -- 140 btu
 			local sk1, mas1 = SplitSkill(Pl:GetSkill(const.Skills.Armsmaster))
-			result = result + sp * 0.25 + sk + sk1 * mas1 * 0.25 + 7 
+			base_attack_interval = 140
+			attack_interval_mul = attack_interval_mul / (1 + (sk + sk1 * mas1 * 0.25) * 0.01)
 		elseif it and it:T().Skill == const.Skills.Staff then
 			local sk, mas = SplitSkill(Pl:GetSkill(const.Skills.Staff))  --100 btu
 			local sk1, mas1 = SplitSkill(Pl:GetSkill(const.Skills.Armsmaster))
-			result = result + sp * 0.25 + sk + sk1 * mas1 * 0.25 + 40
+			base_attack_interval = 100
+			attack_interval_mul = attack_interval_mul / (1 + (sk + sk1 * mas1 * 0.25) * 0.01)
 		elseif it and it:T().Skill == const.Skills.Mace then
 			local sk, mas = SplitSkill(Pl:GetSkill(const.Skills.Mace))   --120 btu
 			local sk1, mas1 = SplitSkill(Pl:GetSkill(const.Skills.Armsmaster))
-			result = result + sp * 0.25 + sk + sk1 * mas1 * 0.25 + 22
+			base_attack_interval = 120
+			attack_interval_mul = attack_interval_mul / (1 + (sk + sk1 * mas1 * 0.25) * 0.01)
 		elseif it and it:T().Skill == const.Skills.Spear then
 			local sk, mas = SplitSkill(Pl:GetSkill(const.Skills.Spear))  --100 btu
 			local sk1, mas1 = SplitSkill(Pl:GetSkill(const.Skills.Armsmaster))
-			result = result + sp * 0.25 + sk + sk1 * mas1 * 0.25 + 40
+			base_attack_interval = 100
+			attack_interval_mul = attack_interval_mul / (1 + (sk + sk1 * mas1 * 0.25) * 0.01)
 		elseif it and it:T().Skill == const.Skills.Blaster then    --15 btu
 			local sk, mas = SplitSkill(Pl:GetSkill(const.Skills.Blaster))
-			result = result + sk + mas * 5 + 229
+			base_attack_interval = 20
+			attack_interval_mul = attack_interval_mul / (1 + (sk + mas * 5) * 0.01)
 			if it.Number == 962 then
-				result = result + 25
+				attack_interval_mul = attack_interval_mul / 1.25
 			end
 		else
 			if Pl.Class == 28 then
 				local sk, mas = SplitSkill(Pl:GetSkill(const.Skills.DragonAbility)) --100 btu
-				result = result + sp * 0.25 + sk * 2 + 40
+				base_attack_interval = 100
+				attack_interval_mul = attack_interval_mul / (1 + (sk * 2) * 0.01)
 			else
 				local sk, mas = SplitSkill(Pl:GetSkill(const.Skills.Unarmed)) --125 btu
-				result = result + sp * 0.25 + sk * 2 + math.min(mas, 3) * 25 + 18
+				base_attack_interval = 125 * 0.99 ^ (25 * (math.min(mas, 3)))
+				attack_interval_mul = attack_interval_mul / (1 + (sk * 2) * 0.01)
 			end
 		end
-		t.Result = math.max(result, 0) - acadj
+		local btu = math.max(attack_interval_mul * base_attack_interval, 0)
+		t.Result = (150 / btu - 1) * 100 - acadj + 1000
 	end
 
 	
@@ -547,23 +627,10 @@ function events.CalcStatBonusBySkills(t)
 	if t.Stat == const.Stats.RangedAttack then -- ��ս����
 		local Pl = t.Player
 		
-		local ac= Pl:GetAccuracy()
-		local acadj=0
-		if ac <= 2 then
-			acadj = -6
-		elseif ac <= 21 then
-			acadj = math.floor(ac / 2) - 6 
-		elseif ac <= 40 then
-			acadj = math.floor(ac / 5)
-		elseif ac <= 300 then
-			acadj = math.floor(ac / 25) + 7
-		elseif ac <= 399 then
-			acadj = math.floor(ac / 50) + 13
-		elseif ac <= 499 then
-			acadj = 25
-		else
-			acadj = 30
-		end
+		local ac = Pl:GetAccuracy()
+		local acadj = CalculateStatAdjustment(ac)
+
+		local attack_interval_mul = 1.0
 		local result = 0
 
 		local PLT = PlayerEffects[Pl]
@@ -580,62 +647,80 @@ function events.CalcStatBonusBySkills(t)
 			elseif v > 0 then
 				local Item = Pl.Items[v]
 				if Item.Bonus2 == 41 and Item.BodyLocation == const.ItemSlot.Bow + 1 then
-					spaddrange = 5
+					result = result + 5
 				end
 			end
 		end
 		if Pl.SpellBuffs[const.PlayerBuff.Haste].ExpireTime > Game.Time or Party.SpellBuffs[const.PartyBuff.Haste].ExpireTime > Game.Time then
 			result = result + 5
 		end
-		local sp= Pl:GetSpeed()
-		sp = sp - sp * sp * 0.0005
-		local it = Pl:GetActiveItem(const.ItemSlot.MainHand)
+
+		-- 物品/增益对攻速的乘数（与近战一致）
+		attack_interval_mul = attack_interval_mul / (1 + result * 0.01)
+
+		-- 速度对攻速的乘数（与近战一致）
+		local sp = Pl:GetSpeed()
+		attack_interval_mul = attack_interval_mul / (1 + sp * 0.01)
+
+		-- 护甲/盾惩罚（与近战一致：正数百分比拉长间隔）
+		result = 0
 		local armor = Pl:GetActiveItem(const.ItemSlot.Armor)
 		local shield = Pl:GetActiveItem(const.ItemSlot.ExtraHand)
 		if armor and armor:T().Skill == const.Skills.Leather then
 			local sk2, mas2 = SplitSkill(Pl:GetSkill(const.Skills.Leather))
 			if mas2 < const.Expert then
-				result = result - 10
+				result = result + 10
 			end
 		elseif armor and armor:T().Skill == const.Skills.Chain then
 			local sk2, mas2 = SplitSkill(Pl:GetSkill(const.Skills.Chain))
 			if mas2 < const.Expert then
-				result = result - 15
+				result = result + 15
 			end
 		elseif armor and armor:T().Skill == const.Skills.Plate then
 			local sk2, mas2 = SplitSkill(Pl:GetSkill(const.Skills.Plate))
 			if mas2 < const.Expert then
-				result = result - 20
+				result = result + 20
 			end
 		end
 		if shield and shield:T().Skill == const.Skills.Shield then
 			local sk2, mas2 = SplitSkill(Pl:GetSkill(const.Skills.Shield))
 			if mas2 < const.Expert then
-				result = result - 10
+				result = result + 10
 			end
 			if mas2 < const.GM then
-				result = result - 10
+				result = result + 10
 			end
 		end
-		it = Pl:GetActiveItem(const.ItemSlot.Bow)
+		attack_interval_mul = attack_interval_mul * (1 + result * 0.01)
+
+		-- 基础攻击间隔与技能乘数（弓 / 龙息）
+		local base_attack_interval = 100
+		local it = Pl:GetActiveItem(const.ItemSlot.Bow)
 		if it then
-			local sk, mas = SplitSkill(Pl:GetSkill(const.Skills.Bow)) -- 100 btu
-			result = result + sp * 0.25 + sk * 2 + 40
+			-- 弓：100 btu，远程基础 40% 加速，技能/速度加成
+			base_attack_interval = 100
+			local sk, mas = SplitSkill(Pl:GetSkill(const.Skills.Bow))
+			attack_interval_mul = attack_interval_mul / (1 + (sk * 1) * 0.01)
+		elseif Pl.Class == 28 then
+			-- 龙息：100 btu，同上
+			base_attack_interval = 100
+			local sk, mas = SplitSkill(Pl:GetSkill(const.Skills.DragonAbility))
+			attack_interval_mul = attack_interval_mul / (1 + (sk * 1) * 0.01)
 		else
-			if Pl.Class == 28 then
-				local sk, mas = SplitSkill(Pl:GetSkill(const.Skills.DragonAbility)) -- 100 btu
-				result = result + sp * 0.25 + sk * 2 + 40
-			end
+			-- 无弓非龙：仅用乘数，无技能加速
+			base_attack_interval = 100
 		end
-		t.Result = math.max(result, 0) - acadj
+
+		local btu = math.max(attack_interval_mul * base_attack_interval, 1)
+		t.Result = (150 / btu - 1) * 100 - acadj + 1000
 	end
 end
 
 function events.GetAttackDelay(t) --����
 	if t.Ranged then
-		t.Result = 150 * (0.99 ^ (t.Player:GetRangedAttack()))
+		t.Result = 150 / (1 + t.Player:GetRangedAttack() * 0.01 - 10)
 	else
-		t.Result = 150 * (0.99 ^ (t.Player:GetMeleeAttack()))
+		t.Result = 150 / (1 + t.Player:GetMeleeAttack() * 0.01 - 10)
 		vars.MeleeDelay = vars.MeleeDelay or {}
 		vars.MeleeDelay[t.Player:GetIndex()] = t.Result
 	end
@@ -1109,13 +1194,6 @@ WearItemConditions[1406] = function(PlayerId)
 	return true
 end
 
-function events.CanWearItem(t)
-	local Pl = Party[t.PlayerId]
-	if Pl.ItemArmor > 0 and Pl.Items[Pl.ItemArmor].Number == 1406 then
-		local EqSt = Game.ItemsTxt[t.ItemId].EquipStat
-		t.Available = EqSt == 0 or EqSt == 3 or EqSt == 8 or EqSt == 10 or EqSt == 11
-	end
-end
 
 --------------------------------
 ---- Stat bonuses
@@ -1622,7 +1700,6 @@ GetSpcBonusList(70).Stats ={[const.Stats.WaterResistance]	= 20}
 
 GetSpcBonusList(62).Stats ={[const.Stats.EarthResistance]	= 40}	
 
-GetSpcBonusList(25).Stats ={[const.Stats.Level]	= 25}	
 
 --------------------------------
 ---- Over time item effects

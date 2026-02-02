@@ -873,7 +873,7 @@ function events.MonsterCastSpell(t)
 						local mattack = t.Monster.Attack1
 						local dmg = mattack.DamageDiceCount * mattack.DamageDiceSides / 2
 						dmg = math.random(math.ceil(dmg * 0.75), math.ceil(dmg * 1.25))
-						evt.DamagePlayer(math.random(0,cnt - 1), const.Phys, dmg)
+						evt.DamagePlayer(math.random(0,cnt - 1), const.Damage.Phys, dmg)
 						break
 					end
 				end

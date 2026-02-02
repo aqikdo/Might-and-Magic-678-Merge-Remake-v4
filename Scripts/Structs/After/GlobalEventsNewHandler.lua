@@ -559,8 +559,11 @@ local function Barrel(Eid)
 	else
 		local Sprite = Map.Sprites[SpriteId]
 		local Var = Sprite.EventVariable
-		Game.ShowStatusText(Game.NPCText[BarrelTexts[Var]])
-		evt.ForPlayer("Current").Add{31 + Var, 2}
+		-- Game.ShowStatusText(Game.NPCText[BarrelTexts[Var]])
+		local tmpstr = Game.NPCText[BarrelTexts[Var]]
+		tmpstr = string.replace(tmpstr, "2", "1")
+		Game.ShowStatusText(tmpstr)
+		evt.ForPlayer("Current").Add{31 + Var, 1}
 		evt.Set{"AutonotesBits", BarrelABits[Var]}
 		mapvars.ActiveSprites[SpriteId] = 0
 		evt.hint[Eid] = Game.NPCTopic[BarrelEvents[0]]

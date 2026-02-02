@@ -1,4 +1,5 @@
 local random, floor, ceil = math.random, math.floor, math.ceil
+local MT = Merge.Tables
 local MonsterItems = {
 [20] = 1004,
 [21] = 1004,
@@ -50,38 +51,84 @@ local function GetOverallPartyLevel()
 	return ceil(Ov/Cnt)
 end
 
+-- const.ItemType 包含关系：TreasureItemType 对应的可接受物品类型集合
+-- Weapon(1)=所有武器和弓；Misc(22)=卷轴、书、宝石、戒指、amulet、腰带、鞋子、王冠(Helm)
+local ItemTypeIncludes = {
+	[1]  = { [1]=true, [2]=true, [3]=true, [23]=true, [24]=true, [25]=true, [26]=true, [27]=true, [28]=true, [29]=true, [30]=true },  -- Weapon
+	[22] = { [6]=true, [7]=true, [10]=true, [11]=true, [12]=true, [16]=true, [17]=true, [22]=true, [46]=true, [47]=true },  -- Misc: helm,belt,boots,ring,amulet,scroll,book,misc,gems
+}
+local function ItemTypeMatches(wantType, itemType)
+	if wantType == 0 then
+		return true
+	end
+	local set = ItemTypeIncludes[wantType]
+	if set then
+		return set[itemType] == true
+	end
+	return itemType == wantType
+end
+
 function events.PickCorpse(t)
 	local mon = t.Monster
 	if mon.Ally == 9999 then -- no drop from reanimated monsters
 		return
 	end
---	evt.GiveItem{Id=281}
-	local mval = 0
-	local lv = GetOverallPartyLevel()
-	for i,v in Party do
-		local sk, mas=SplitSkill(v.Skills[const.Skills.IdentifyItem])
-		mval = math.max(mval, sk * 4 + mas * 2)
-	end
-	mval = math.min(mval, 48)
-	if mon.TreasureItemPercent ~= 0 then
-	if (mon.TreasureItemLevel >= 4 and lv <= 30) or (mon.TreasureItemLevel >= 5 and lv <= 50) or (mon.TreasureItemLevel >= 6) then
-		while math.random(1,96) <= mval do
-			evt.GiveItem(mon.TreasureItemLevel, ItemProb[math.random(1,100)])
+	local DropItemLevelmin = math.max(mon.Level - 10, 1)
+	local DropItemLevelmax = math.min(mon.Level + 10, 100)
+	local gaveItem = false
+	local itemName = nil
+	if math.random() <= 0.1 then
+		local wantType = (mon.TreasureItemType or 0)  -- 0 = Any (const.ItemType.Any)
+		
+		-- 从 ItemsExtra 中查找等级在范围内且符合 TreasureItemType（含包含关系）的物品
+		local candidateItems = {}
+		if MT.ItemsExtra and Game.ItemsTxt then
+			for itemId, itemExtra in pairs(MT.ItemsExtra) do
+				if itemExtra.Level and itemExtra.Level >= DropItemLevelmin and itemExtra.Level <= DropItemLevelmax then
+					if not itemExtra.QuestItem then
+						local itemType = (Game.ItemsTxt[itemId] and Game.ItemsTxt[itemId].EquipStat and (Game.ItemsTxt[itemId].EquipStat + 1)) or 0
+						if ItemTypeMatches(wantType, itemType) then
+							table.insert(candidateItems, itemId)
+						end
+					end
+				end
+			end
+		end
+		
+		if #candidateItems > 0 then
+			local selectedItemId = candidateItems[math.random(1, #candidateItems)]
+			evt.GiveItem(1, 0, selectedItemId)
+			gaveItem = true
+			itemName = Game.ItemsTxt[selectedItemId] and Game.ItemsTxt[selectedItemId].Name or ("item #" .. selectedItemId)
+			-- 有 (mon.Level + 50)/100 的概率具有附魔
+			local enchantChance = (mon.Level + 50) / 100
+			local minStrength = math.max(1, math.ceil(DropItemLevelmin / 4))
+			local maxStrength = math.min(25, math.ceil(DropItemLevelmax / 4))
+			local strength = math.random(minStrength, maxStrength)
+			local bonus = math.random(1, 11)
+			if math.random() <= enchantChance then
+				Mouse.Item.Bonus = bonus
+				Mouse.Item.BonusStrength = strength
+			end
 		end
 	end
+	
+	-- 按 TreasureDiceCount、TreasureDiceSides 投骰给队伍加钱
+	local gold = math.random(DropItemLevelmin * 5, DropItemLevelmax * 5)
+	evt.Add("Gold", gold)
+	
+	-- 状态栏：You found [xxx gold] [and xxx item]
+	local parts = {}
+	if gold > 0 then
+		table.insert(parts, tostring(gold) .. " gold")
 	end
-	if mon.TreasureItemLevel >= 4 and mon.TreasureItemLevel <= 5 then
-		evt.GiveItem(mon.TreasureItemLevel, 14)
+	if itemName then
+		table.insert(parts, itemName)
 	end
-	if mon.Elite ~= 0 then
-		for i = 1, math.random(1,2) do 
-			evt.GiveItem(mon.TreasureItemLevel, 14)
-		end
-		Party.AddGold(math.random(mon.Level , mon.Level * 2) * 10, 0)
-	--	evt.Add("Gold",math.random(mon.Level , mon.Level * 2) * 10)
-	--	evt.Add("Exp",math.random(mon.Level , mon.Level * 2) * 100)
-	--	evt.Add(math.random(32,38),1)
+	if #parts > 0 then
+		Game.ShowStatusText("You found " .. table.concat(parts, " and "), 2)
 	end
+	
 	if Game.UseMonsterBolster == true then
 		mon.AIState = const.AIState.Removed
 	end

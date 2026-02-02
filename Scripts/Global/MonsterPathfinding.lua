@@ -1099,7 +1099,6 @@ function events.AfterLoadMap()
 
 		events.Tick = PathfinderTick
 		events.MonstersChooseDirection = PositionCheck
-	--	events.MonstersChooseDirection = math.random(0,2047)
 	end
 
 end
