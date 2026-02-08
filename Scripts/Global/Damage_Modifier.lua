@@ -15,16 +15,26 @@
 local const = const
 local MF = Merge.Functions
 
-local MonsterSpellDamage=  {[0] = 0,0.0, 4.5, 0.0, 0.0, 0.0, 3.5, 5.5, 0.0, 2.0, 5.0,10.5,
-									0.0, 0.0, 0.0, 2.0, 0.0, 0.0, 4.5, 0.0, 5.5, 0.0, 2.0,
-									0.0, 2.5, 0.0, 5.5, 0.0, 0.0, 8.0, 0.0, 0.0, 3.5,10.0,
-									0.0, 0.0, 0.0,23.0, 0.0,12.0, 0.0, 5.5, 0.0,40.0, 0.0,
-									0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 5.0, 0.0, 0.0, 0.0,
-									0.0, 0.0, 0.0, 6.0, 0.0, 0.0, 4.0, 0.0, 0.0,12.5, 0.0,
-									0.0, 0.0, 0.0, 2.5, 0.0, 0.0, 0.0, 0.0, 0.0, 5.5, 0.0,
-									5.5, 9.5, 0.0, 0.0, 0.0, 0.0, 5.0, 0.0, 0.0,10.5, 0.0,
-									0.0, 5.5, 0.0, 0.0, 3.5, 0.0, 0.0, 0.0,13.0, 0.0,10.0}
-									
+local MonsterSpellDamage=  {[2]  = 1.00, [6]  = 0.40, [11] = 0.50,
+							[15] = 0.25, [18] = 1.00,
+							[24] = 0.30, [26] = 1.00, [29] = 0.50, [33] = 1.00,
+							[37] = 2.50, [39] = 1.00, [41] = 0.40,
+							[52] = 0.50,
+							[59] = 1.00, [65] = 1.00,
+							[70] = 1.00, [76] = 1.00,
+							[78] = 1.00, [84] = 1.00, [87] = 1.00,
+							[90] = 1.50, [93] = 0.25, [97] = 0.50}
+
+local spellDamageType=    {[2] = const.Damage.Fire, [6] = const.Damage.Fire, [11] = const.Damage.Fire,
+							[15] = const.Damage.Air, [18] = const.Damage.Air,
+							[24] = const.Damage.Water, [26] = const.Damage.Water, [29] = const.Damage.Water, [33] = const.Damage.Water,
+							[37] = const.Damage.Earth, [39] = const.Damage.Earth, [41] = const.Damage.Earth,
+							[52] = const.Damage.Spirit,
+							[59] = const.Damage.Mind, [65] = const.Damage.Mind,
+							[70] = const.Damage.Body, [76] = const.Damage.Body,
+							[78] = const.Damage.Light, [84] = const.Damage.Light, [87] = const.Damage.Light,
+							[90] = const.Damage.Dark, [93] = const.Damage.Dark, [97] = const.Damage.Dark}
+
 local LichIncreaseConstant = 1.3
 local FireDamageBonus = 1.5
 local BodyDamageBonus = 1.2
@@ -74,13 +84,11 @@ local statBonusMap = {
     [const.Stats.MindResistance] = "MindResistanceBonus"
 }
 
-local function BolsterAdjust(x)
-	return (1 + 5.5 * x) / 6 * 0.99 ^ ((2 - x) * 40)
-end
-
-local function LogBolsterAdjust()
-	local BolsterMul = Game.BolsterAmount / 100
-	return math.log(BolsterAdjust(BolsterMul))/math.log(0.99)
+local STAMINA_ATTACK_COST = 8
+local STAMINA_SHOOT_COST = 15
+local function ConsumeStamina(amount)
+	vars.PartyStamina = math.max(0, vars.PartyStamina - amount)
+	Game.NeedRedraw = true
 end
 
 local function GetDist(x,y)
@@ -428,15 +436,10 @@ function events.PlayerAttacked(t,attacker) --���﹥������ ��
 			if attacker.Monster.SpellBuffs[const.MonsterBuff.ShrinkingRay].ExpireTime > Game.Time and attacker.Monster.SpellBuffs[const.MonsterBuff.ShrinkingRay].Power <= 10 then
 				dmg = dmg * (1 - (attacker.Monster.SpellBuffs[const.MonsterBuff.ShrinkingRay].Power) * 0.1)
 			end
-			local magicmul = 1
-			if mattack.Type ~= const.Damage.Phys then
-				magicmul = 0.99 ^ (125 - LogBolsterAdjust() - BolsterMul * 60)
-			end
 			if attacker.Monster.SpellBuffs[const.MonsterBuff.Bless].ExpireTime > Game.Time then
-				dmg = math.ceil(dmg * 1.5 * magicmul)
 				evt.DamagePlayer(t.PlayerSlot,mattack.Type, dmg)
 			else
-				dmg = math.random(math.ceil(dmg * 0.75 * magicmul), math.ceil(dmg * 1.25 * magicmul))
+				dmg = math.random(math.ceil(dmg * 0.75), math.ceil(dmg * 1.25))
 				evt.DamagePlayer(t.PlayerSlot,mattack.Type, dmg)
 			end
 			
@@ -461,81 +464,73 @@ function events.PlayerAttacked(t,attacker) --���﹥������ ��
 			if attacker.Monster.SpellBuffs[const.MonsterBuff.ShrinkingRay].ExpireTime > Game.Time then
 				dmg = dmg * (1 - (attacker.Monster.SpellBuffs[const.MonsterBuff.ShrinkingRay].Power) * 0.1)
 			end
-			local magicmul = 1
-			if mattack.Type ~= const.Damage.Phys then
-				magicmul = 0.99 ^ (125 - LogBolsterAdjust() - BolsterMul * 60)
-			end
 			if attacker.Monster.SpellBuffs[const.MonsterBuff.Bless].ExpireTime > Game.Time then
-				evt.DamagePlayer(t.PlayerSlot,mattack.Type,math.ceil(dmg * 1.5 * magicmul))
+				evt.DamagePlayer(t.PlayerSlot,mattack.Type,math.ceil(dmg * 1.5))
 			else
-				evt.DamagePlayer(t.PlayerSlot,mattack.Type,math.random(math.ceil(dmg * 0.75 * magicmul), math.ceil(dmg * 1.25 * magicmul)))
+				evt.DamagePlayer(t.PlayerSlot,mattack.Type,math.random(math.ceil(dmg * 0.75), math.ceil(dmg * 1.25)))
 			end
 			t.Handled = true
 		else
-			--Message(tostring(attacker.Object.Spell).." "..tostring(attacker.Object.SpellSkill))
-			if attacker.Object.Type == Game.SpellObjId[34] then
-				vars.StunExpireTime = Game.Time + 250
+			local spellId = attacker.Object.Spell
+			local spellSkill, spellmas = SplitSkill(attacker.Object.SpellSkill)
+			local baseDmg = (MonsterSpellDamage[spellId] or 0) * spellSkill
+
+			-- 第一步：用 MonsterSpellDamage 计算魔法伤害，随机 0.75~1.25 后对当前玩家造成伤害
+			if spellId ~= 41 and baseDmg > 0 then
+				local dmg = math.ceil(baseDmg * (0.75 + math.random() * 0.5))
+				local dmgType = spellDamageType[spellId] or const.Damage.Fire
+				-- Message(tostring(dmg).." "..tostring(dmgType).." "..tostring(spellId).." "..tostring(spellSkill))
+				evt.DamagePlayer(t.PlayerSlot, dmgType, dmg)
 			end
-			
-			--Message(tostring(attacker.Object.Type).." "..tostring(attacker.Object.SpellSkill))
-			if attacker.Object.Spell == 2 then
-				sk,mas = SplitSkill(attacker.Object.SpellSkill)
-				if mas == 4 then
-					dmgmul = 1
-					while math.random(0,2) == 0 do
-						dmgmul = dmgmul * 2
-						if dmgmul > 1000 then
-							dmgmul = 1024
-							break
+
+			-- 第二步：按法术 ID 执行特效（表驱动）
+			local spellEffect = {
+				[34] = function()
+					if attacker.Object.Type == Game.SpellObjId[34] then
+						vars.StunExpireTime = Game.Time + 250
+					end
+				end,
+				[2] = function()
+					local sk, mas = SplitSkill(spellSkill)
+					if mas == 4 then
+						local dmgmul = 1
+						while math.random(0, 2) == 0 do
+							dmgmul = dmgmul * 2
+							if dmgmul > 1000 then dmgmul = 1024; break end
+						end
+						if dmgmul > 1 then
+							evt.DamagePlayer(t.PlayerSlot, const.Damage.Fire, (dmgmul - 1) * sk * math.random(3, 5))
 						end
 					end
-					if dmgmul > 1 then
-						evt.DamagePlayer(t.PlayerSlot,const.Damage.Fire, (dmgmul - 1) * sk * math.random(3,5))
+				end,
+				[11] = function()
+					local sk, mas = SplitSkill(spellSkill)
+					if mas == 4 then
+						vars.BurningExpireTime = Game.Time + const.Minute * 5
+						vars.BurningPower = math.max((vars.BurningPower or 0), math.ceil(sk / 4))
 					end
-				end
+				end,
+				[18] = function()
+					local sk, mas = SplitSkill(spellSkill)
+					if mas == 4 then vars.StunExpireTime = Game.Time + 100 end
+				end,
+				[26] = function()
+					vars.SlowExpireTime = math.max((vars.SlowExpireTime or 0), Game.Time + 250)
+				end,
+				[70] = function()
+					if vars.PartyArmorDecrease.ExpireTime < Game.Time then
+						vars.PartyArmorDecrease.ExpireTime = Game.Time + 2500
+						vars.PartyArmorDecrease.Power = 20
+					else
+						vars.PartyArmorDecrease.ExpireTime = Game.Time + 2500
+						vars.PartyArmorDecrease.Power = vars.PartyArmorDecrease.Power + 20
+					end
+				end,
+			}
+			if spellEffect[spellId] then
+				spellEffect[spellId]()
 			end
-			if attacker.Object.Spell == 11 then
-				sk,mas = SplitSkill(attacker.Object.SpellSkill)
-				if mas == 4 then
-					vars.BurningExpireTime = Game.Time + const.Minute * 5
-					vars.BurningPower = math.max((vars.BurningPower or 0), math.ceil(sk / 4))
-				end
-			end
-			if attacker.Object.Spell == 18 then
-				sk,mas = SplitSkill(attacker.Object.SpellSkill)
-				if mas == 4 then
-					vars.StunExpireTime = Game.Time + 100
-				end
-			end
-			if attacker.Object.Spell == 26 then
-				vars.SlowExpireTime = math.max((vars.SlowExpireTime or 0), Game.Time + 250)
-			end
-			if attacker.Object.Type == 3091 and attacker.Object.Spell == 33 then
-				evt.DamagePlayer(t.PlayerSlot,const.Damage.Water,attacker.Object.SpellSkill * math.random(5,15))
-			end
-			if attacker.Object.Type == 1010 and attacker.Object.Spell == 62 then
-				evt.DamagePlayer(t.PlayerSlot,const.Damage.Fire,attacker.Object.SpellSkill * math.random(3,5))
-			end
-			if attacker.Object.Spell == 70 then
-				if vars.PartyArmorDecrease.ExpireTime < Game.Time then
-					vars.PartyArmorDecrease.ExpireTime = Game.Time + 2500
-					vars.PartyArmorDecrease.Power = 20
-				else
-					vars.PartyArmorDecrease.ExpireTime = Game.Time + 2500
-					vars.PartyArmorDecrease.Power = vars.PartyArmorDecrease.Power + 20
-				end
-			end
-			if attacker.Object.Spell == 41 then
-				
-				local sk,mas = SplitSkill(attacker.Object.SpellSkill) --BUG????
-				--Message(tostring(sk).." "..tostring(mas))
-				for i,pl in Party do
-					evt.DamagePlayer(i,const.Damage.Earth,sk * math.random(4,7))
-				end
-				--evt.DamagePlayer(0,const.Damage.Earth,sk * math.random(4,7))
-				attacker.Object.SpellSkill = 0
-				t.Handled = true
-			end
+			t.Handled = true
 		end
 		if (not attacker.Object) or attacker.Object.Spell == 0 then
 			if attacker.Monster.Bonus > 0 then
@@ -646,8 +641,7 @@ function CalcRealDamageM(Damage, DamageKind, ByPlayer, Player, Monster)
 		end
 		if Player.Face == 20 or Player.Face == 21 then
 			PlayerPhysDamageMul = PlayerPhysDamageMul * 1.3
-		end
-		if Player.Face == 26 or Player.Face == 27 then
+		elseif Player.Face == 26 or Player.Face == 27 then
 			PlayerMagicDamageMul = PlayerMagicDamageMul * LichIncreaseConstant
 		end
 		if Player.SpellBuffs[const.PlayerBuff.TempAccuracy].ExpireTime > Game.Time then
@@ -726,7 +720,7 @@ end
 ---------------------------------
 
 local function CalcRealDamage(Player,Damage,DamageKind)
-	--Message(tostring(Damage).." "..tostring(DamageKind))
+	-- Message(tostring(Damage).." "..tostring(DamageKind))
 	if vars.Invincible and vars.Invincible > Game.Time then
 		return 0
 	end
@@ -767,11 +761,10 @@ local function CalcRealDamage(Player,Damage,DamageKind)
 			--Message("Detected!")
 		end
 		if mas3 == const.GM then
-			local spd = ((PartySpeedX or 0) ^ 2 + (PartySpeedY or 0) ^ 2) ^ 0.5
-			local avgspd = ((avgPartySpeedX or 0) ^ 2 + (avgPartySpeedY or 0) ^ 2) ^ 0.5
-			local spd_rec_ratio = 0.5 ^ ((avgspd / 20) ^ 2)
-			--Message(tostring(spd).." "..tostring(avgspd).." "..tostring(spd_rec_ratio))
-			Damage = Damage * spd_rec_ratio
+			local isrunning = (vars.PartySpeed and vars.PartySpeed >= 28)
+			if isrunning then
+				Damage = Damage * 0.25
+			end
 		end
 	end
 
@@ -885,6 +878,7 @@ function events.MonsterAttacked(t,attacker) --���ﱻ����
 			if attacker.Player.SpellBuffs[const.PlayerBuff.Misform].ExpireTime < Game.Time then
 				--Message(tostring(attacker.Object.Spell))
 				if attacker.Object.Spell == 133 then
+					ConsumeStamina(STAMINA_SHOOT_COST)
 					if t.Monster.SpellBuffs[const.MonsterBuff.Shield].ExpireTime > Game.Time and t.Monster.SpellBuffs[const.MonsterBuff.Shield].Skill == 4 then
 						if math.random(1,5) >= 2 then
 							t.Handled = true
@@ -1005,6 +999,7 @@ function events.MonsterAttacked(t,attacker) --���ﱻ����
 		end
 		if attacker.PlayerIndex and not attacker.Object then
 			if attacker.Player.SpellBuffs[const.PlayerBuff.Misform].ExpireTime < Game.Time then
+				ConsumeStamina(STAMINA_ATTACK_COST)
 				local it = attacker.Player:GetActiveItem(const.ItemSlot.MainHand)
 				local physdmg = math.random(attacker.Player:GetMeleeDamageMin(),attacker.Player:GetMeleeDamageMax())
 				if it and it:T().Skill == const.Skills.Dagger then
@@ -1780,9 +1775,9 @@ function events.CalcStatBonusBySkills(t)
 		t.Result = t.Result + hpfactor * sk * mas
 		
 		-- -- Add new HP bonus by endurance
-		t.Result = t.Result + hpfactor * t.Player.LevelBase * en * 0.01 
-				 + hpbase * en * 0.01
-				 + hpfactor * sk * mas * en * 0.01
+		t.Result = t.Result + hpfactor * t.Player.LevelBase * en * 0.005 
+				 + hpbase * en * 0.005
+				 + hpfactor * sk * mas * en * 0.005
 	end
 end
 
@@ -1791,7 +1786,7 @@ end
 function events.CalcStatBonusByItems(t)
 	if t.Stat == const.Stats.HP then -- HP Bonus
 		local en= t.Player:GetEndurance()
-		t.Result = t.Result * 10 * (1 + en * 0.01)
+		t.Result = t.Result * 10 * (1 + en * 0.005)
 	end
 end
 

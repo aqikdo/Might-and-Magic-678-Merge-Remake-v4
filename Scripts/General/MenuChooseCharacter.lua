@@ -367,10 +367,11 @@ function events.GameInitialized2()
 					Mouse.Item.Bonus = 0
 					Mouse.Item.BonusStrength = 0
 				else
-					evt.GiveItem{2,11,0}
-					if Mouse.Item.Bonus > 0 then
-						Mouse.Item.BonusStrength = math.random(1,5)
-					end
+					local random_item_idx = math.random(1,3)
+					local random_item = {137, 922, 923}
+					evt.GiveItem{1,0,random_item[random_item_idx]}
+					Mouse.Item.Bonus = math.random(1,11)
+					Mouse.Item.BonusStrength = math.random(1,3)
 				end
 			end
 		end

@@ -551,9 +551,9 @@ Default Monster Data					Stats								Movement and Combat					Attack 1			Attack 
 547	Ghost	BGhost A	11	55	157	252	5%L2Ring	0	Y	Free	Normal	4	240	100	0	Afraidx3	Phys	21D21+3	0	0	0	0	0	11	0	0	0	38	38	38	Imm	Imm	Imm	38	0	38	0	0
 548	Evil Spirit	BGhost B	14	62	172	352	10%L3Ring	0	Y	Long	Normal	4	260	90	0	0	Phys	23D24+13	0	0	0	0	0	14	0	0	0	57	57	57	Imm	Imm	Imm	57	0	57	0	0
 549	Specter	BGhost C	18	71	187	492	20%L4Ring	0	Y	Med	Suicidal	4	300	90	0	Uncon	Phys	26D27+24	0	0	0	0	0	18	0	0	0	76	76	76	Imm	Imm	Imm	76	0	76	0	0
-550	Goblin	BGoblin A	3	200	20	137	4D4	0	N	Med	Normal	4	260	100	0	0	Phys	4d5+10	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-551	Goblin Shaman	BGoblin B	4	240	30	191	8D4	0	N	Med	Normal	4	280	100	0	0	Phys	4d5+16	0	0	0	0	0	6	"Fire Bolt,N,1"	0	0	10	10	10	10	10	10	10	10	10	0	0
-552	Goblin King	BGoblin C	5	280	40	267	10%15D4+L1	0	N	Short	Aggress	4	300	90	0	0	Phys	4d5+22	0	0	0	0	0	8	"Fire Bolt,N,2"	0	0	20	20	20	20	20	20	20	20	20	0	0
+550	Goblin	BGoblin A	3	200	20	137	4D4	0	N	Med	Normal	4	260	100	0	0	Phys	2d5	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+551	Goblin Shaman	BGoblin B	4	240	30	191	8D4	0	N	Med	Normal	4	280	100	0	0	Phys	2d5+2	0	0	0	0	0	4	"Fire Bolt,N,1"	0	0	10	10	10	10	10	10	10	10	10	0	0
+552	Goblin King	BGoblin C	5	280	40	267	10%15D4+L1	0	N	Short	Aggress	4	300	90	0	0	Phys	2d5+4	0	0	0	0	0	5	"Fire Bolt,N,2"	0	0	20	20	20	20	20	20	20	20	20	0	0
 553	Guard	Guard A	17	139	195	504	5%3D20+L1Armor	0	N	Short	Normal	4	200	90	0	0	Phys	26D26+10	0	0	0	0	0	17	0	0	0	30	30	30	30	0	30	30	30	30	0	0
 554	Lieutenant	Guard B	22	158	210	705	5%5D20+L2Armor	0	N	Short	Normal	4	220	90	0	0	Phys	29D30+18	0	10	Phys	29D60+18	0	22	0	0	0	45	45	45	45	5	45	45	45	45	0	0
 555	Captain	Guard C	28	180	225	986	10%10D20+L3Armor	0	N	Short	Aggress	4	240	80	0	0	Phys	33D34+8	0	10	Phys	33D68+8	0	28	0	0	0	61	61	61	61	10	61	61	61	61	0	0

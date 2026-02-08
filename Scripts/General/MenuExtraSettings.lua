@@ -353,11 +353,10 @@ function events.GameInitialized2()
 			local ExSet = vars.ExtraSettings
 
 			ExSet.BolsterAmount = ExSet.BolsterAmount or 100
-			ExSet.InfinityView	= ExSet.InfinityView  or false
-
-			if ExSet.ImprovedPathfinding == nil then
-				ExSet.ImprovedPathfinding = true
-			end
+			ExSet.InfinityView	= ExSet.InfinityView  or true
+			ExSet.ShowWeatherEffects = ExSet.ShowWeatherEffects  or false
+			ExSet.UseMonsterBolster	= ExSet.UseMonsterBolster  or false
+			ExSet.ImprovedPathfinding = ExSet.ImprovedPathfinding  or true
 
 			for k,v in pairs(VarsToStore) do
 				Game[v] = (ExSet[v] == nil) and true or ExSet[v]

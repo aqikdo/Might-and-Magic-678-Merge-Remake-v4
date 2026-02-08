@@ -28,7 +28,7 @@ local function CalculateStatAdjustment(value)
 	if value <= 2 then
 		adj = -6
 	elseif value <= 21 then
-		adj = floor(value / 2) - 6 
+		adj = floor((value - 1) / 2) - 6 
 	elseif value <= 40 then
 		adj = floor(value / 5)
 	elseif value <= 300 then

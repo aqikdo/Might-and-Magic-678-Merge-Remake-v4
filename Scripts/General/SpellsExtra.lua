@@ -1443,12 +1443,6 @@ local avg_coeff = 0.97
 local function stpoutdoorx(d)
 	if Stp == false then
 --		Party.X = d.edi
-		PartySpeedX = (d.edi - Party.X) * Spd
-		if avgPartySpeedX then
-			avgPartySpeedX = avgPartySpeedX * avg_coeff + math.abs(PartySpeedX) * (1 - avg_coeff)
-		else
-			avgPartySpeedX = PartySpeedX
-		end
 		Party.X = (Party.X * (1-Spd) + d.edi * Spd)
 	end
 	--edi ebx edx
@@ -1456,12 +1450,6 @@ end
 local function stpoutdoory(d)
 	if Stp == false then
 --		Party.Y = d.ebx
-		PartySpeedY = (d.ebx - Party.Y) * Spd
-		if avgPartySpeedY then
-			avgPartySpeedY = avgPartySpeedY * avg_coeff + math.abs(PartySpeedY) * (1 - avg_coeff)
-		else
-			avgPartySpeedY = PartySpeedY
-		end
 		Party.Y = (Party.Y * (1-Spd) + d.ebx * Spd)
 	end
 end
@@ -1473,26 +1461,12 @@ local function stpoutdoorz(d)
 end
 local function stpindoorx(d)
 	if Stp == false then
---		Party.X = d.eax
-		PartySpeedX = (d.eax - Party.X) * Spd * 5 / 3
-		if avgPartySpeedX then
-			avgPartySpeedX = avgPartySpeedX * avg_coeff + math.abs(PartySpeedX) * (1 - avg_coeff)
-		else
-			avgPartySpeedX = PartySpeedX
-		end
 		Party.X = (Party.X * (1-Spd) + d.eax * Spd)
 	end
 	--edi ebx edx
 end
 local function stpindoory(d)
 	if Stp == false then
---		Party.Y = d.eax
-		PartySpeedY = (d.eax - Party.Y) * Spd * 5 /3
-		if avgPartySpeedY then
-			avgPartySpeedY = avgPartySpeedY * avg_coeff + math.abs(PartySpeedY) * (1 - avg_coeff)
-		else
-			avgPartySpeedY = PartySpeedY
-		end
 		Party.Y = (Party.Y * (1-Spd) + d.eax * Spd)
 	end
 end

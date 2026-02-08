@@ -793,7 +793,7 @@ local function SpellBuffExtraTimer()
 	end
 
 	if (not vars.MagicRes) or vars.MagicRes < Game.Time then
-		if (vars.DarkGraspExpireTime and vars.DarkGraspExpireTime >= Game.Time) or (vars.StunExpireTime and vars.StunExpireTime >= Game.Time) then
+		if (vars.DarkGraspExpireTime and vars.DarkGraspExpireTime >= Game.Time) or (vars.StunExpireTime and vars.StunExpireTime >= Game.Time)  then
 			Stp = true
 		else
 			Stp = false
@@ -801,6 +801,9 @@ local function SpellBuffExtraTimer()
 		
 		Spd = 1
 		SpdZ = 1
+		if vars.StaminaLowMul then
+			Spd = Spd * vars.StaminaLowMul
+		end
 		if vars.SlowExpireTime and vars.SlowExpireTime >= Game.Time then
 			Spd = Spd * 0.4
 		end
@@ -828,7 +831,7 @@ local function SpellBuffExtraTimer()
 			SpdZ = SpdZ * math.max(0.25, (0.99985 ^ (vars.ElemwFatigue or 0)))
 		end
 		
-		if vars.StunExpireTime and vars.StunExpireTime >= Game.Time then
+		if (vars.StunExpireTime and vars.StunExpireTime >= Game.Time) then
 			for _, pl in Party do
 				pl.RecoveryDelay = math.max(pl.RecoveryDelay, 10)
 			end
