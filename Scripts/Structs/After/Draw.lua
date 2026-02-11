@@ -19,7 +19,7 @@ end
 
 local poly
 
-function DrawScreenEffectD3D(BitmapIndex, u, v, du, dv, x1, y1, x2, y2, cl, cl2, cl3, cl4)
+function DrawScreenEffectD3D(BitmapIndex, u, v, du, dv, x1, y1, x2, y2, cl, cl2, cl3, cl4, opaque)
 	if not Game.IsD3D then
 		return
 	end
@@ -39,12 +39,17 @@ function DrawScreenEffectD3D(BitmapIndex, u, v, du, dv, x1, y1, x2, y2, cl, cl2,
 	local SetTextureStageState = u4[vt + 0xA0]
 	call(SetTextureStageState, 0, dev, 0, 12, 1)  -- D3DTSS_ADDRESS
 	call(SetTexture, 0, dev, 0, Game.BitmapsLod.D3D_Textures[BitmapIndex])
-	
+	-- opaque: SRCBLEND=1 (ONE), DESTBLEND=0 (ZERO) to replace; else alpha blend 2,2
+	if opaque then
+		call(SetRenderState, 0, dev, 19, 1)   -- SRCBLEND = ONE
+		call(SetRenderState, 0, dev, 20, 0)   -- DESTBLEND = ZERO
+	else
+		call(SetRenderState, 0, dev, 19, 2)
+		call(SetRenderState, 0, dev, 20, 2)
+	end
 	call(SetRenderState, 0, dev, 28, 0)  -- D3DRENDERSTATE_FOGENABLE
 	call(SetRenderState, 0, dev, 27, 1)  -- D3DRENDERSTATE_ALPHABLENDENABLE
 	call(SetRenderState, 0, dev, 14, 0)  -- D3DRENDERSTATE_ZWRITEENABLE
-	call(SetRenderState, 0, dev, 19, 2)  -- D3DRENDERSTATE_SRCBLEND
-	call(SetRenderState, 0, dev, 20, 2)  -- D3DRENDERSTATE_DESTBLEND
 	call(SetRenderState, 0, dev, 26, 0)  -- D3DRENDERSTATE_DITHERENABLE
 	call(SetRenderState, 0, dev, 23, 8)  -- D3DRENDERSTATE_ZFUNC
 	call(DrawPrimitive, 0, dev, 6, 452, poly, 4, 28)

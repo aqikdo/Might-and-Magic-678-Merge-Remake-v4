@@ -29,6 +29,7 @@ return {
   ["Scripts/General/2_OutdoorTravels.lua"] = {1, "94d635f5ede137fdfe4d774bfed21be8"},
   ["Scripts/General/AdaptiveMonstersStats.lua"] = {1, "8287aded15b26dcb3ca6d95094eff5b6"},
   ["Scripts/General/Additional UI.lua"] = {1, "0af3f9ea7bddb4a51ed121f5495cf091"},
+  ["Scripts/General/CharacterOptions.lua"] = {1, ""},
   ["Scripts/General/CheckFiles.lua"] = {1, "9239b9280a082409deed1a277ad061ee"},
   ["Scripts/General/CouncilAppearance.lua"] = {1, "c8a1cea825cc0acf23d5247d0f136f1d"},
   ["Scripts/General/CustomRaceClassNames.lua"] = {1, "0a3604d4d2c8ffd3559e20aa6f285f7e"},

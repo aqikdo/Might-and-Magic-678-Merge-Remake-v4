@@ -390,9 +390,9 @@ local function SummonMonsterAdjust()
 				SetAttackMaxDamage2(mon, mon.Attack1, math.ceil(TxtMon.Attack1.DamageDiceSides) * TxtMon.Attack1.DamageDiceCount * (1 + mon.Elite) * (MonsterEliteDamage[mon.NameId] or 1) * ReanimateDmg[1] * DamageMulByBoost[mon.BoostType])
 				SetAttackMaxDamage2(mon, mon.Attack2, math.ceil(TxtMon.Attack2.DamageDiceSides) * TxtMon.Attack2.DamageDiceCount * (1 + mon.Elite) * (MonsterEliteDamage[mon.NameId] or 1) * ReanimateDmg[1] * DamageMulByBoost[mon.BoostType])
 				local sk,mas = SplitSkill(TxtMon.SpellSkill)
-				mon.SpellSkill = JoinSkill(math.min(math.max(1, sk * (1 + mon.Elite) * SpellDamageMul[mon.Spell] * (MonsterEliteDamage[mon.NameId] or 1) * MagicMulByBoost[mon.BoostType]) * ReanimateDmg[1], 1000), mas)
+				mon.SpellSkill = JoinSkill(math.min(math.max(1, sk * (1 + mon.Elite) * (MonsterEliteDamage[mon.NameId] or 1) * MagicMulByBoost[mon.BoostType]) * ReanimateDmg[1], 1000), mas)
 				sk,mas = SplitSkill(TxtMon.Spell2Skill)
-				mon.Spell2Skill = JoinSkill(math.min(math.max(1, sk * (1 + mon.Elite) * SpellDamageMul[mon.Spell2] * (MonsterEliteDamage[mon.NameId] or 1) * MagicMulByBoost[mon.BoostType]) * ReanimateDmg[1], 1000), mas)
+				mon.Spell2Skill = JoinSkill(math.min(math.max(1, sk * (1 + mon.Elite) * (MonsterEliteDamage[mon.NameId] or 1) * MagicMulByBoost[mon.BoostType]) * ReanimateDmg[1], 1000), mas)
 				if vars.LastCastSpell == nil or Game.Time - vars.LastCastSpell >= const.Minute * 5 then
 					mon.HP = mon.FullHP
 				end
@@ -655,39 +655,7 @@ local function MonsterRandomWalk()
 	end
 end
 
-SpellMissleSpeed={0,4000,0,0,0,4000,0,0,0,0,4000,
-				  0,0,0,0,0,0,10000,0,0,0,0,
-				  0,1500,0,6000,0,0,4000,0,0,4000,4000,
-				  6000,0,0,1000,0,4000,0,4000,0,0,0,
-				  0,0,0,0,0,0,0,0,0,0,0,
-				  0,0,0,4000,0,0,0,0,0,6000,0,
-				  0,0,0,8000,0,0,0,0,0,4000,0,
-				  4000,0,0,0,0,0,0,0,0,32000,0,
-				  0,2000,0,0,4000,0,0,0,4000,0,0,0,0,0,0,0,0,0,0,0,0,0,16000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
-				  
-local function DragonMissileTimer()
-	for i,v in Map.Objects do
-		if v.Spell == const.Spells.ShootDragon then
-			if vars.HammerhandDamageType == const.Damage.Fire then
-				v.Type = 510
-			elseif vars.HammerhandDamageType == const.Damage.Air then
-				v.Type = 500
-			elseif vars.HammerhandDamageType == const.Damage.Water then
-				v.Type = 515
-			elseif vars.HammerhandDamageType == const.Damage.Earth then
-				v.Type = 505
-			elseif vars.HammerhandDamageType == const.Damage.Body then
-				v.Type = 520
-			elseif vars.HammerhandDamageType == const.Damage.Mind then
-				v.Type = 525
-			elseif vars.HammerhandDamageType == nil then
-				vars.HammerhandDamageType = const.Damage.Fire
-			end
-		end
-	end
-end
-
-local function SpeedUpMissileTimer()
+local function MissileTimer()
 --	aergv = Party.SpeedZ
 --	if aergv~=0 then
 --		Message(tostring(aergv))
@@ -700,31 +668,10 @@ local function SpeedUpMissileTimer()
 	local SpellMas = {}
 	for i,v in Map.Objects do
 		if v.Spell then
-			local velo = math.sqrt(v.VelocityX ^ 2 + v.VelocityY ^ 2 + v.VelocityZ ^ 2)
-			local acvelo = SpellMissleSpeed[v.Spell]
 			local distx = Party.X - v.X
 			local disty = Party.Y - v.Y
 			local distz = Party.Z + 50 - v.Z
 			local dist = math.sqrt(distx ^ 2 + disty ^ 2 + distz ^ 2)
-			if acvelo and acvelo~=0 then
-				if velo > 1000 or v.age == nil or v.age <= 2 then
-					v.VelocityX = v.VelocityX * (acvelo / velo)
-					v.VelocityY = v.VelocityY * (acvelo / velo)
-					v.VelocityZ = v.VelocityZ * (acvelo / velo)
-				else
-					v.VelocityX = acvelo * (distx / dist)
-					v.VelocityY = acvelo * (disty / dist)
-					v.VelocityZ = acvelo * (distz / dist)
-				end
-			end
-			--if velo < 1000 then
-			--	v.VelocityX = v.VelocityX * (3000 / velo)
-			--	v.VelocityY = v.VelocityY * (3000 / velo)
-			--	v.VelocityZ = v.VelocityZ * (3000 / velo)
-			--end
-			--if v.Spell==const.Spells.ShrinkingRay then
-			--	Message(tostring(velo))
-			--end
 			if v.Type == 10020 and v.Spell == 33 then
 				v.VelocityX = 0
 				v.VelocityY = 0
@@ -736,7 +683,6 @@ local function SpeedUpMissileTimer()
 					v.Age = 500
 					v.MaxAge = 1
 				end
---				Message(tostring(v.Age))
 			elseif v.Type == 1060 then
 				if FireSpikeList[v.Owner] == nil then
 					cnt[v.Owner] = 1
@@ -761,14 +707,6 @@ local function SpeedUpMissileTimer()
 					evt.DamagePlayer(evt.Players.All,const.Damage.Air,v.SpellSkill * 2)
 				end
 			end
-		end
-		if v.Missile then
-			local velo = math.sqrt(v.VelocityX ^ 2 + v.VelocityY ^ 2 + v.VelocityZ ^ 2)
-			local acvelo = 4000
-			--Message(tostring(v.Target))
-			v.VelocityX = v.VelocityX * (acvelo / velo)
-			v.VelocityY = v.VelocityY * (acvelo / velo)
-			v.VelocityZ = v.VelocityZ * (acvelo / velo)
 		end
 	end
 	for j = 1, OwnerListCount do
@@ -1304,7 +1242,7 @@ function events.AfterLoadMap()
 		vars.PlayerAttackTime = Game.Time
 	end
 	
-	Timer(SpeedUpMissileTimer, 4, false)
+	Timer(MissileTimer, 4, false)
 	Timer(SpellBuffExtraTimer, 1, false)
 	Timer(SummonMonsterAdjust, const.Minute/8, false)
 	Timer(ManaRegeneration, const.Minute/8, false)
@@ -1317,7 +1255,6 @@ function events.AfterLoadMap()
 	Timer(MonsterBuffsAdjust_LowFrequency, const.Minute/4, false)
 	Timer(NegRegen, const.Minute * 4, false)
 	Timer(MonsterRandomWalk, const.Minute / 4, false)
-	Timer(DragonMissileTimer, 1, false)
 	Timer(InsaneTimer, const.Minute/8, false)
 	Timer(BurningTimer, const.Minute/4, false)
 

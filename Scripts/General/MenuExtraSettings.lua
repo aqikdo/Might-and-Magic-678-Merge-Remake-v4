@@ -10,6 +10,7 @@ end
 CustomUI.NewSettingsPage = NewSettingsPage
 
 local function ExitExtSetScreen()
+	CurrentPage = 1  -- 退出时重置页码，下次从第一页打开，避免错乱
 	Editor.UpdateVisibility(Game.InfinityView)
 	if not Game.ShowWeatherEffects then
 		CustomUI.ShowSFTAnim() -- stop current animation
@@ -28,6 +29,10 @@ function events.GameInitialized2()
 	local RETURN = const.Keys.RETURN
 	local ESCAPE = const.Keys.ESCAPE
 	NewSettingsPage(ExSetScr, "ExtraSettings")
+	-- 角色选项页（入口：主界面 -> 控制 -> Extra Settings 里左右翻页）
+	if const.Screens and const.Screens.CharacterOptions then
+		table.insert(Pages, const.Screens.CharacterOptions)
+	end
 
 	---- Switch extra screen ----
 	local RightSwitch = CustomUI.CreateButton{

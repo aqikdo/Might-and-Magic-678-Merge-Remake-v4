@@ -567,13 +567,30 @@
 	@std:
 	]])
 
-	-- Make zombie/lich dragon breath white projectile
+	-- Dragon breath projectile: zombie/lich white, else by HammerhandDamageType
 	function events.DragonBreathProjectile(t)
 		local race = Party.PlayersArray[t.PlayerIndex].Attrs.Race
-		if Game.Races[race].BaseRace == const.Race.Dragon
-				and (Game.Races[race].Kind == const.RaceKind.Undead
-				or Game.Races[race].Kind == const.RaceKind.Ghost) then
-			t.ObjId = 8000
+		local dmg = vars.HammerhandDamageType
+		if dmg == const.Damage.Fire then
+			t.ObjId = 510
+		elseif dmg == const.Damage.Air then
+			t.ObjId = 500
+		elseif dmg == const.Damage.Water then
+			t.ObjId = 515
+		elseif dmg == const.Damage.Earth then
+			t.ObjId = 505
+		elseif dmg == const.Damage.Body then
+			t.ObjId = 520
+		elseif dmg == const.Damage.Mind then
+			t.ObjId = 525
+		else
+			if Game.Races[race].BaseRace == const.Race.Dragon
+			and (Game.Races[race].Kind == const.RaceKind.Undead
+			or Game.Races[race].Kind == const.RaceKind.Ghost) then
+				t.ObjId = 8000
+			else
+				t.ObjId = 510
+			end
 		end
 	end
 

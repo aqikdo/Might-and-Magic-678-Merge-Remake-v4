@@ -416,18 +416,18 @@ Memory Crystal	413	64	16	-	-	-	-	-	-	-	x	-	-	-	null	0	0	0	0	0	0
 Infused rod	414	64	16	-	-	-	-	-	-	-	x	-	-	-		0	0	0	0	0	0
 Wisp wrappings	415	64	16	-	-	-	-	-	-	-	x	-	-	-	3CAPE	0	0	0	0	0	0
 Black and white potion	416	64	64	-	-	-	-	-	-	-	x	-	-	-	obj160	0	0	0	0	0	0
-Air	500	16	16	-	-	x	-	x	x	x	-	-	-	-	spell101	768	6000	0	0	0	0
-Earth	505	16	16	-	-	x	-	x	x	x	-	-	-	-	spell102	768	4000	0	0	0	0
-Fire	510	16	16	-	-	x	-	x	x	x	-	-	-	-	spell103	768	4000	0	0	0	0
-Water	515	16	16	-	-	x	-	x	x	x	-	-	-	-	spell104	768	4000	0	0	0	0
-Body	520	16	16	-	-	x	-	x	x	x	-	-	-	-	spell105	768	4000	0	0	0	0
-Mind	525	16	16	-	-	x	-	x	x	x	-	-	-	-	spell105	768	4000	0	0	0	0
-Spirit	530	16	16	-	-	x	-	x	x	x	-	-	-	-	spell105	768	4000	0	0	0	0
-Light	535	16	16	-	-	x	-	x	x	x	-	-	-	-	spell106	768	4000	0	0	0	0
-Dark	540	16	16	-	-	x	-	x	x	x	-	-	-	-	spell107	768	4000	0	0	0	0
-Arrow	545	16	16	-	-	x	-	x	x	x	-	-	-	-	arrow	768	4000	0	0	0	0
-FireArrow	550	16	16	-	-	x	-	x	x	x	-	-	-	-	FrArw	768	4000	0	0	0	0
-Laser	555	16	16	-	-	x	-	x	x	x	-	-	-	-	lzrbolt	768	6000	0	0	0	0
+Air	500	16	16	-	-	x	-	x	x	x	-	-	-	-	spell101	768	8000	0	0	0	0
+Earth	505	16	16	-	-	x	-	x	x	x	-	-	-	-	spell102	768	8000	0	0	0	0
+Fire	510	16	16	-	-	x	-	x	x	x	-	-	-	-	spell103	768	8000	0	0	0	0
+Water	515	16	16	-	-	x	-	x	x	x	-	-	-	-	spell104	768	8000	0	0	0	0
+Body	520	16	16	-	-	x	-	x	x	x	-	-	-	-	spell105	768	8000	0	0	0	0
+Mind	525	16	16	-	-	x	-	x	x	x	-	-	-	-	spell105	768	8000	0	0	0	0
+Spirit	530	16	16	-	-	x	-	x	x	x	-	-	-	-	spell105	768	8000	0	0	0	0
+Light	535	16	16	-	-	x	-	x	x	x	-	-	-	-	spell106	768	8000	0	0	0	0
+Dark	540	16	16	-	-	x	-	x	x	x	-	-	-	-	spell107	768	8000	0	0	0	0
+Arrow	545	16	16	-	-	x	-	x	x	x	-	-	-	-	arrow	768	8000	0	0	0	0
+FireArrow	550	16	16	-	-	x	-	x	x	x	-	-	-	-	FrArw	768	8000	0	0	0	0
+Laser	555	16	16	-	-	x	-	x	x	x	-	-	-	-	lzrbolt	768	8000	0	0	0	0
 explosion	556	16	16	-	-	x	x	x	x	-	-	-	-	-	null	0	0	0	0	0	0
 Cannonball	560	16	16	-	-	x	-	x	-	x	-	-	-	-	spell70c	768	4000	0	0	0	0
 Cyclops Projectile	565	16	16	-	-	x	-	x	-	x	-	-	-	-	boulder	768	3000	0	0	0	0
@@ -454,7 +454,7 @@ Incinerate	1100	16	16	-	-	x	-	x	x	x	-	-	-	-	spell11	768	4000	0	0	0	0
 explosion	1101	16	16	-	-	x	x	x	x	-	-	-	-	-	null	0	0	0	0	0	0
 Sparks	2030	16	16	-	-	x	-	x	-	x	-	-	-	-	spell02	768	1000	0	0	0	0
 explosion	2031	16	16	-	-	x	-	x	x	-	-	-	-	-	null	64	0	0	0	0	0
-Lightning Bolt	2060	16	16	-	-	x	-	x	x	x	-	-	-	-	spell18	128	8000	0	0	0	0
+Lightning Bolt	2060	16	16	-	-	x	-	x	x	x	-	-	-	-	spell18	128	10000	0	0	0	0
 explosion	2061	16	16	-	-	x	x	x	x	-	-	-	-	-	null	0	0	0	0	0	0
 Implosion	2080	16	16	-	-	x	-	x	x	-	-	-	-	-	spell57c	64	0	0	0	0	0
 explosion	2081	16	16	-	-	x	x	x	x	-	-	-	-	-	spell57c	8	0	0	0	0	0
@@ -472,7 +472,7 @@ shard	3092	16	16	-	-	x	-	x	x	x	-	-	-	-	spell26	768	4000	0	0	0	0
 Stun	4000	16	16	-	-	x	-	x	x	x	-	-	-	-	spell03	768	4000	0	0	0	0
 Slow	4010	16	16	-	-	x	-	x	x	x	-	-	-	-	null	768	4000	0	0	0	0
 explosion	4011	16	16	-	-	x	x	x	x	-	-	-	-	-	null	0	0	0	0	0	0
-Deadly Swarm	4030	16	16	-	-	x	-	x	x	x	-	-	-	-	spell37	768	4000	0	0	0	0
+Deadly Swarm	4030	16	16	-	-	x	-	x	x	x	-	-	-	-	spell37	768	1000	0	0	0	0
 explosion	4031	16	16	-	-	x	x	x	x	-	-	-	-	-	spell37c	128	0	0	0	0	0
 Blades	4050	16	16	-	-	x	-	x	x	x	-	-	-	-	spell39	768	4000	0	0	0	0
 explosion	4051	16	16	-	-	x	x	x	x	-	-	-	-	-	spell39c	8	0	0	0	0	0
@@ -494,11 +494,11 @@ Berzerk	6060	16	16	-	-	x	x	x	x	-	-	-	-	-	spell62	64	0	0	0	0	0
 explosion	6061	16	16	-	-	x	x	x	x	-	-	-	-	-	null	0	0	0	0	0	0
 Mass Fear	6070	16	16	-	-	x	-	x	x	x	-	-	-	-	null	768	4000	0	0	0	0
 explosion	6071	16	16	-	-	x	x	x	x	-	-	-	-	-	null	0	0	0	0	0	0
-Psychic Shock	6090	16	16	-	-	x	-	x	x	x	-	-	-	-	spell65	768	4000	0	0	0	0
+Psychic Shock	6090	16	16	-	-	x	-	x	x	x	-	-	-	-	spell65	768	6000	0	0	0	0
 explosion	6091	16	16	-	-	x	x	x	x	-	-	-	-	-	spell57c	8	0	0	0	0	0
 Enslave	6100	16	16	-	-	x	x	x	x	-	-	-	-	-	spell66	64	0	0	0	0	0
 explosion	6101	16	16	-	-	x	x	x	x	-	-	-	-	-	null	0	0	0	0	0	0
-Harm	7030	16	16	-	-	x	-	x	x	x	-	-	-	-	spell70	768	4000	0	0	0	0
+Harm	7030	16	16	-	-	x	-	x	x	x	-	-	-	-	spell70	768	8000	0	0	0	0
 explosion	7031	16	16	-	-	x	x	x	x	-	-	-	-	-	null	0	0	0	0	0	0
 Flying Fist	7090	16	16	-	-	x	-	x	x	x	-	-	-	-	spell76	768	4000	0	0	0	0
 explosion	7091	16	16	-	-	x	x	x	x	-	-	-	-	-	null	0	0	0	0	0	0
@@ -510,11 +510,11 @@ Paralyze	8030	16	16	-	-	x	-	x	x	x	-	-	-	-	null	768	4000	0	0	0	0
 explosion	8031	16	16	-	-	x	x	x	x	-	-	-	-	-	null	0	0	0	0	0	0
 Prismatic Light	8060	16	16	-	-	x	x	x	x	-	-	-	-	-	spell84	128	0	0	0	0	0
 explosion	8061	16	16	-	-	x	x	x	x	-	-	-	-	-	null	0	0	0	0	0	0
-Sunray	8090	16	16	-	-	x	-	x	x	x	-	-	-	-	spell87	128	8000	0	0	0	0
+Sunray	8090	16	16	-	-	x	-	x	x	x	-	-	-	-	spell87	128	32000	0	0	0	0
 explosion	8091	16	16	-	-	x	x	x	x	-	-	-	-	-	null	0	0	0	0	0	0
 Toxic Cloud	9010	16	16	-	-	x	-	x	x	x	-	-	-	-	spell90	768	2000	0	0	0	0
 explosion	9011	16	16	-	-	x	x	x	x	-	-	-	-	-	null	0	0	0	0	0	0
-Shrinking Ray	9030	16	16	-	-	x	-	x	x	x	-	-	-	-	spell92	768	4000	0	0	0	0
+Shrinking Ray	9030	16	16	-	-	x	-	x	x	x	-	-	-	-	spell92	768	8000	0	0	0	0
 explosion	9031	16	16	-	-	x	-	x	x	-	-	-	-	-	null	0	0	0	0	0	0
 Shrap Metal	9040	16	16	-	-	x	-	x	x	x	-	-	-	-	spell93	768	4000	0	0	0	0
 explosion	9041	16	16	-	-	x	x	x	x	-	-	-	-	-	spell57c	8	0	0	0	0	0

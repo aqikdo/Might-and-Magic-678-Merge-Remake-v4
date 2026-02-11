@@ -85,7 +85,7 @@ local statBonusMap = {
 }
 
 local STAMINA_ATTACK_COST = 8
-local STAMINA_SHOOT_COST = 15
+-- local STAMINA_SHOOT_COST = 15
 local function ConsumeStamina(amount)
 	vars.PartyStamina = math.max(0, vars.PartyStamina - amount)
 	Game.NeedRedraw = true
@@ -856,7 +856,6 @@ function events.MonsterAttacked(t,attacker) --���ﱻ����
 		end
 		t.Handled = true
 	else
-		t.Handled = true
 		if attacker.PlayerIndex then
 			vars.PlayerAttackTime = Game.Time
 			vars.LastCastSpell = Game.Time
@@ -878,7 +877,8 @@ function events.MonsterAttacked(t,attacker) --���ﱻ����
 			if attacker.Player.SpellBuffs[const.PlayerBuff.Misform].ExpireTime < Game.Time then
 				--Message(tostring(attacker.Object.Spell))
 				if attacker.Object.Spell == 133 then
-					ConsumeStamina(STAMINA_SHOOT_COST)
+					t.Handled = true
+					-- ConsumeStamina(STAMINA_SHOOT_COST)
 					if t.Monster.SpellBuffs[const.MonsterBuff.Shield].ExpireTime > Game.Time and t.Monster.SpellBuffs[const.MonsterBuff.Shield].Skill == 4 then
 						if math.random(1,5) >= 2 then
 							t.Handled = true
@@ -998,6 +998,12 @@ function events.MonsterAttacked(t,attacker) --���ﱻ����
 			
 		end
 		if attacker.PlayerIndex and not attacker.Object then
+			t.Handled = true
+			if vars.CharacterOptions and vars.CharacterOptions[GetPlayerId(attacker.Player)] and vars.CharacterOptions[GetPlayerId(attacker.Player)].DisableAttack then
+				Game.ShowStatusText(string.format("%s takes defense action.", attacker.Player.Name), 2)
+				attacker.Player.AttackRecovery = 80
+				return
+			end
 			if attacker.Player.SpellBuffs[const.PlayerBuff.Misform].ExpireTime < Game.Time then
 				ConsumeStamina(STAMINA_ATTACK_COST)
 				local it = attacker.Player:GetActiveItem(const.ItemSlot.MainHand)
