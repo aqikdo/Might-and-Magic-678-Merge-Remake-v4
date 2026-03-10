@@ -17,12 +17,42 @@ local function GetMonster(ptr)
 	return Mon, MonId
 end
 
+-- 第二法术冷却时长，与 MonsterControl 中读取的 mapvars.Spell2Cooldown 对应
+local SPELL2_COOLDOWN = const.Minute * 5
+
+local function GetMonsterIndex(mon)
+	for idx, m in Map.Monsters do
+		if m == mon then
+			return idx
+		end
+	end
+	return nil
+end
+
+-- 怪物释放第二法术时：写入冷却结束时间到 mapvars，并把释放概率设为 0
+local function OnMonsterCastSpell2(t)
+	if t.Spell ~= t.Monster.Spell2 or t.Monster.Spell2 == 0 then
+		return
+	end
+	local idx = GetMonsterIndex(t.Monster)
+	if idx == nil then
+		return
+	end
+	if mapvars.Spell2Cooldown == nil then
+		mapvars.Spell2Cooldown = {}
+	end
+	mapvars.Spell2Cooldown[idx] = Game.Time + SPELL2_COOLDOWN
+	t.Monster.Spell2Chance = 0
+	if t.Monster.Spell ~= 0 then
+		t.Monster.SpellChance = 100
+	end
+end
+
 -- Change chance calculation for "slow" and "mass distortion" spells to be applied.
 local function CanApplySpell(Skill, Mastery, Resistance)
 	if Resistance == const.MonsterImmune then
 		return false
 	else
---		return (math.random(5, 100) + Skill + Mastery*2.5) > Resistance
 		return true
 	end
 end
@@ -93,10 +123,8 @@ mem.hook(0x42c42a, function(d)
 		d.eax = 0
 		return
 	else
---		if Mas > 3 then
-			mon.Group = 0
-			mon.Ally = 9999 -- Same as reanimated monster's ally.
---		end
+		mon.Group = 0
+		mon.Ally = 9999 -- Same as reanimated monster's ally.
 		mon.Hostile = false
 		mon.ShowAsHostile = false
 		d.eax = 1
@@ -201,20 +229,12 @@ local function MonCanBeReanimated(Mon, ByMon)
 	end
 	return false
 end
---local IsOff = {}
---for i = 0,200 do
---	IsOff[i] = 0
---end
---local Off = {2,6,11,15,18,24,26,29,32,39,41,65,70,76,78,87,90,93,95,97}
---for i = 1,20 do
---	IsOff[Off[i]] = 1
---end
 
 function events.MonsterCastSpellM(t)
-	if t.Spell == 69 then
+	OnMonsterCastSpell2(t)
+	if t.Spell == 69 then -- Divine restoration
 		local Skill, Mas = SplitSkill(t.Monster.Spell == t.Spell and t.Monster.SpellSkill or t.Monster.Spell2Skill)
-		local Heal = 6 * Skill
-		local x,y,z = XYZ(t.Monster)
+		local Heal = 20 * Skill
 		local Mon = t.Monster
 		local maxdebuff = 10
 		local maxstrength = 0
@@ -237,68 +257,58 @@ function events.MonsterCastSpellM(t)
 			end
 		end
 		--Message(tostring(maxstrength) .. " " .. tostring(maxdebuff) .. " " .. tostring(HealMonId))
-		HealMon.HP = math.min(HealMon.HP + Heal, HealMon.FullHP)
-
-		HealMon.SpellBuffs[const.MonsterBuff.ShrinkingRay].ExpireTime = 0
-		HealMon.SpellBuffs[const.MonsterBuff.Paralyze].ExpireTime = 0
-		HealMon.SpellBuffs[const.MonsterBuff.Stoned].ExpireTime = 0
-		HealMon.SpellBuffs[const.MonsterBuff.Slow].ExpireTime = 0
-		HealMon.SpellBuffs[const.MonsterBuff.MeleeOnly].ExpireTime = 0
-		HealMon.SpellBuffs[const.MonsterBuff.DamageHalved].ExpireTime = 0
-		HealMon.SpellBuffs[const.MonsterBuff.Fate].ExpireTime = 0
-		HealMon.SpellBuffs[const.MonsterBuff.Hammerhands].ExpireTime = 0
-		HealMon.SpellBuffs[const.MonsterBuff.ArmorHalved].ExpireTime = 0
-		HealMon.SpellBuffs[const.MonsterBuff.Charm].ExpireTime = 0
-
 		if HealMonId ~= -1 then
+			HealMon.HP = math.min(HealMon.HP + Heal, HealMon.FullHP)
+			HealMon.SpellBuffs[const.MonsterBuff.ShrinkingRay].ExpireTime = 0
+			HealMon.SpellBuffs[const.MonsterBuff.Paralyze].ExpireTime = 0
+			HealMon.SpellBuffs[const.MonsterBuff.Stoned].ExpireTime = 0
+			HealMon.SpellBuffs[const.MonsterBuff.Slow].ExpireTime = 0
+			HealMon.SpellBuffs[const.MonsterBuff.MeleeOnly].ExpireTime = 0
+			HealMon.SpellBuffs[const.MonsterBuff.DamageHalved].ExpireTime = 0
+			HealMon.SpellBuffs[const.MonsterBuff.Fate].ExpireTime = 0
+			HealMon.SpellBuffs[const.MonsterBuff.Hammerhands].ExpireTime = 0
+			HealMon.SpellBuffs[const.MonsterBuff.ArmorHalved].ExpireTime = 0
+			HealMon.SpellBuffs[const.MonsterBuff.Charm].ExpireTime = 0
 			Game.ShowMonsterBuffAnim(HealMonId)
 		end
 
 	end
-	if t.Spell == 67 then
+	if t.Spell == 67 then -- Power Cure
 		local Skill, Mas = SplitSkill(t.Monster.Spell == t.Spell and t.Monster.SpellSkill or t.Monster.Spell2Skill)
-		local Heal = 4 * Skill * math.max(1, Mas / 2 - 0.5)
-		local x,y,z = XYZ(t.Monster)
+		local Heal = 20 * Skill * math.max(1, Mas / 2 - 0.5)
 		local Mon = t.Monster
-		local count = 0
 		for i,v in Map.Monsters do
 			if MonCanBeHealed(v, Mon) then
 				v.HP = math.min(v.HP + Heal, v.FullHP)
 				Game.ShowMonsterBuffAnim(i)
-				count = count + 1
-				if Mas <= 3 and count >= 5 then
-					break
-				end
 			end
 		end
 	end
---	t.Monster.Velocity = t.Monster.Velocity * 2
---	t.Monster.X = Party.X + math.cos(math.random() * 6.28) * 200
---	t.Monster.Y = Party.Y + math.sin(math.random() * 6.28) * 200
---	t.Monster.Z = Party.Z
-	-- if t.Spell == 5 or t.Spell == 17 or t.Spell == 17 or t.Spell == 38 or t.Spell == 46 or t.Spell == 51 or t.Spell == 85 or t.Spell == 86 then
-	--if t.Spell == 66 then
-		--Party[0].HP = -100000
-		--local pl = Party[math.random(0, Party.length - 1)]
-		--local lst = {}
-		--local cnt = -1
-		--for i in pl.Spells do
-		--	if pl.Spells[i] == true and IsOff[i] then
-		--		cnt = cnt + 1
-		--		lst[cnt] = i
-		--	end
-		--end
-		--t.CallDefault(15, JoinSkill(60, const.GM))
-		--evt.CastSpell(6, const.GM, 60, Party.X,Party.Y,Party.Z+50, Party.X,Party.Y,Party.Z)
-		--local Skill, Mas = SplitSkill(t.Monster.Spell == t.Spell and t.Monster.SpellSkill or t.Monster.Spell2Skill)
-		--local pl = Party[math.random(0, Party.length - 1)]
-		--local dmg = math.min(pl.SP, Skill * math.random(4,6))
-		--pl.HP = pl.HP - dmg
-		--pl.SP = pl.SP - dmg
-	--end
+	if t.Spell == 71 then -- Heal
+		local Skill, Mas = SplitSkill(t.Monster.Spell == t.Spell and t.Monster.SpellSkill or t.Monster.Spell2Skill)
+		local Heal = 5 * Skill
+		local Mon = t.Monster
+		local HealMonId = -1
+		local MinHpRate = 1
+		local HealMon
+		for i,v in Map.Monsters do
+			if MonCanBeHealed(v, Mon) then
+				if (v.HP / v.FullHP) < MinHpRate then
+					MinHpRate = (v.HP / v.FullHP)
+					HealMonId = i
+					HealMon = v
+				end
+			end
+		end
+		if HealMonId ~= -1 then
+			HealMon.HP = math.min(HealMon.HP + Heal, HealMon.FullHP)
+			Game.ShowMonsterBuffAnim(HealMonId)
+		end
+	end
 end
 
 function events.MonsterCastSpell(t)
+	OnMonsterCastSpell2(t)
 	-- Enslave
 	if t.Spell == 66 and t.Monster.ShowAsHostile == true and Party.SpellBuffs[const.PartyBuff.ProtectionFromMagic].ExpireTime <= Game.Time then
 		vars.MonsterAttackTime = Game.Time
@@ -498,7 +508,8 @@ function events.MonsterCastSpell(t)
 		vars.MonsterAttackTime = Game.Time
 		local Skill, Mas = SplitSkill(t.Monster.Spell == t.Spell and t.Monster.SpellSkill or t.Monster.Spell2Skill)
 		local Mon = t.Monster
-		local dmg = Skill * math.random(4,6)
+		local dmg = Skill * 1 * (0.9 + math.random() * 0.2)
+		-- Message(tostring(Skill).." "..tostring(dmg))
 		local dist = GetDist(Mon,Party.X,Party.Y,Party.Z)
 		if dist < 512 then
 			for i,pl in Party do

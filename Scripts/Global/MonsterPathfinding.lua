@@ -141,6 +141,8 @@ local function TraceReach(MonId, Monster, Target)
 	return TraceMonWayAsm(MonId, Monster, Monster, Target, Monster.BodyRadius)
 end
 
+Pathfinder.TraceReach = TraceReach
+
 --------------------------------------------------
 --				Way generation			--
 --------------------------------------------------

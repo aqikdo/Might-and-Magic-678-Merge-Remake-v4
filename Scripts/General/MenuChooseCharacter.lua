@@ -322,8 +322,19 @@ function events.GameInitialized2()
 		Log(Merge.Log.Info, "MenuChooseCharacter: PrepareChar: RosterId %d, PartyId %d",
 			RosterId, PartyId)
 		-- local ItemTypesBySkills	= {	[0]	= 30, 23, 24, 25, 26, 27, 28, 11, 5, 31, 32, 33}
-		local ItemTypesBySkills	= { }
-		local ItemsBySkills		= { [1] = 1, [5] = 849, [9] = 84, [12] = 401, [13] = 412, [14] = 423, [15] = 434, [16] = 445, [17] = 456, [18] = 467, [19] = 478, [20] = 489}
+		local SpellsBySkills		= {[12] = {2}, -- fire magic
+									   [13] = {13, 19, 21}, -- air magic
+									   [14] = {27, 31, 33}, -- water magic
+									   [15] = {35}, -- earth magic
+									   [16] = {46}, -- spirit magic
+									   [17] = {57}, -- mind magic
+									   [18] = {68}, -- body magic
+									   [19] = {79}, -- light magic
+									   [20] = {90}} -- dark magic
+		local ItemsBySkills		= { [1] = 1, -- sword
+									[2] = 817, -- dagger
+									[5] = 849, -- bow	
+									[9] = 84} -- leather
 
 		local Char = Party.PlayersArray[RosterId]
 		Char.Experience = 0
@@ -345,6 +356,19 @@ function events.GameInitialized2()
 			end
 		end
 
+		-- Gift basic elemental magic skills at party start (only fills missing skills).
+		do
+			local skills = {const.Skills.Fire, const.Skills.Air, const.Skills.Water, const.Skills.Earth}
+			for i = 1, #skills do
+				local skId = skills[i]
+				local cur = Char.Skills[skId] or 0
+				local lvl = SplitSkill(cur)
+				if lvl == 0 then
+					Char.Skills[skId] = JoinSkill(1, const.Novice)
+				end
+			end
+		end
+
 		for i,v in Char.Inventory do
 			Char.Inventory[i] = 0
 		end
@@ -358,10 +382,10 @@ function events.GameInitialized2()
 		Game.CurrentPlayer = PartyId
 		for i,v in Char.Skills do
 			if v > 0 then
-				if ItemTypesBySkills[i] then
-					evt.GiveItem{1,ItemTypesBySkills[i],0}
-					Mouse.Item.Bonus = 0
-					Mouse.Item.BonusStrength = 0
+				if SpellsBySkills[i] then
+					for _, spell in ipairs(SpellsBySkills[i]) do
+						Char.Spells[spell] = true
+					end
 				elseif ItemsBySkills[i] then
 					evt.GiveItem{1,0,ItemsBySkills[i]}
 					Mouse.Item.Bonus = 0

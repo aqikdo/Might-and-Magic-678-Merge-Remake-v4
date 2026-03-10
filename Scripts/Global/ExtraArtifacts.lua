@@ -616,7 +616,8 @@ function events.CalcStatBonusBySkills(t)
 				attack_interval_mul = attack_interval_mul / (1 + (sk * 2) * 0.01)
 			end
 		end
-		local btu = math.max(attack_interval_mul * base_attack_interval, 0)
+		local btu = math.max(attack_interval_mul * base_attack_interval, 0) / (vars.StaminaLowMul or 1)
+		
 		t.Result = (150 / btu - 1) * 100 - acadj + 1000
 	end
 
@@ -711,7 +712,7 @@ function events.CalcStatBonusBySkills(t)
 			base_attack_interval = 100
 		end
 
-		local btu = math.max(attack_interval_mul * base_attack_interval, 1)
+		local btu = math.max(attack_interval_mul * base_attack_interval, 1) / (vars.StaminaLowMul or 1)
 		t.Result = (150 / btu - 1) * 100 - acadj + 1000
 	end
 end
@@ -940,6 +941,48 @@ StoreEffects = function(Player, postpone_gc)
 					if Mod.OverTimeEffect then
 						table.insert(PLT.OverTimeEffects, Mod.OverTimeEffect)
 					end
+				end
+
+				-- Bonus 12: HP regen = 0.25 * BonusStrength
+				if Item.Bonus == 12 and Item.BonusStrength and Item.BonusStrength > 0 then
+					PLT.HPSPRegen.HP = (PLT.HPSPRegen.HP or 0) + 0.25 * Item.BonusStrength
+				end
+
+				-- Bonus 13: SP regen = 0.1 * BonusStrength
+				if Item.Bonus == 13 and Item.BonusStrength and Item.BonusStrength > 0 then
+					PLT.HPSPRegen.SP = (PLT.HPSPRegen.SP or 0) + 0.1 * Item.BonusStrength
+				end
+
+				-- Bonus 30: 生命值恢复(0.15x/15s)，火系抗性(1.5x)
+				if Item.Bonus == 30 and Item.BonusStrength and Item.BonusStrength > 0 then
+					PLT.HPSPRegen.HP = (PLT.HPSPRegen.HP or 0) + 0.15 * Item.BonusStrength
+					T = PLT.Stats
+					T[const.Stats.FireResistance] = (T[const.Stats.FireResistance] or 0) + 1.5 * Item.BonusStrength
+				end
+				-- Bonus 31: 魔法值恢复(0.6x/15s)，水系抗性(1.5x)
+				if Item.Bonus == 31 and Item.BonusStrength and Item.BonusStrength > 0 then
+					PLT.HPSPRegen.SP = (PLT.HPSPRegen.SP or 0) + 0.6 * Item.BonusStrength
+					T = PLT.Stats
+					T[const.Stats.WaterResistance] = (T[const.Stats.WaterResistance] or 0) + 1.5 * Item.BonusStrength
+				end
+				-- Bonus 32: 速度(0.6x)，气系抗性(1.5x)
+				if Item.Bonus == 32 and Item.BonusStrength and Item.BonusStrength > 0 then
+					T = PLT.Stats
+					T[const.Stats.Speed] = (T[const.Stats.Speed] or 0) + 0.6 * Item.BonusStrength
+					T[const.Stats.AirResistance] = (T[const.Stats.AirResistance] or 0) + 1.5 * Item.BonusStrength
+				end
+				-- Bonus 33: 耐力(0.6x)，土系抗性(1.5x)
+				if Item.Bonus == 33 and Item.BonusStrength and Item.BonusStrength > 0 then
+					T = PLT.Stats
+					T[const.Stats.Endurance] = (T[const.Stats.Endurance] or 0) + 0.6 * Item.BonusStrength
+					T[const.Stats.EarthResistance] = (T[const.Stats.EarthResistance] or 0) + 1.5 * Item.BonusStrength
+				end
+				-- Bonus 34: 防御等级(0.6x)，心、体系抗性(1.5x)
+				if Item.Bonus == 34 and Item.BonusStrength and Item.BonusStrength > 0 then
+					T = PLT.Stats
+					T[const.Stats.ArmorClass] = (T[const.Stats.ArmorClass] or 0) + 0.6 * Item.BonusStrength
+					T[const.Stats.MindResistance] = (T[const.Stats.MindResistance] or 0) + 1.5 * Item.BonusStrength
+					T[const.Stats.BodyResistance] = (T[const.Stats.BodyResistance] or 0) + 1.5 * Item.BonusStrength
 				end
 
 				-- Bonus2
@@ -1460,6 +1503,9 @@ GetBonusList(520).Stats = {[const.Stats.Might] = 15,
 						   [const.Stats.Endurance] = 15,
 						   [const.Stats.Intellect] = -15,
 						   [const.Stats.Personality] = -15}
+
+-- Skullcrusher
+GetBonusList(1364).Stats = {[const.Stats.Might] = 10}
 --------------------------------
 ---- Skill bonuses
 -- Faerie ring
@@ -1641,6 +1687,8 @@ GetBonusList(2020).ModAttackDelay = 5
 GetBonusList(2022).ModAttackDelay = 15
 -- Serpent wand
 GetBonusList(570).ModAttackDelay = 5
+-- Skullcrusher
+GetBonusList(1364).ModAttackDelay = -10
 
 --------------------------------
 ---- HP/SP regen
@@ -1699,6 +1747,7 @@ GetSpcBonusList(69).Stats ={[const.Stats.AirResistance]	= 20}
 GetSpcBonusList(70).Stats ={[const.Stats.WaterResistance]	= 20}
 
 GetSpcBonusList(62).Stats ={[const.Stats.EarthResistance]	= 40}	
+
 
 
 --------------------------------
@@ -1910,7 +1959,7 @@ OnHitEffects[528] = {
 OnHitEffects[529] = {
 	DamageKind 	= const.Damage.Air,
 	Add			= 10}
-	
+
 -- Serpent Wand
 OnHitEffects[570] = {
 	Special = function(t)

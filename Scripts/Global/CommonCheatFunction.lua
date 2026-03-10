@@ -121,6 +121,20 @@ function SetAttr1(plnum,mi,nt,pe,en,ac,sp,lu)
 	pl.LuckBase = lu
 end
 
+-- 调试：把 Party[0] 身上装备的 bonus 改为 12，BonusStrength 改为 25
+function SetParty0Bonus(bonus, strength)
+	local pl = Party[0]
+	for _, itemIdx in pl.EquippedItems do
+		if itemIdx and itemIdx > 0 then
+			local item = pl.Items[itemIdx]
+			if item and not item.Broken then
+				item.Bonus = bonus
+				item.BonusStrength = strength
+			end
+		end
+	end
+end
+
 function PrintAttr()
 	for _, pl in Party do
 		print("Might:", pl.MightBase, "Intellect:", pl.IntellectBase, "Personality:", pl.PersonalityBase, "Endurance:", pl.EnduranceBase, "Speed:", pl.SpeedBase, "Accuracy:", pl.AccuracyBase, "Luck:", pl.LuckBase)

@@ -29,11 +29,16 @@ Id	Note	Continent	QuestItem	LostQBit	StartQBit	EndQBit	PostEnd	Level
 28	Regnan Fighting Knife							71
 29	Twilight Kris							93
 30	Dueling Long Dagger							89
-31	Stone Axe
-32	Battle Hatchet
-33	Battleaxe
-34	Dwarven Battleaxe
-35	Minotaur Battleaxe
+31	Stone Axe							8
+32	Battle Hatchet							34
+33	Battleaxe							61
+34	Dwarven Battleaxe							74
+35	Minotaur Battleaxe							87
+36	Two-Handed Axe
+37	Footman's Axe
+38	Minotaur War Axe
+39	Elite Minotaur Axe
+40	Minotaur Herdsman Axe
 56	Hunting Bow							20
 57	Recurve Bow							71
 58	Snakewood Bow							75
@@ -81,11 +86,11 @@ Id	Note	Continent	QuestItem	LostQBit	StartQBit	EndQBit	PostEnd	Level
 822	Long Dagger							9
 823	Erathian Long Dagger							28
 824	Exquisite Long Dagger							67
-825	Crude Axe
-826	Battle Axe
-827	Dwarven Axe
-828	Steel Axe
-829	Minotaur Axe
+825	Crude Axe							1
+826	Battle Axe							21
+827	Dwarven Axe							41
+828	Steel Axe							54
+829	Minotaur Axe							67
 844	Crude Bow							10
 845	Longbow							16
 846	Elven Longbow							32
@@ -131,11 +136,11 @@ Id	Note	Continent	QuestItem	LostQBit	StartQBit	EndQBit	PostEnd	Level
 1622	Long Dagger							20
 1623	Piercing Dagger							43
 1624	Divine Dagger							97
-1625	Hand Axe
-1626	Battle Axe
-1627	War Axe
-1628	Dwarven Axe
-1629	Supreme Axe
+1625	Hand Axe							14
+1626	Battle Axe							27
+1627	War Axe							47
+1628	Dwarven Axe							80
+1629	Supreme Axe							83
 1644	Crude Longbow							24
 1645	Elven Bow							52
 1646	Precision Bow							63

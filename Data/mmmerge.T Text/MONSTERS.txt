@@ -2,9 +2,9 @@ Default Monster Data					Stats								Movement and Combat					Attack 1			Attack 
 #	Name	Picture	LVL	 HP 	AC	 EXP 	Treasure	Blood	Fly	Move	AI Type	Hst	Spd	Rec	Pref	Bonus	Type	Damage	Miss	Att%	Type	Damage	Miss	Use%	"Spl,Mas,Skil"	Use%	"Spl,Mas,Skil"	Fire	Air	Water	Earth	Mind	Spirit	Body	Light	Dark	Phys	Special
 																																						
 	A		0																																			
-1	Lizardman Peasant	Lizardmen Male (Peasant) A	4	19	0	3	1d3	1	N	Short	Wimp	4	200	100	0	0	Phys	12D13+5	0	0	0	0	0	4	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-2	Lizardman Farmer	Lizardmen Male (Peasant) B	5	21	0	4	1d3	1	N	Short	Wimp	4	215	90	0	0	Phys	14D14+5	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-3	Lizardman Villager	Lizardmen Male (Peasant) C	6	24	0	5	1d3	1	N	Short	Wimp	4	230	80	0	0	Phys	15D16+2	0	0	0	0	0	6	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+1	Lizardman Peasant	Lizardmen Male (Peasant) A	1	50	0	5	1d3	1	N	Short	Wimp	4	200	100	0	0	Phys	1d1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+2	Lizardman Farmer	Lizardmen Male (Peasant) B	1	50	0	5	1d3	1	N	Short	Wimp	4	200	100	0	0	Phys	1d1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+3	Lizardman Villager	Lizardmen Male (Peasant) C	1	50	0	5	1d3	1	N	Short	Wimp	4	200	100	0	0	Phys	1d1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 4	Lizardman Soldier	Lizardmen Warrior A	4	19	0	67	1d6	1	N	Med	Normal	2	155	100	0	0	Phys	12D13+5	0	10	Phys	12D13+5	Arrow	4	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 5	Lizardman Sergeant	Lizardmen Warrior B	5	21	5	93	1d6	1	N	Med	Normal	2	175	90	0	0	Phys	14D14+5	0	15	Phys	14D14+5	Arrow	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 6	Lizardman Captain	Lizardmen Warrior C	6	24	10	130	1d6	1	N	Short	Aggress	2	195	80	0	0	Phys	15D16+2	0	25	Phys	15D16+2	Arrow	6	0	0	0	0	0	0	0	0	0	0	0	0	0	0
@@ -482,21 +482,21 @@ Default Monster Data					Stats								Movement and Combat					Attack 1			Attack 
 478	Magyar	Barbarian A	20	134	210	676	5%5D10+L2Misc	0	N	Long	Aggress	4	260	80	0	0	Phys	28D28+23	0	0	0	0	0	20	0	0	0	90	90	90	90	20	90	90	90	90	0	0
 479	Magyar Soldier	Barbarian B	26	152	225	946	5%10D10+L3Misc	0	N	Med	Aggress	4	280	70	0	0	Phys	32D32+26	0	10	Phys	32D32+26	0	26	0	0	0	106	106	106	106	36	106	106	106	106	0	0
 480	Magyar Matron	Barbarian C	33	174	240	1324	10%20D10+L4Misc	0	N	Med	Suicidal	4	300	60	0	0	Phys	36D37	0	20	Air	36D37	Air	33	0	0	0	121	121	121	121	51	121	121	121	121	0	0
-481	Bat	BBat A	3	10	0	137	0	0	Y	Free	Normal	4	280	50	0	Disease1	Phys	11D11	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-482	Giant Bat	BBat B	3	11	15	191	5%L1Ring	0	Y	Free	Normal	4	300	50	0	Disease1	Phys	11D11	0	0	0	0	0	3	0	0	0	10	10	10	10	10	10	10	10	10	0	0
-483	Vampire Bat	BBat C	5	13	30	267	5%L2Ring	0	Y	Free	Aggress	4	320	50	0	Disease2	Phys	14D14+5	0	0	0	0	0	5	0	0	0	20	20	20	20	20	20	20	20	20	0	0
+481	Bat	BBat A	3	350	0	137	5%L1Ring	0	Y	Free	Normal	4	375	80	0	Disease1	Phys	2d3	0	0	0	0	0	3	0	0	0	20	20	20	20	20	20	20	20	20	0	0
+482	Giant Bat	BBat B	4	400	0	191	5%L1Ring	0	Y	Free	Normal	4	400	80	0	Disease1	Phys	2d3+2	0	0	0	0	0	4	0	0	0	20	20	20	20	20	20	20	20	20	0	0
+483	Vampire Bat	BBat C	5	450	0	267	5%L2Ring	0	Y	Free	Aggress	4	425	80	0	Disease2	Phys	2d3+4	0	0	0	0	0	5	0	0	0	20	20	20	20	20	20	20	20	20	0	0
 484	Flying Eye	BBeholder A	32	259	187	1422	10%L4Ring	0	Y	Med	Aggress	4	140	70	0	Asleepx4	Water	35D36+32	Water	0	0	0	0	32	0	0	0	90	90	Imm	90	90	Imm	90	Imm	Imm	0	0
 485	Terrible Eye	BBeholder B	41	295	202	1990	20%L5Ring	0	Y	Med	Aggress	4	160	60	0	Afraidx4	Fire	40D41+15	Fire	0	0	0	0	41	"Fireball,N,11"	0	0	Imm	106	106	106	106	Imm	106	Imm	Imm	0	0
 486	Maddening Eye	BBeholder C	54	336	217	2786	30%L6Ring	0	Y	Short	Suicidal	4	180	50	0	Insanex4	Air	46D47+18	Air	0	0	0	0	54	"Dispel Magic,N,10"	0	0	121	Imm	121	121	121	Imm	121	Imm	Imm	0	0
-487	Blood Sucker	Bloodsucker A	3	14	30	51	0	0	Y	Free	Normal	4	300	50	0	Disease1	Phys	11D11	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-488	Brain Sucker	Bloodsucker B	3	15	45	71	5%L1Ring	0	Y	Free	Aggress	4	350	50	0	Disease1	Phys	11D11	0	0	0	0	0	3	0	0	0	10	10	10	10	10	10	10	10	10	0	0
-489	Soul Sucker	Bloodsucker C	5	18	60	99	5%L2Ring	0	Y	Free	Suicidal	4	400	50	0	Disease2	Phys	14D14+5	0	0	0	0	0	5	0	0	0	20	20	20	20	20	20	20	20	20	0	0
+487	Blood Sucker	Bloodsucker A	3	200	0	51	0	0	Y	Free	Normal	4	450	50	0	Disease1	Phys	2d3	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+488	Brain Sucker	Bloodsucker B	4	225	0	71	5%L1Ring	0	Y	Free	Aggress	4	475	50	0	Disease1	Phys	2d3+2	0	0	0	0	0	4	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+489	Soul Sucker	Bloodsucker C	5	250	0	99	5%L2Ring	0	Y	Free	Suicidal	4	500	50	0	Disease2	Phys	2d3+4	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 490	Acolyte of Baa	Cleric A	13	70	154	319	5%5D10+L1Mace	0	N	Med	Normal	4	160	90	0	0	Air	22D23+19	Air	0	0	0	0	13	0	0	0	23	23	23	23	0	23	23	23	23	0	0
 491	Cleric of Baa	Cleric B	16	79	169	446	5%10D10+L2Mace	0	N	Med	Normal	4	180	90	0	0	Air	25D25+21	Air	0	0	0	0	16	"Harm,N,6"	0	0	40	40	40	40	0	40	40	40	40	0	0
 492	Priest of Baa	Cleric C	21	91	184	624	10%20D10+L3Misc	0	N	Med	Aggress	4	200	80	0	0	Air	29D29+7	Air	0	0	0	0	21	"Flying Fist,N,10"	0	"Power Cure,G,10"	56	56	56	56	0	56	56	56	56	0	0
-493	Cobra	Cobra A	7	31	40	183	5%L1Misc	0	N	Free	Normal	4	300	70	0	Poison1x10	Phys	16D17+10	0	20	Water	16D17+10	0	7	0	0	0	0	0	0	Imm	0	0	0	0	0	0	0
-494	King Cobra	Cobra B	9	35	55	256	5%L2Misc	0	N	Free	Aggress	4	270	70	0	Poison1x20	Phys	19D19+2	0	20	Water	19D19+2	0	9	0	0	0	10	10	10	Imm	10	10	10	10	10	0	0
-495	Queen Cobra	Cobra C	11	40	70	358	10%L3Misc	0	N	Free	Suicidal	4	240	50	0	Poison2x5	Phys	21D21+3	0	20	Water	21D21+3	0	11	0	0	0	20	20	20	Imm	20	20	20	20	20	0	0
+493	Cobra	Cobra A	5	450	0	183	5%L1Misc	0	N	Free	Normal	4	350	70	0	Poison1x10	Phys	2d3+2	0	20	Water	2d3+2	0	5	0	0	0	10	10	10	Imm	10	10	10	10	10	0	0
+494	King Cobra	Cobra B	6	525	0	256	5%L2Misc	0	N	Free	Aggress	4	375	70	0	Poison1x20	Phys	2d3+4	0	20	Water	2d3+4	0	6	0	0	0	10	10	10	Imm	10	10	10	10	10	0	0
+495	Queen Cobra	Cobra C	7	600	0	358	10%L3Misc	0	N	Free	Suicidal	4	400	70	0	Poison2x5	Phys	2d3+6	0	20	Water	2d3+6	0	7	0	0	0	10	10	10	Imm	10	10	10	10	10	0	0
 496	Agar's Pet	Cockatrice A	28	233	195	986	4D20	0	Y	Free	Normal	4	240	80	0	DrainSP	Phys	33D34+8	0	0	0	0	0	28	0	0	0	77	77	77	77	Imm	Imm	77	Imm	Imm	0	0
 497	Agar's Monster	Cockatrice B	36	265	210	1380	6D20	0	Y	Free	Aggress	4	260	80	0	DrainSPx2	Phys	38D38+9	0	0	0	0	0	36	0	0	0	92	92	92	92	Imm	Imm	92	Imm	Imm	0	0
 498	Agar's Abomination	Cockatrice C	47	302	225	1931	10D20	0	Y	Free	Suicidal	4	280	80	0	DrainSPx3	Phys	43D44+6	0	0	0	0	0	47	0	0	0	108	108	108	108	Imm	Imm	108	Imm	Imm	0	0
@@ -551,9 +551,9 @@ Default Monster Data					Stats								Movement and Combat					Attack 1			Attack 
 547	Ghost	BGhost A	11	55	157	252	5%L2Ring	0	Y	Free	Normal	4	240	100	0	Afraidx3	Phys	21D21+3	0	0	0	0	0	11	0	0	0	38	38	38	Imm	Imm	Imm	38	0	38	0	0
 548	Evil Spirit	BGhost B	14	62	172	352	10%L3Ring	0	Y	Long	Normal	4	260	90	0	0	Phys	23D24+13	0	0	0	0	0	14	0	0	0	57	57	57	Imm	Imm	Imm	57	0	57	0	0
 549	Specter	BGhost C	18	71	187	492	20%L4Ring	0	Y	Med	Suicidal	4	300	90	0	Uncon	Phys	26D27+24	0	0	0	0	0	18	0	0	0	76	76	76	Imm	Imm	Imm	76	0	76	0	0
-550	Goblin	BGoblin A	3	200	20	137	4D4	0	N	Med	Normal	4	260	100	0	0	Phys	2d5	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-551	Goblin Shaman	BGoblin B	4	240	30	191	8D4	0	N	Med	Normal	4	280	100	0	0	Phys	2d5+2	0	0	0	0	0	4	"Fire Bolt,N,1"	0	0	10	10	10	10	10	10	10	10	10	0	0
-552	Goblin King	BGoblin C	5	280	40	267	10%15D4+L1	0	N	Short	Aggress	4	300	90	0	0	Phys	2d5+4	0	0	0	0	0	5	"Fire Bolt,N,2"	0	0	20	20	20	20	20	20	20	20	20	0	0
+550	Goblin	BGoblin A	3	300	20	160	4D4	0	N	Med	Normal	4	320	100	0	0	Phys	2d3	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+551	Goblin Shaman	BGoblin B	4	350	30	200	8D4	0	N	Med	Normal	4	340	100	0	0	Phys	2d3+2	0	0	0	0	0	4	0	0	0	10	10	10	10	10	10	10	10	10	0	0
+552	Goblin King	BGoblin C	5	400	40	240	10%15D4+L1	0	N	Short	Aggress	4	360	90	0	0	Phys	2d3+4	0	0	0	0	0	5	0	0	0	20	20	20	20	20	20	20	20	20	0	0
 553	Guard	Guard A	17	139	195	504	5%3D20+L1Armor	0	N	Short	Normal	4	200	90	0	0	Phys	26D26+10	0	0	0	0	0	17	0	0	0	30	30	30	30	0	30	30	30	30	0	0
 554	Lieutenant	Guard B	22	158	210	705	5%5D20+L2Armor	0	N	Short	Normal	4	220	90	0	0	Phys	29D30+18	0	10	Phys	29D60+18	0	22	0	0	0	45	45	45	45	5	45	45	45	45	0	0
 555	Captain	Guard C	28	180	225	986	10%10D20+L3Armor	0	N	Short	Aggress	4	240	80	0	0	Phys	33D34+8	0	10	Phys	33D68+8	0	28	0	0	0	61	61	61	61	10	61	61	61	61	0	0
@@ -578,9 +578,9 @@ Default Monster Data					Stats								Movement and Combat					Attack 1			Attack 
 574	Medusa	BMedusa A	32	254	190	1387	10%10D20+L3Misc	0	N	Med	Normal	4	200	80	0	Stone	Phys	35D36+32	0	0	0	0	0	32	"Harm,M,36"	0	0	25	95	95	95	Imm	Imm	95	95	95	0	0
 575	Medusa Enchantress	BMedusa B	41	289	205	1941	10%15D20+L4Misc	0	N	Med	Aggress	4	220	80	0	Stonex2	Phys	40D41+15	0	0	0	0	0	41	0	0	0	40	110	110	110	Imm	Imm	110	110	110	0	0
 576	Gorgon	BMedusa C	54	330	220	2717	30%30D20+L5Misc	0	N	Short	Suicidal	4	240	70	0	Stonex3	Phys	46D47+18	0	0	0	0	0	54	"Psychic Shock,M,40"	0	0	55	125	125	125	Imm	Imm	125	125	125	0	0
-577	Peasant	Merchant A	4	15	0	52	5D20	0	N	Med	Wimp	4	140	50	0	0	Phys	12D13+5	0	0	0	0	0	4	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-578	Peasant	Merchant B	5	17	0	72	7D20	0	N	Med	Normal	4	140	50	0	0	Phys	14D14+5	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-579	Peasant	Merchant C	6	19	0	100	10D20	0	N	Med	Normal	4	140	50	0	0	Phys	15D16+2	0	0	0	0	0	6	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+577	Peasant	Merchant A	1	50	0	10	5D20	0	N	Med	Wimp	4	140	50	0	0	Phys	1d1	0	0	0	0	0	4	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+578	Peasant	Merchant B	1	50	0	10	7D20	0	N	Med	Normal	4	140	50	0	0	Phys	1d1	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+579	Peasant	Merchant C	1	50	0	10	10D20	0	N	Med	Normal	4	140	50	0	0	Phys	1d1	0	0	0	0	0	6	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 580	Minotaur	BMinotaur A	48	499	214	3649	10%10D20+L4Axe	0	N	Long	Normal	4	250	80	0	0	Phys	44D44+2	0	0	0	0	0	48	0	0	0	130	60	130	130	95	60	130	60	60	0	0
 581	Minotaur Mage	BMinotaur B	62	568	229	5108	10%20D20+L5Axe	0	N	Med	Aggress	4	260	70	0	0	Phys	50D50+3	0	0	0	0	0	62	"Lightning Bolt,M,22"	0	"Pain Reflection,M,5"	145	75	145	145	110	75	145	75	75	0	0
 582	Minotaur King	BMinotaur C	81	648	244	7151	20%50D20+L6Axe	0	N	Short	Suicidal	4	300	60	2	0	Phys	57D57+22	0	0	0	0	0	81	0	0	"Pain Reflection,M,5"	160	90	160	160	125	90	160	90	90	0	0
@@ -596,33 +596,33 @@ Default Monster Data					Stats								Movement and Combat					Attack 1			Attack 
 592	Ogre	Ogre A	20	129	164	467	5%10D10+L1Weapon	0	N	Med	Aggress	4	240	90	0	0	Phys	28D28+23	0	0	0	0	0	20	0	0	0	55	55	55	55	55	55	55	55	55	0	0
 593	Ogre Raider	Ogre B	26	147	179	653	5%20D10+L2Weapon	0	N	Med	Aggress	4	260	80	0	0	Phys	32D32+26	0	0	0	0	0	26	0	0	0	70	70	70	70	70	70	70	70	70	0	0
 594	Ogre Chieftain	Ogre C	33	167	194	914	5%30D10+L3Weapon	0	N	Med	Aggress	4	280	70	2	Poison2x5	Phys	36D37	0	0	0	0	0	33	0	0	0	85	85	85	85	85	85	85	85	85	0	0
-595	Peasant	PeasantF1 A	1	5	0	16	2D6	0	N	Long	Wimp	0	140	100	0	0	Phys	6D6+4	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-596	Peasant	PeasantF1 B	1	5	0	22	3D6	0	N	Long	Wimp	0	140	100	0	0	Phys	6D6+4	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-597	Peasant	Peasantf1 C	1	6	0	30	4D6	0	N	Long	Wimp	0	140	100	0	0	Phys	6D6+4	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-598	Peasant	PeasantF2 A	1	5	0	16	2D6	0	N	Long	Wimp	0	140	100	0	0	Phys	6D6+4	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-599	Peasant	PeasantF2 B	1	5	0	22	3D6	0	N	Long	Wimp	0	140	100	0	0	Phys	6D6+4	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-600	Peasant	PeasantF2 C	1	6	0	30	4D6	0	N	Long	Wimp	0	140	100	0	0	Phys	6D6+4	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+595	Peasant	PeasantF1 A	1	50	0	10	2D6	0	N	Long	Wimp	0	140	100	0	0	Phys	1d1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+596	Peasant	PeasantF1 B	1	50	0	10	2D6	0	N	Long	Wimp	0	140	100	0	0	Phys	1d1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+597	Peasant	Peasantf1 C	1	50	0	10	2D6	0	N	Long	Wimp	0	140	100	0	0	Phys	1d1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+598	Peasant	PeasantF2 A	1	50	0	10	2D6	0	N	Long	Wimp	0	140	100	0	0	Phys	1d1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+599	Peasant	PeasantF2 B	1	50	0	10	2D6	0	N	Long	Wimp	0	140	100	0	0	Phys	1d1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+600	Peasant	PeasantF2 C	1	50	0	10	2D6	0	N	Long	Wimp	0	140	100	0	0	Phys	1d1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 601	Cutpurse	PeasantF3 A	4	15	30	53	10%3D6+L1Dagger	0	N	Med	Normal	4	200	100	0	0	Phys	12D13+5	0	0	0	0	0	4	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 602	Bounty Hunter	PeasantF3 B	5	17	45	74	20%5D6+L1Dagger	0	N	Med	Aggress	4	220	100	0	0	Phys	14D14+5	0	0	0	0	0	5	0	0	0	10	10	10	10	0	10	10	10	10	0	0
 603	Assassin	PeasantF3 C	6	19	60	103	50%10D6+L2Dagger	0	N	Med	Aggress	4	240	90	0	Dead	Phys	15D16+2	0	0	0	0	0	6	0	0	0	20	20	20	20	0	20	20	20	20	0	0
 604	Cannibal	PeasantF4 A	6	27	50	142	5%2D6+L1Shield	0	N	Med	Suicidal	4	220	90	0	0	Phys	15D16+2	0	0	0	0	0	6	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 605	Head Hunter	PeasantF4 B	7	30	65	198	10%4D6+L1Shield	0	N	Med	Suicidal	4	250	90	0	Weakx4	Phys	16D17+10	0	0	0	0	0	7	0	0	0	10	10	10	10	0	10	10	10	10	0	0
 606	Witch Doctor	PeasantF4 C	10	35	80	277	5%6D6+L1Amulet	0	N	Med	Suicidal	4	280	80	0	Weakx6	Phys	20D20+3	0	0	0	0	0	10	"Deadly Swarm,N,3"	0	0	22	22	22	22	0	22	22	22	22	0	0
-607	Peasant	PeasantM1 A	1	5	0	16	3D3	0	N	Long	Wimp	0	140	100	0	0	Phys	6D6+4	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-608	Peasant	PeasantM1 B	1	5	0	22	4D4	0	N	Long	Wimp	0	140	100	0	0	Phys	6D6+4	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-609	Peasant	PeasantM1 C	1	6	0	30	8D8	0	N	Long	Wimp	0	140	100	0	0	Phys	6D6+4	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-610	Apprentice Mage	PeasantM2 A	3	9	7	82	5%2D6+L1Staff	0	N	Med	Normal	4	140	100	0	0	Phys	11D11	0	0	0	0	0	3	"Fire Bolt,N,1"	0	0	0	0	0	0	0	0	0	0	0	0	0
-611	Journeyman Mage	PeasantM2 B	3	10	22	114	5%5D6+L1Staff	0	N	Med	Normal	4	140	100	0	0	Phys	11D11	0	0	0	0	0	3	"IceBolt,N,1"	0	0	10	10	10	10	0	10	10	10	10	0	0
-612	Mage	PeasantM2 C	5	11	37	159	10%10D6+L1Misc	0	N	Med	Aggress	4	140	100	0	0	Phys	14D14+5	0	0	0	0	0	5	"Lightning Bolt,N,1"	0	0	20	20	20	20	0	20	20	20	20	0	0
+607	Peasant	PeasantM1 A	1	50	0	10	2D6	0	N	Long	Wimp	0	140	100	0	0	Phys	1d1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+608	Peasant	PeasantM1 B	1	50	0	10	2D6	0	N	Long	Wimp	0	140	100	0	0	Phys	1d1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+609	Peasant	PeasantM1 C	1	50	0	10	2D6	0	N	Long	Wimp	0	140	100	0	0	Phys	1d1	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+610	Apprentice Mage	PeasantM2 A	3	200	10	160	5%2D6+L1Staff	0	N	Med	Normal	4	250	100	0	0	Fire	2d3	Fire	0	0	0	0	4	"Fire Bolt,N,1"	0	0	20	20	20	20	20	20	20	20	20	0	0
+611	Journeyman Mage	PeasantM2 B	4	250	20	200	5%5D6+L1Staff	0	N	Med	Normal	4	250	90	0	0	Water	2d3+2	Water	0	0	0	0	5	"IceBolt,N,1"	50	0	30	30	30	30	30	30	30	30	30	0	0
+612	Mage	PeasantM2 C	5	300	30	240	10%10D6+L1Misc	0	N	Med	Aggress	4	250	80	0	0	Air	2d3+4	Air	0	0	0	0	7	"Lightning Bolt,N,1"	0	0	40	40	40	40	40	40	40	40	40	0	0
 613	Follower of Baa	PeasantM3 A	4	15	15	152	2D6	0	N	Med	Normal	4	140	100	0	0	Phys	12D13+5	0	0	0	0	0	4	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 614	Mystic of Baa	PeasantM3 B	5	17	30	212	5%3D6+L1Staff	0	N	Med	Aggress	4	160	90	0	0	Phys	14D14+5	0	0	0	0	0	5	"Mind Blast,N,1"	0	0	10	10	10	10	0	10	10	10	10	0	0
 615	Fanatic of Baa	PeasantM3 C	6	19	45	296	5%4d6+L2Staff	0	N	Med	Suicidal	4	200	70	0	0	Phys	15D16+2	0	0	0	0	0	6	0	0	0	20	20	20	20	0	20	20	20	20	0	0
 616	Cannibal	PeasantM4 A	6	27	50	142	5%2D6+L1Spear	0	N	Med	Suicidal	4	220	90	0	0	Phys	15D16+2	0	0	0	0	0	6	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 617	Head Hunter	PeasantM4 B	7	30	65	198	10%4D6+L1Spear	0	N	Med	Suicidal	4	250	90	0	Poison1x5	Phys	16D17+10	0	0	0	0	0	7	0	0	0	10	10	10	10	0	10	10	10	10	0	0
 618	Witch Doctor	PeasantM4 C	10	35	80	277	5%6D6+L2Ring	0	N	Long	Suicidal	4	280	80	0	Poison1x5	Phys	20D20+3	0	0	0	0	0	10	"Fire Bolt,N,3"	0	0	22	22	22	22	0	22	22	22	22	0	0
-619	Common Rat	BRat A	3	12	16	160	2%L1Ring	0	N	Free	Normal	4	250	75	0	Disease1x2	Phys	11D11	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-620	Large Rat	BRat B	3	13	31	224	2%L1Ring	0	N	Free	Normal	4	250	75	0	Disease1x2	Phys	11D11	0	0	0	0	0	3	0	0	0	10	10	10	10	10	10	10	10	10	0	0
-621	Giant Rat	BRat C	5	15	46	313	2%L1Ring	0	N	Free	Aggress	4	250	75	0	Disease2x2	Phys	14D14+5	0	0	0	0	0	5	0	0	0	20	20	20	20	20	20	20	20	20	0	0
+619	Common Rat	BRat A	2	150	0	160	2%L1Ring	0	N	Free	Normal	4	360	60	0	Disease1x2	Phys	2d3	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+620	Large Rat	BRat B	3	200	0	224	2%L1Ring	0	N	Free	Normal	4	380	60	0	Disease1x2	Phys	2d3+2	0	0	0	0	0	4	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+621	Giant Rat	BRat C	4	250	0	313	2%L1Ring	0	N	Free	Aggress	4	400	60	0	Disease2x2	Phys	2d3+4	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0
 622	Patrol Unit	BRobot A	76	658	230	5504	0	0	Y	Med	Aggress	4	200	50	0	0	Phys	55D55+44	Ener	0	0	0	0	76	0	0	0	117	117	117	117	Imm	Imm	117	117	117	0	0
 623	Enforcer Unit	BRobot B	98	750	245	7705	0	0	Y	Short	Suicidal	4	200	50	0	0	Phys	62D63+51	Ener	0	0	0	0	98	0	0	0	132	132	132	132	Imm	Imm	132	132	132	0	0
 624	Terminator Unit	BRobot C	128	855	260	10787	0	0	Y	Short	Suicidal	4	200	50	0	Errad	Phys	71D72+57	Ener	0	0	0	0	128	"Dispel Magic,E,4"	0	0	147	147	147	147	Imm	Imm	147	147	147	0	0
@@ -635,9 +635,9 @@ Default Monster Data					Stats								Movement and Combat					Attack 1			Attack 
 631	Sorcerer	Sorcerer A	30	230	178	1250	10%10D10+L2Staff	0	N	Med	Aggress	4	200	90	0	0	Air	34D35+21	Air	0	0	0	0	30	"Lightning Bolt,M,12"	0	0	67	Imm	67	67	30	67	67	67	67	0	0
 632	Magician	Sorcerer B	39	262	193	1750	10%20D10+L3Staff	0	N	Med	Aggress	4	220	80	2	0	Air	39D40+15	Air	0	0	0	0	39	"Lightning Bolt,M,22"	0	0	85	Imm	85	85	40	85	85	85	85	0	0
 633	Warlock	Sorcerer C	50	299	208	2450	20%40D10+L5Staff	0	N	Short	Aggress	4	240	70	2	Insanex4	Phys	44D45+39	Ener	0	0	0	0	50	"Lightning Bolt,M,32"	0	0	103	Imm	103	103	50	103	103	103	103	0	0
-634	Spider	BSpider A	6	29	70	160	0	0	N	Med	Normal	4	300	90	0	Poison1x2	Phys	15D16+2	0	0	0	0	0	6	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-635	Giant Spider	BSpider B	7	33	85	224	0	0	N	Med	Aggress	4	280	90	0	Poison2x2	Phys	16D17+10	0	10	Water	16D17+10	Water	7	0	0	0	10	10	10	10	10	10	10	10	10	0	0
-636	Huge Spider	BSpider C	10	37	100	313	0	0	N	Short	Aggress	4	260	90	0	Poison2x4	Phys	20D20+3	0	20	Water	20D20+3	Water	10	0	0	0	39	39	39	39	39	39	39	39	39	0	0
+634	Spider	BSpider A	4	350	20	160	0	0	N	Med	Normal	4	400	90	0	Poison1x2	Phys	2d3+1	0	0	0	0	0	4	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+635	Giant Spider	BSpider B	5	400	40	224	0	0	N	Med	Aggress	4	350	90	0	Poison2x2	Phys	2d3+3	0	10	Water	2d3+3	Water	5	0	0	0	20	20	20	20	20	20	20	20	20	0	0
+636	Huge Spider	BSpider C	6	450	60	313	0	0	N	Short	Aggress	4	300	90	0	Poison2x4	Phys	2d3+5	0	20	Water	2d3+5	Water	6	0	0	0	40	40	40	40	40	40	40	40	40	0	0
 637	Thief	BThief A	10	50	155	209	5%3D10+L1	0	N	Med	Normal	4	250	60	0	0	Phys	20D20+3	0	20	Phys	20D60+3	0	10	0	0	0	41	41	41	41	13	41	41	41	41	0	0
 638	Burglar	BThief B	13	56	170	292	10%4D10+L1	0	N	Med	Normal	4	260	60	0	0	Phys	22D23+19	0	25	Phys	22D69+19	0	13	0	0	0	57	57	57	57	23	57	57	57	57	0	0
 639	Rogue	BThief C	16	65	185	408	20%5D10+L2Cape	0	N	Med	Aggress	4	270	60	0	0	Phys	25D25+21	0	30	Phys	25D75+21	0	16	0	0	0	74	74	74	74	33	74	74	74	74	0	0

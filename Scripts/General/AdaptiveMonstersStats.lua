@@ -233,27 +233,57 @@ local function ProcessBolsterTxt()
 end
 
 local OffensiveSpells = {
-{2,6,11,62},	-- fire
-{15,18},		-- air
-{24,26,29,32},	-- water
-{37,39,41},		-- earth
-{52},			-- spirit
-{59,65},		-- mind
-{70,76},		-- body
-{78,84,87},		-- light
-{90,93,97}		-- dark
+	2,			-- firebolt
+	6,			-- fireball
+	11,			-- incinerate
+	62,			-- fire blast
+	15,			-- sparks
+	18,			-- lightning bolt
+	24,			-- poison spray
+	26,			-- ice bolt
+	29,			-- acid burst
+	32,			-- ice blast
+	37,			-- deadly swarm
+	39,			-- blades
+	41,			-- rock blast
+	52,			-- spirit lash
+	59,			-- mind blast
+	65,			-- psychic shock
+	70,			-- harm
+	76,			-- flying fist
+	78,			-- light bolt
+	87,			-- sunray
+	90,			-- toxic cloud
+	93,			-- sharpmetal
+	97			-- dragon breath
 }
 
+
 local DefensiveSpells = {
-{5},			-- fire
-{17,19},		-- air
-{33},	     	-- water
-{34,35,38},		-- earth
-{46,64,51,54},	-- spirit
-{66},			-- mind
-{69,67},		-- body
-{80,85,86},		-- light
-{89,95,96}		-- dark
+	5,			-- haste
+	17,			-- shield
+	33,			-- lloyd's beacon
+	38,			-- stone skin
+	46,			-- bless
+	51,			-- heroism
+	71,			-- heal (to be completed)
+	85, 		-- day of protection
+	86, 		-- hour of power
+	95			-- pain reflection
+}
+
+local SecondarySpells = {
+	19,			-- invisibility
+	34,			-- stun
+	35,			-- slow
+	64,			-- curse
+	66,			-- mana burn
+	67,			-- power cure
+	69,			-- divine restoration
+	80,			-- dispel magic
+	84,			-- prismatic light
+	89,			-- reanimate
+	96,			-- dark grasp
 }
 
 local MonsterSpecialSpell = {
@@ -300,22 +330,11 @@ local MonsterSpecialSpell2 = {
 	[72]  = {80, 25},  	 	-- Great Wyrm: Dispel Magic 25%
 }
 
-								
-local HPMulByStyle 		= {[0] = 1.10, 1.20, 1.10, 0.90, 1.0}
-local DamageMulByStyle 	= {[0] = 0.63, 0.42, 0.56, 0.51, 1.0}
-local MagicMulByStyle   = {[0] = 0.40, 0.40, 0.52, 0.66, 1.0}
-local SpRateMulByStyle  = {[0] = 1.20, 1.20, 1.60, 2.00, 1.0}
-local SpeedMulByStyle   = {[0] = 1.00, 0.90, 1.35, 0.90, 1.0}
-local SpMasMulByStyle   = {[0] = 2   , 2   , 3   , 4   , 1  }
-local ArmorResAddbyStyle= {[0] = 0   , 30  , 0   , 0   , 0  }
 
-MagicMulByBoost   		= {[0] = 1.00, 1.00, 1.00, 2.00, 1.0}
-local SpRateMulByBoost  = {[0] = 0.50, 1.00, 1.00, 3.00, 1.0}
-DamageMulByBoost 		= {[0] = 3.00, 1.00, 1.00, 1.00, 1.0}
-local ArmorResAddbyBoost= {[0] = 0   , 70  , 0   , 0   , 0  }
+MagicMulByBoost   		= {[0] = 1.00, 1.00, 1.00, 1.50, 1.00}
+DamageMulByBoost 		= {[0] = 1.50, 1.00, 1.00, 1.00, 1.00}
+local DmgRdMulByBoost   = {[0] = 1.00, 1.75, 1.00, 1.00, 1.00}
 
---ReanimateHP			= {[0] = 1.00, 0.25}
---ReanimateDmg			= {[0] = 1.00, 0.80}
 ReanimateHP				= {[0] = 1.00, 0.50}
 ReanimateDmg			= {[0] = 1.00, 0.50}
 ReanimateSpeed			= {[0] = 1.00, 0}
@@ -398,33 +417,8 @@ MonsterEliteTable = {
 	[201] = {10.5, 5, 160, 140, 0}      -- 圣殿守卫（精英等级20）
 }
 							
-						   			   
-local MapLevel 			= {["sewer.blv"] 	= 2.2, -- Free Haven Sewer
-						   ["zdwj02.blv"] 	= 0.6, -- Devil Outpost
-						   ["6t7.blv"] 		= 2.8, -- Superior Temple of Baa
-						   ["6t6.blv"] 		= 3.3, -- Supereme Temple of Baa
-						   ["cd1.blv"] 		= 2.3, -- Castle Alamos
-						   ["cd2.blv"] 		= 1.7, -- Castle Darkmoor
-						   ["cd3.blv"] 		= 2.0, -- Castle Kerigspire
-						   ["pyramid.blv"] 	= 2.2, -- Tomb of Varn
-						   ["sci-fi.blv"] 	= 2.2, -- Control Center
-						   ["hive.blv"] 	= 2.4, -- Hive
-						   ["6d12.blv"] 	= 2.0, -- Silver Helm Castle
-						   ["7d10.blv"] 	= 2.6, -- Breeding Zone
-						   ["t01.blv"] 		= 2.4, -- Temple of Light
-						   ["t02.blv"] 		= 2.4, -- Temple of Dark
-						   ["t03.blv"] 		= 1.9, -- Grand Temple of the Sun
-						   ["7d19.blv"] 	= 1.9, -- Grand Temple of the Moon
-						   ["7d16.blv"] 	= 3.0, -- Wine Cellar
-						   ["7d12.blv"] 	= 2.4, -- Clanker's Laboratory
-						   ["7d27.blv"] 	= 3.0, -- Land of Constellation (Star)
-						   ["7d23.blv"] 	= 3.0, -- Lincoin
-						   ["d10.blv"] 		= 1.0, -- Crystal of Escaton
-						   ["d35.blv"] 		= 2.5, -- Palace of Escaton
-						   ["d36.blv"] 		= 1.8, -- Prison of the Air Lord
-						   ["d37.blv"] 		= 2.4, -- Prison of the Fire Lord
-						   ["d38.blv"] 		= 2.4, -- Prison of the Water Lord
-						   ["d39.blv"] 		= 2.4} -- Prison of the Earth Lord
+-- MapBoost: [mapname] = [level_add, hp_mul, damage_mul, armor_rd_mul, magic_rd_mul, exp_mul]
+local MapBoost 			= {["6d01.blv"] 	= {1, 1.2, 1.2, 1.0, 1.0, 1.2}}  -- 大耳怪城堡
 
 local BolsterTypes = const.Bolster.Types
 
@@ -453,13 +447,12 @@ local function SetAttackMaxDamage(Attack, MaxDamage)
 	MaxDamage = ceil(MaxDamage)
 
 	local Dices, Sides
-	local FixDamage = 0
 
-	MaxDamage = MaxDamage - FixDamage
-	Dices = sqrt(MaxDamage)
+	MaxDamage = MaxDamage
+	Dices = math.floor(sqrt(MaxDamage))
 	Sides = Dices
 
-	Attack.DamageAdd 		= FixDamage
+	Attack.DamageAdd 		= MaxDamage - Sides * Dices
 	Attack.DamageDiceSides 	= Sides
 	Attack.DamageDiceCount 	= Dices
 end
@@ -468,25 +461,30 @@ local function FixRandom(mon, p1, p2, p3, mod)
 	return (math.floor(mon.StartX * p1 * p2 / p3) + math.floor(mon.StartY * p2 * p3 / p1) + mon.StartZ * p3 + vars.RandomSeed) % mod + 1
 end
 
+local function GetMaxDamage(Attack)
+	return Attack.DamageDiceCount*Attack.DamageDiceSides+Attack.DamageAdd
+end
+
 function SetAttackMaxDamage2(mon, Attack, MaxDamage)
 	MaxDamage = ceil(MaxDamage)
 	
 	local Dices, Sides
 	
 	if MaxDamage <= 8100 then
-		Dices = sqrt(MaxDamage)
-		Sides = Dices + FixRandom(mon,17,41,31,floor(sqrt(Dices)))
+		local randomfactor = math.ceil(MaxDamage / 100) + 1
+		Dices = math.floor(sqrt(MaxDamage)) - FixRandom(mon,17,97,37,randomfactor - 1)
 	elseif MaxDamage <= 21000 then
-		MaxDamage = MaxDamage + FixRandom(mon,13,101,19,floor(MaxDamage / 10))
-		Dices = 100 - FixRandom(mon,17,97,37,10)
-		Sides = math.min(255, floor(MaxDamage / Dices))
+		local randomfactor = 11
+		Dices = 100 - FixRandom(mon,17,97,37,randomfactor - 1)
 	else
-		Dices = math.min(255, floor(sqrt(MaxDamage)))
-		Sides = math.min(255, Dices + FixRandom(mon,17,41,31,floor(sqrt(Dices))))
+		local randomfactor = math.ceil(MaxDamage / 200) + 1
+		Dices = math.min(255, floor(sqrt(MaxDamage)))  - FixRandom(mon,17,97,37,randomfactor - 1)
 	end
+	Sides = math.min(255, floor(MaxDamage / Dices))
 	
 	Attack.DamageDiceSides 	= Sides
 	Attack.DamageDiceCount 	= Dices
+	Attack.DamageAdd 		= MaxDamage - Sides * Dices
 end
 
 local function GenMonSpell1(mon, MonSettings, BolStep, boostType)
@@ -494,29 +492,6 @@ local function GenMonSpell1(mon, MonSettings, BolStep, boostType)
 	local Magic, Creed, Style, Ranged = MonSettings.Magic, MonSettings.Creed, MonSettings.Style, MonSettings.Ranged
 	if Style == 4 then
 		return 0
-	end
-
-	local School, Spell
-	local Schl, Schr
-	if Magic == 0 then
---		School = random(1,9)
---		School = FixRandom(mon, 13, 17, 59, 9)
-		Schl = 1
-		Schr = 9
-	elseif Magic < 10 then
-		School = Magic
-		Schl = Magic
-		Schr = Magic
-	elseif Magic == 10 then
---		School = random(5,9)
---		School = FixRandom(mon, 23, 29, 79, 5) + 4
-		Schl = 5
-		Schr = 9
-	elseif Magic == 11 then
---		School = random(1,4)
---		School = FixRandom(mon, 37, 41, 97, 4)
-		Schl = 1
-		Schr = 4
 	end
 	
 	local IsOffensive = true
@@ -528,23 +503,11 @@ local function GenMonSpell1(mon, MonSettings, BolStep, boostType)
 
 	local SpellSet = {}
 	if IsOffensive then
---		SpellSet = OffensiveSpells[School]
-		for i = Schl,Schr do
-			for j = 1 , #OffensiveSpells[i] do
-				table.insert(SpellSet, OffensiveSpells[i][j])
-			end
-		end
+		SpellSet = OffensiveSpells
 	else
---		SpellSet = DefensiveSpells[School]
-		for i = Schl,Schr do
-			for j = 1 , #DefensiveSpells[i] do
-				table.insert(SpellSet, DefensiveSpells[i][j])
-			end
-		end
+		SpellSet = DefensiveSpells
 	end
 
---	Spell = #SpellSet
---	Spell = SpellSet[random(1,#SpellSet)]
 	Spell = SpellSet[FixRandom(mon, 47, 101, 7, #SpellSet)]
 	return Spell
 
@@ -554,53 +517,24 @@ local function GenMonSpell2(mon, MonSettings, BolStep)
 
 	local Magic, Creed, Style, Ranged = MonSettings.Magic, MonSettings.Creed, MonSettings.Style, MonSettings.Ranged
 
-	if Style == 4 then
+	if Style == 4 or FixRandom(mon, 97, 37, 61, 4) <= 3 then
 		return 0
 	end
 
-	local School, Spell
-	if Magic == 0 then
---		School = random(1,9)
-		School = FixRandom(mon, 23, 29, 31, 9)
-	elseif Magic < 10 then
-		School = Magic
-	elseif Magic == 10 then
---		School = random(5,9)
-		School = FixRandom(mon, 101, 17, 7, 5) + 4
-	elseif Magic == 11 then
---		School = random(1,4)
-		School = FixRandom(mon, 107, 97, 17, 4)
-	end
-	
-	local IsOffensive = true
-	if boostType == 0 or boostType == 1 then
-		IsOffensive = false
-	elseif boostType == 2 then
-		IsOffensive = (FixRandom(mon, 61, 67, 73, 2) == 1)
-	end
+	local SpellSet = SecondarySpells
 
-	local SpellSet
-	if IsOffensive then
-		SpellSet = OffensiveSpells[School]
-	else
-		SpellSet = DefensiveSpells[School]
-	end
-
-	Spell = #SpellSet
---	Spell = SpellSet[random(1,Spell)]
-	Spell = SpellSet[FixRandom(mon, 17, 93, 31, Spell)]
+	Spell = SpellSet[FixRandom(mon, 17, 93, 31, #SpellSet)]
 	return Spell
 
 end
 
 local SpellReplace = {[81] = 87}
 
-local function CalcResistance(res,BolsterMul)
---	return math.min(20 + 15 * math.log(res + 1), res * 3.5 - 30)
+local function CalcResistance(res,magic_rd_mul)
 	if res > 10000 then
 		return const.MonsterImmune
 	else
-		return math.max(0, res + (BolsterMul - 1) * 40)
+		return math.max(0, res + (magic_rd_mul - 1) * (res + 100))
 	end
 end
 
@@ -614,9 +548,7 @@ local function LogBolsterAdjust()
 	return math.log(BolsterAdjust(BolsterMul))/math.log(0.99)
 end
 
-function PrepareMapMon(mon)
-	local lv = MapLevel[Map.Name] or 1
-	
+function PrepareMapMon(mon, monId)
 	if mon.Id == 457 then
 		mon.NameId = 120
 	elseif mon.Id == 458 then
@@ -638,7 +570,6 @@ function PrepareMapMon(mon)
 		IsReanimated = 1
 	end
 	
---	mon.Level = math.floor(TxtMon.Level * lv)
 	mon.Level = TxtMon.Level
 	
 --	mon.Elite           = (mon.StartX * 10007 + mon.StartY * 12347 + mon.StartZ * 45347) % 10
@@ -699,11 +630,8 @@ function PrepareMapMon(mon)
 		end
 	end
 
---	if mon.Elite == 1 then
---		mon.Elite = 10
---	end
 	-- Base stats
-	if not IsSummoned then -- Q
+	if not IsSummoned then
 		local fhp = ceil(min(TxtMon.FullHP * elite_hp_mul, 30000) * ReanimateHP[IsReanimated]) 
 		if mon.HP > 0 then
 			mon.HP = ceil(fhp * mon.HP / mon.FullHP)
@@ -711,10 +639,7 @@ function PrepareMapMon(mon)
 		mon.FullHP = fhp
 	end
 
-	--mon.HP = 30000
-	--mon.FullHP = 30000
-
-	mon.ArmorClass = TxtMon.ArmorClass + elite_armor_add + FixRandom(mon, 131, 137, 139, 11) - 1
+	mon.ArmorClass = TxtMon.ArmorClass + elite_armor_add
 	
 	if not IsSummoned then
 		mon.MoveSpeed = TxtMon.MoveSpeed * ReanimateSpeed[IsReanimated]
@@ -723,31 +648,23 @@ function PrepareMapMon(mon)
 	-- Attacks
 	
 	if not IsSummoned then
-		mon.Attack1.DamageAdd 		= BolsterMul * 60
-		SetAttackMaxDamage2(mon, mon.Attack1, math.ceil(TxtMon.Attack1.DamageDiceSides) * TxtMon.Attack1.DamageDiceCount * elite_dmg_mul * ReanimateDmg[IsReanimated] * DamageMulByBoost[mon.BoostType])
-		
+		SetAttackMaxDamage2(mon, mon.Attack1, GetMaxDamage(TxtMon.Attack1) * elite_dmg_mul * ReanimateDmg[IsReanimated] * DamageMulByBoost[mon.BoostType])
+
 		mon.Attack1.Missile 		= TxtMon.Attack1.Missile
 		mon.Attack1.Type 			= TxtMon.Attack1.Type
 		
-		mon.Attack2.DamageAdd 		= BolsterMul * 60
-		SetAttackMaxDamage2(mon, mon.Attack2, math.ceil(TxtMon.Attack2.DamageDiceSides) * TxtMon.Attack2.DamageDiceCount * elite_dmg_mul * ReanimateDmg[IsReanimated] * DamageMulByBoost[mon.BoostType])
+		SetAttackMaxDamage2(mon, mon.Attack2, GetMaxDamage(TxtMon.Attack2) * elite_dmg_mul * ReanimateDmg[IsReanimated] * DamageMulByBoost[mon.BoostType])
 
-	--	mon.Attack2Chance 			= 0 
 		mon.Attack2Chance 			= TxtMon.Attack2Chance
 		mon.Attack2.Missile 		= TxtMon.Attack2.Missile
 		mon.Attack2.Type 			= TxtMon.Attack2.Type
 		
 		-- Spells
-		-- Monsters can not cast paralyze, replace it:
-		mon.Spell = SpellReplace[mon.Spell] or TxtMon.Spell
-		mon.Spell2 = SpellReplace[mon.Spell2] or TxtMon.Spell2
 
 		local NeedSpells = true
 
 		local sk,mas = SplitSkill(TxtMon.SpellSkill)
-		--mas = 4
 		
-		--if mon.Spell == 0 or FixRandom(mon, 3, 5, 7, 2) <= 0 then
 		mon.Spell = GenMonSpell1(mon, MonSettings, BolStep, mon.BoostType)
 		mas = 3
 
@@ -757,36 +674,29 @@ function PrepareMapMon(mon)
 				mas = 4
 			end	
 		end
-		--end
 
 		--mas = 4
-		--mon.Spell = 65
-		
---		if mon.Elite~=0 then
---			mon.Spell = 19
---		end
-		if Game.Map.Name == "elemw.odm" then
-			mon.Spell = 26
-		end
+		-- mon.Spell = 71
 
 		if mon.NameId >= 1 and mon.NameId ~= 163 then
 			mon.Spell = MonsterEliteSpell[mon.NameId] or mon.Spell
 			mas = 4
 		end
 
-		mon.SpellChance		= 100
-	--	mon.SpellSkill 		= JoinSkill(math.min(math.max(1, sk * (1 + mon.Elite) * SpellDamageMul[mon.Spell] * (MonsterEliteDamage[mon.NameId] or 1) * MagicMulByBoost[mon.BoostType]), 1000) , mas)
-		if IsReanimated == 1 then
-			mon.SpellSkill = JoinSkill(math.min(math.max(1, sk * elite_dmg_mul * MagicMulByBoost[mon.BoostType]) * ReanimateDmg[1], 1000), mas)
+		if mon.Spell ~= 0 then
+			mon.SpellChance		= 100  -- finish in Spell2 logic
+			if IsReanimated == 1 then
+				mon.SpellSkill = JoinSkill(math.min(math.max(1, sk * elite_dmg_mul * MagicMulByBoost[mon.BoostType]) * ReanimateDmg[1], 1000), mas)
+			else
+				mon.SpellSkill = JoinSkill(math.min(math.max(1, sk * elite_dmg_mul * MagicMulByBoost[mon.BoostType]), 1000) , mas)
+			end
 		else
-			mon.SpellSkill = JoinSkill(math.min(math.max(1, sk * elite_dmg_mul * MagicMulByBoost[mon.BoostType]), 1000) , mas)
+			mon.SpellSkill = 0
+			mon.SpellChance = 0
 		end
-	--	mon.SpellChance     = 0
 
 		sk,mas = SplitSkill(TxtMon.Spell2Skill)
-		--mas = 4
 
-		--if mon.Spell2 == 0 or FixRandom(mon, 173, 337, 347, 6) <= 5 then
 		mon.Spell2 = GenMonSpell2(mon, MonSettings, BolStep, mon.BoostType)
 		mas = 3
 
@@ -797,34 +707,35 @@ function PrepareMapMon(mon)
 			end	
 		end
 
-		--end
-	--	mon.Spell2 = GenMonSpell2(mon, MonSettings, BolStep)
-	--	mon.Spell2 = 64
 		if mon.NameId >= 1 and mon.NameId ~= 163 then
 			mon.Spell2 = MonsterEliteSpell2[mon.NameId] or mon.Spell2
 			mas = 4
 		end
-		
-		mon.Spell2Chance	= min(TxtMon.Spell2Chance * (1 + mon.Elite) * SpRateMulByBoost[mon.BoostType], math.min(100, 25 * (SpRateMulByStyle[Style] ^ 2) * SpRateMulByBoost[mon.BoostType]))
-	--	mon.Spell2Skill 	= JoinSkill(math.min(math.max(1, sk * (1 + mon.Elite) * SpellDamageMul[mon.Spell2] * (MonsterEliteDamage[mon.NameId] or 1) * MagicMulByBoost[mon.BoostType]), 1000), mas)
-		if IsReanimated == 1 then
-			mon.Spell2Skill = JoinSkill(math.min(math.max(1, sk * elite_dmg_mul * MagicMulByBoost[mon.BoostType]) * ReanimateDmg[1], 1000), mas)
+
+		-- 设置法术技能，并且根据 mapvars 第二法术冷却，把第二法术释放概率设为 0 或 100
+		if mon.Spell2 ~= 0 then
+			if IsReanimated == 1 then
+				mon.Spell2Skill = JoinSkill(math.min(math.max(1, sk * elite_dmg_mul * MagicMulByBoost[mon.BoostType]) * ReanimateDmg[1], 1000), mas)
+			else
+				mon.Spell2Skill = JoinSkill(math.min(math.max(1, sk * elite_dmg_mul * MagicMulByBoost[mon.BoostType]), 1000) , mas)
+			end
+			
+			if mapvars.Spell2Cooldown == nil then
+				mapvars.Spell2Cooldown = {}
+			end
+
+			local cooldownEnd = mapvars.Spell2Cooldown[monId]
+			if cooldownEnd and Game.Time < cooldownEnd then
+				mon.SpellChance = 100
+				mon.Spell2Chance = 0
+			else
+				mon.SpellChance = 0
+				mon.Spell2Chance = 100
+			end
 		else
-			mon.Spell2Skill = JoinSkill(math.min(math.max(1, sk * elite_dmg_mul * MagicMulByBoost[mon.BoostType]), 1000) , mas)
-		end
-	--	mon.Spell2Chance    = 0
-		if mon.Spell == mon.Spell2 then
-			mon.SpellChance = mon.SpellChance + mon.Spell2Chance * (100 - mon.SpellChance) / 100
-			mon.Spell2 = 0
 			mon.Spell2Chance = 0
 			mon.Spell2Skill = 0
-			if mon.NameId == 170 or mon.NameId == 173 then
-				mon.SpellChance = 100
-			end
 		end
-		mon.Spell2 = 0
-		mon.Spell2Chance = 0
-		mon.Spell2Skill = 0
 	end
 	
 	if mon.Id == 646 or mon.Id == 647 or mon.Id == 648 or mon.Id == 652 then
@@ -849,7 +760,7 @@ function PrepareMapMon(mon)
 	-- Rewards
 	
 	if IsReanimated == 0 then
-		mon.Experience = mon.Level * mon.Level * 1.25
+		mon.Experience = TxtMon.Experience
 	else
 		mon.Experience = 0
 	end
@@ -861,91 +772,36 @@ function PrepareMapMon(mon)
 	mon.TreasureDiceCount 	= 0
 	mon.TreasureDiceSides	= 0
 	
-	
-	-- if mon.Elite ~= 0 then
-	-- 	mon.TreasureItemPercent = 100
-	-- 	if TxtMon.TreasureItemLevel ~= 0 then
-	-- 		mon.TreasureItemLevel	= math.min(TxtMon.TreasureItemLevel + 3, 6)
-	-- 	else
-	-- 		mon.TreasureItemLevel	= math.min(math.floor(mon.Level) / 10 + 3, 6)
-	-- 	end
-	-- else 
-	-- 	if TxtMon.TreasureItemLevel >= 2 then
-	-- 		mon.TreasureItemLevel	= math.min(TxtMon.TreasureItemLevel + 2, 6)
-	-- 		local lv2 = GetOverallPartyLevel()
-	-- 		local lv3 = mon.Level
-	-- 		if mon.TreasureItemLevel == 4 then
-	-- 			if lv2 <= 30 then
-	-- 				mon.TreasureItemPercent = math.max(TxtMon.TreasureItemPercent, 50 * (2.7 ^ (-(lv3-15)*(lv3-15)/200)))
-	-- 			end
-	-- 		end
-	-- 		if mon.TreasureItemLevel == 5 then
-	-- 			if lv2 <= 50 then
-	-- 				mon.TreasureItemPercent = math.max(TxtMon.TreasureItemPercent, 75 * (2.7 ^ (-(lv3-30)*(lv3-30)/200)))
-	-- 			end
-	-- 		end
-	-- 		if mon.TreasureItemLevel == 6 then
-	-- 			mon.TreasureItemPercent = math.max(TxtMon.TreasureItemPercent, 100 * (2.7 ^ (-(lv3-50)*(lv3-50)/1000)))
-	-- 		end
-	-- 	end
-	-- end
-	
-	if TxtMon.FireResistance < 10000 then 
-		mon.FireResistance = math.max(TxtMon.FireResistance + elite_res_add + FixRandom(mon, 149, 151, 157, 11) + ArmorResAddbyBoost[mon.BoostType], 0)
-	else
-		mon.FireResistance = const.MonsterImmune
-	end
-	if TxtMon.AirResistance < 10000 then 
-		mon.AirResistance = math.max(TxtMon.AirResistance + elite_res_add + FixRandom(mon, 163, 167, 173, 11) + ArmorResAddbyBoost[mon.BoostType], 0)
-	else
-		mon.AirResistance = const.MonsterImmune
-	end
-	if TxtMon.WaterResistance < 10000 then 
-		mon.WaterResistance = math.max(TxtMon.WaterResistance + elite_res_add + FixRandom(mon, 179, 181, 191, 11) + ArmorResAddbyBoost[mon.BoostType], 0)
-	else
-		mon.WaterResistance = const.MonsterImmune
-	end
-	if TxtMon.EarthResistance < 10000 then 
-		mon.EarthResistance = math.max(TxtMon.EarthResistance + elite_res_add + FixRandom(mon, 193, 197, 199, 11) + ArmorResAddbyBoost[mon.BoostType], 0)
-		if mon.BoostType == const.Bolster.Style.Speed then
-			mon.EarthResistance = const.MonsterImmune
+	-- Resistances: 10000 = immune in txt
+	local boostMul = DmgRdMulByBoost[mon.BoostType]
+	local speedBoost = (mon.BoostType == const.Bolster.Style.Speed)
+	local function setElemRes(name, useElite, speedForceImmune)
+		local txtVal = TxtMon[name]
+		if txtVal >= 10000 then
+			mon[name] = const.MonsterImmune
+		else
+			local base = useElite and math.max(txtVal + elite_res_add, 0) or txtVal
+			mon[name] = base + (boostMul - 1) * (base + 100)
+			if speedForceImmune and speedBoost then
+				mon[name] = const.MonsterImmune
+			end
 		end
-	else
-		mon.EarthResistance = const.MonsterImmune
 	end
-	if TxtMon.BodyResistance < 10000 then 
-		mon.BodyResistance = math.max(TxtMon.BodyResistance + elite_res_add + FixRandom(mon, 211, 223, 227, 11) + ArmorResAddbyBoost[mon.BoostType], 0)
-	else
-		mon.BodyResistance = const.MonsterImmune
+	local elemRes = {
+		{"FireResistance", true, false},
+		{"AirResistance", true, false},
+		{"WaterResistance", true, false},
+		{"EarthResistance", true, true},
+		{"BodyResistance", true, false},
+		{"MindResistance", true, false},
+		{"SpiritResistance", true, false},
+		{"LightResistance", true, true},
+		{"DarkResistance", true, true},
+		{"PhysResistance", true, false},
+	}
+	for _, r in ipairs(elemRes) do
+		setElemRes(r[1], r[2], r[3])
 	end
-	if TxtMon.MindResistance < 10000 then 
-		mon.MindResistance = math.max(TxtMon.MindResistance + elite_res_add + FixRandom(mon, 233, 239, 241, 11) + ArmorResAddbyBoost[mon.BoostType], 0)
-	else
-		mon.MindResistance = const.MonsterImmune
-	end
-	if TxtMon.SpiritResistance < 10000 then 
-		mon.SpiritResistance = math.max(TxtMon.SpiritResistance + elite_res_add + FixRandom(mon, 251, 257, 263, 11) + ArmorResAddbyBoost[mon.BoostType], 0)
-	else
-		mon.SpiritResistance = const.MonsterImmune
-	end
-	if TxtMon.LightResistance < 10000 then 
-		mon.LightResistance = math.max(TxtMon.LightResistance + elite_res_add + FixRandom(mon, 269, 271, 277, 11) + ArmorResAddbyBoost[mon.BoostType], 0)
-		if mon.BoostType == const.Bolster.Style.Speed then
-			mon.LightResistance = const.MonsterImmune
-		end
-	else
-		mon.LightResistance = const.MonsterImmune
-	end
-	if TxtMon.DarkResistance < 10000 then 
-		mon.DarkResistance = math.max(TxtMon.DarkResistance + elite_res_add + FixRandom(mon, 281, 283, 293, 11) + ArmorResAddbyBoost[mon.BoostType], 0)
-		if mon.BoostType == const.Bolster.Style.Speed then
-			mon.DarkResistance = const.MonsterImmune
-		end
-	else
-		mon.DarkResistance = const.MonsterImmune
-	end
-
-	mon.PhysResistance = TxtMon.PhysResistance + ArmorResAddbyBoost[mon.BoostType]
 
 	mon.BodyRadius = MonsterBodyRadius[mon.Id] or mon.BodyRadius
 	mon.Bonus = TxtMon.Bonus
@@ -1014,10 +870,6 @@ local function PrepareTxtMon(i, PartyLevel, MapSettings, OnlyThis)
 		end
 		return Default
 	end
-	
-	local function GetMaxDamage(Attack)
-		return Attack.DamageDiceCount*Attack.DamageDiceSides+Attack.DamageAdd
-	end
 
 	local function GetAvgLevel(mi)
 		local mk = ceil(mi/3)
@@ -1062,34 +914,40 @@ local function PrepareTxtMon(i, PartyLevel, MapSettings, OnlyThis)
 		end
 	end
 
-	local lv = MapLevel[Map.Name] or 1
+	local map_boost_table = MapBoost[Map.Name]
+	local level_add = map_boost_table and map_boost_table[1] or 0
+	local hp_mul = map_boost_table and map_boost_table[2] or 1
+	local damage_mul = map_boost_table and map_boost_table[3] or 1
+	local armor_rd_mul = map_boost_table and map_boost_table[4] or 1
+	local magic_rd_mul = map_boost_table and map_boost_table[5] or 1
+	local exp_mul = map_boost_table and map_boost_table[6] or 1
 	
-	if mapvars.RefillCountAdded ~= true then
-		if isTableNonEmpty(Map.Refilled) and Map.Refilled.RefillCount ~= nil then
-			mapvars.RefillCount = Map.Refilled.RefillCount + 1
-			--Map.Refilled.RefillCount = nil
-		else
-			if isTableNonEmpty(Map.Refilled) then
-				mapvars.RefillCount = 1
-			else
-				mapvars.RefillCount = 0
-			end
-		end
-	end
-	mapvars.RefillCountAdded = true
+	-- if mapvars.RefillCountAdded ~= true then
+	-- 	if isTableNonEmpty(Map.Refilled) and Map.Refilled.RefillCount ~= nil then
+	-- 		mapvars.RefillCount = Map.Refilled.RefillCount + 1
+	-- 		--Map.Refilled.RefillCount = nil
+	-- 	else
+	-- 		if isTableNonEmpty(Map.Refilled) then
+	-- 			mapvars.RefillCount = 1
+	-- 		else
+	-- 			mapvars.RefillCount = 0
+	-- 		end
+	-- 	end
+	-- end
+	-- mapvars.RefillCountAdded = true
 
 	
-	if vars.NoRefillAdd ~= true then
-		lv = lv * (MapSettings.LevelShift + 50 * mapvars.RefillCount) / MapSettings.LevelShift
-		--[[
-		if mapvars.RefillCount == 0 then
-			if MapSettings.LevelShift <= 30 then
-				local mulrate = (-0.01622*MapSettings.LevelShift*MapSettings.LevelShift+1.38*MapSettings.LevelShift+3.198) / MapSettings.LevelShift
-				lv = lv * (math.max(0, BolsterMul / 2 - 1) * (mulrate - 1) + 1)
-			end
-		end
-		]]--
-	end
+	-- if vars.NoRefillAdd ~= true then
+	-- 	lv = lv * (MapSettings.LevelShift + 50 * mapvars.RefillCount) / MapSettings.LevelShift
+	-- 	--[[
+	-- 	if mapvars.RefillCount == 0 then
+	-- 		if MapSettings.LevelShift <= 30 then
+	-- 			local mulrate = (-0.01622*MapSettings.LevelShift*MapSettings.LevelShift+1.38*MapSettings.LevelShift+3.198) / MapSettings.LevelShift
+	-- 			lv = lv * (math.max(0, BolsterMul / 2 - 1) * (mulrate - 1) + 1)
+	-- 		end
+	-- 	end
+	-- 	]]--
+	-- end
 	
 	
 	for monId, mon in pairs(MonTable) do
@@ -1107,43 +965,37 @@ local function PrepareTxtMon(i, PartyLevel, MapSettings, OnlyThis)
 
 		local Formula = Formulas[MonKind] or Formulas["def"]
 
-		--local lvadd = math.sqrt(math.max(math.log(lv),0)) * 72
-		-- local lvadd = 99.5 * math.log(lv * 2 / (lv + 1))
-		local lvadd = 0
-
 		MonBolStep[monId] = BolStep
 
 		if MapSettings.Type ~= BolsterTypes.OriginalStats then
 
 			-- Base hitpoints
-			mon.FullHP = min(mon.FullHP * BolsterMul * (lv + 1) * 0.5, 30000)
+			mon.FullHP = min(mon.FullHP * BolsterMul * hp_mul, 30000)
 			BoostedHP  = mon.FullHP
 
 			-- Armor class
-			mon.ArmorClass = math.max(0, mon.ArmorClass + (BolsterMul - 1) * 40) + lvadd
+			mon.ArmorClass = math.max(0, mon.ArmorClass + (armor_rd_mul - 1) * (mon.ArmorClass + 100))
 			
 			-- Attacks
 			MaxDamage = GetMaxDamage(mon.Attack1)
-			MaxDamage = MaxDamage * BolsterMul *lv
+			MaxDamage = MaxDamage * BolsterMul * damage_mul
 			SetAttackMaxDamage(mon.Attack1, MaxDamage)
-			-- mon.Attack1.DamageAdd 		= BolsterMul * 60
 
 			if mon.Attack2Chance > 0 then
 				MaxDamage = GetMaxDamage(mon.Attack2)
-				MaxDamage = MaxDamage * BolsterMul * lv
+				MaxDamage = MaxDamage * BolsterMul * damage_mul
 				SetAttackMaxDamage(mon.Attack2, MaxDamage)
-				-- mon.Attack2.DamageAdd 		= BolsterMul * 60
 			end
 
 			-- Base spells
 
 			local Skill = mon.SpellChance + mon.Spell2Chance * 0.01
 			
-			mon.SpellSkill 		= JoinSkill(math.max(1,math.min(1000,Skill * lv)), SpMasMulByStyle[Style])
-			mon.SpellChance		= min(mon.Level * 0.2 * SpRateMulByStyle[Style] ^ 3 * BolsterMul, 15 * SpRateMulByStyle[Style] ^ 2)
+			mon.SpellSkill 		= JoinSkill(math.max(1,math.min(1000,Skill * damage_mul)), 4)
+			mon.SpellChance		= 50
 
-			mon.Spell2Skill 	= JoinSkill(math.max(1,math.min(1000,Skill * lv)), SpMasMulByStyle[Style])
-			mon.Spell2Chance	= min(mon.Level * 0.2 * SpRateMulByStyle[Style] ^ 3 * BolsterMul, 25 * SpRateMulByStyle[Style] ^ 2)
+			mon.Spell2Skill 	= JoinSkill(math.max(1,math.min(1000,Skill * damage_mul)), 4)
+			mon.Spell2Chance	= 50
 		
 		end
 
@@ -1189,16 +1041,16 @@ local function PrepareTxtMon(i, PartyLevel, MapSettings, OnlyThis)
 		]]--
 		--Resistances
 		
-		mon.Level = mon.Level * lv
+		mon.Level = mon.Level + level_add
 
-		mon.FireResistance = CalcResistance(mon.FireResistance,BolsterMul) + lvadd
-		mon.AirResistance = CalcResistance(mon.AirResistance,BolsterMul) + lvadd
-		mon.WaterResistance = CalcResistance(mon.WaterResistance,BolsterMul) + lvadd
-		mon.EarthResistance = CalcResistance(mon.EarthResistance,BolsterMul) + lvadd
-		mon.MindResistance = CalcResistance(mon.MindResistance,BolsterMul) + lvadd
-		mon.SpiritResistance = CalcResistance(mon.SpiritResistance,BolsterMul) + lvadd
-		mon.LightResistance = CalcResistance(mon.LightResistance,BolsterMul) + lvadd
-		mon.DarkResistance = CalcResistance(mon.DarkResistance,BolsterMul) + lvadd
+		mon.FireResistance = CalcResistance(mon.FireResistance,magic_rd_mul)
+		mon.AirResistance = CalcResistance(mon.AirResistance,magic_rd_mul)
+		mon.WaterResistance = CalcResistance(mon.WaterResistance,magic_rd_mul)
+		mon.EarthResistance = CalcResistance(mon.EarthResistance,magic_rd_mul)
+		mon.MindResistance = CalcResistance(mon.MindResistance,magic_rd_mul)
+		mon.SpiritResistance = CalcResistance(mon.SpiritResistance,magic_rd_mul)
+		mon.LightResistance = CalcResistance(mon.LightResistance,magic_rd_mul)
+		mon.DarkResistance = CalcResistance(mon.DarkResistance,magic_rd_mul)
 		mon.PhysResistance = mon.PhysResistance
 		
 		--Experience
@@ -1273,7 +1125,7 @@ function BolsterMonsters()
 
 	for i,v in Map.Monsters do
 		if v.Id > 0 and v.Id < Game.MonstersTxt.Limit then
-			PrepareMapMon(v)
+			PrepareMapMon(v, i)
 		end
 	end
 
@@ -1301,7 +1153,7 @@ local function Init()
 				if not ReadyMons[Id] then
 					PrepareTxtMon(Id, PartyLevel, MapSettings)
 				end
-				PrepareMapMon(mon)
+				PrepareMapMon(mon, i)
 			end
 
 		end

@@ -585,19 +585,97 @@ local function SetSpellsExtraHooks()
 	end
 --	mem.hook(0x427EA4, Test)
 	
---	local function Test(d)
---		Party[0].HP = Party[0].HP - 100
---		local mon = GetMonster(d.ebp - 8)
---		mon.HP = 0
---		local sk = d.edi --火系等级 
---		for i,v in Map.Monsters do
---			v.ArmorClass = v.ArmorClass * (0.95 ^ sk)
---		end
---		d.ecx = d.ecx - d.eax
---	end
---	mem.hook(0x427F5C, Test)
+	local function Test2(d)
+		target_pl, target_plidx = MF.GetPlayerFromPtr(d.ecx)
+		target_pl.HP = target_pl.HP + d.edi
+	end
+	-- mem.hook(0x427050, Test2)
+	-- mem.hook(0x427150, Test2)
+	-- mem.hook(0x427250, Test2)
+	-- mem.hook(0x427350, Test2)
+	-- mem.hook(0x427450, Test2)
+	-- mem.hook(0x427550, Test2)
+	-- mem.hook(0x427650, Test2)
+	-- mem.hook(0x427750, Test2)
+	-- mem.hook(0x427850, Test2)
+	-- mem.hook(0x427950, Test2)
+	-- mem.hook(0x427A50, Test2)
+	-- mem.hook(0x427B50, Test2)
+	-- mem.hook(0x427C50, Test2)
+	-- mem.hook(0x427D50, Test2)
+	-- mem.hook(0x427E50, Test2)
+	-- mem.hook(0x427F50, Test2)
+	-- mem.hook(0x428050, Test2)
+	-- mem.hook(0x428150, Test2)
+	-- mem.hook(0x428250, Test2)
+	-- mem.hook(0x428350, Test2)
+	-- mem.hook(0x428450, Test2)
+	-- mem.hook(0x428550, Test2)
+	-- mem.hook(0x428650, Test2)
+	-- mem.hook(0x428750, Test2)
+	-- mem.hook(0x428850, Test2)
+	-- mem.hook(0x428950, Test2)
+	-- mem.hook(0x428A50, Test2)
+	-- mem.hook(0x428B50, Test2)
+	-- mem.hook(0x428C50, Test2)
+	-- mem.hook(0x428D50, Test2)
+	-- mem.hook(0x428E50, Test2)
+	-- mem.hook(0x428F50, Test2)
+	-- mem.hook(0x429050, Test2)
+	-- mem.hook(0x429150, Test2)
+	-- mem.hook(0x429250, Test2)
+	-- mem.hook(0x429350, Test2)
+	-- mem.hook(0x429450, Test2)
+	-- mem.hook(0x429550, Test2)
+	-- mem.hook(0x429650, Test2)
+	-- mem.hook(0x429750, Test2)
+	-- mem.hook(0x429850, Test2)
+	-- mem.hook(0x429950, Test2)
+	-- mem.hook(0x429A50, Test2)
+	-- mem.hook(0x429B50, Test2)
+	-- mem.hook(0x429C50, Test2)
+	-- mem.hook(0x429D50, Test2)
+	-- mem.hook(0x429E50, Test2)
+	-- mem.hook(0x429F50, Test2)
+	-- mem.hook(0x42A050, Test2)
+	-- mem.hook(0x42A150, Test2)
+	-- mem.hook(0x42A250, Test2)
+	-- mem.hook(0x42A350, Test2)
+	-- mem.hook(0x42A450, Test2)
+	-- mem.hook(0x42A550, Test2)
+	-- mem.hook(0x42A650, Test2)
+	-- mem.hook(0x42A750, Test2)
+	-- mem.hook(0x42A850, Test2)
+	-- mem.hook(0x42A950, Test2)
+	-- mem.hook(0x42AA50, Test2)
+	-- mem.hook(0x42AB50, Test2)
+	-- mem.hook(0x42AC50, Test2)
+	-- mem.hook(0x42AD50, Test2)
+	-- mem.hook(0x42AE50, Test2)
+
+	-- mem.hook(0x42AF72, Test2)
+	-- mem.hook(0x42AF50, Test2)    --Hook for healing spell
+
+	-- mem.hook(0x42AF62, Test2)
 
 	--asmpatch(0x427B3D, "je 0x427B4A")
+
+	-------- 68: Heal --------
+	hook(0x42AEA9, function(d)   --跳转lua代码
+		-- 1. 获取当前环境下的变量
+		-- 此时 d.eax 为 mastery, d.edi 为 skill
+		local mas = d.eax
+		local sk = d.edi
+		
+		-- 2. 执行你的自定义逻辑 (参考你之前的逻辑)
+		d.edi = GetSpellPower(const.Spells.Heal, sk, mas)
+		
+		-- 3. 手动完成原代码 2AED2 处的存储动作
+		-- [ebp-04] = edi
+		u4[d.ebp - 0x04] = d.edi
+	end)
+
+	mem.nop(0x42AEAE, 30)  --跳过原代码
 	
 
 	-------- 12: Wizard Eye --------

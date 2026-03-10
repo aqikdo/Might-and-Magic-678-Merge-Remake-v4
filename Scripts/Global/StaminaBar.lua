@@ -1,13 +1,13 @@
 --[[
 	体力条 (Stamina Bar)
-	在游戏主界面左下角显示队伍体力值条。
-	体力值存储在 vars.PartyStamina / vars.PartyStaminaMax，会随存档保存。
-	默认最大体力 100；休息时恢复，行走/战斗等可在此脚本或别处扣减。
+	在游戏主界面左下角为每个队员分别显示独立体力条。
+	体力值存储在 vars.PlayerStamina[slot] / vars.PlayerStaminaMax[slot]（slot 为队伍位置 0..4），会随存档保存。
 ]]
 
 local STAMINA_MAX_DEFAULT = 1000
-local STAMINA_BAR_X, STAMINA_BAR_Y = 70, 295
-local STAMINA_BAR_W, STAMINA_BAR_H = 80, 10
+local STAMINA_BAR_X, STAMINA_BAR_Y = 186, 295
+local STAMINA_BAR_W, STAMINA_BAR_H = 45, 5
+local STAMINA_BAR_GAP = 10   -- 每条之间的间距
 local COLOR_BG = 0x303030
 -- 绿(满) → 黄(半) → 红(空)。D3D 顶点色是 BGR 字节序，必须按 BGR 输出否则红色会显示成蓝/黑
 local function StaminaColor(ratio)
@@ -36,15 +36,47 @@ local function StaminaColor(ratio)
 	return r * 0x10000 + g * 0x100 + b
 end
 
--- 初始化体力（新游戏或读档时若无值则设默认）
+-- 初始化体力（新游戏或读档时，为每个队员初始化）
 local function InitStamina()
-	if vars.PartyStaminaMax == nil or vars.PartyStaminaMax <= 0 then
-		vars.PartyStaminaMax = STAMINA_MAX_DEFAULT
+	if not vars then
+		return
 	end
-	if vars.PartyStamina == nil or vars.PartyStamina < 0 then
-		vars.PartyStamina = vars.PartyStaminaMax
+	if not vars.PlayerStamina then
+		vars.PlayerStamina = {}
 	end
-	vars.PartyStamina = math.min(vars.PartyStamina, vars.PartyStaminaMax)
+	if not vars.PlayerStaminaMax then
+		vars.PlayerStaminaMax = {}
+	end
+	-- 旧存档兼容：若存在 PartyStamina/PartyStaminaMax 且尚无按人数据，则按人数均分到每人
+	if vars.PartyStamina ~= nil and vars.PartyStaminaMax ~= nil then
+		local n = 0
+		for _ in Party do
+			n = n + 1
+		end
+		if n > 0 then
+			local perMax = math.max(1, math.floor(vars.PartyStaminaMax / n))
+			local perCur = math.max(0, math.floor(vars.PartyStamina / n))
+			for slot, pl in Party do
+				if vars.PlayerStaminaMax[slot] == nil then
+					vars.PlayerStaminaMax[slot] = perMax
+				end
+				if vars.PlayerStamina[slot] == nil then
+					vars.PlayerStamina[slot] = perCur
+				end
+			end
+		end
+		vars.PartyStamina = nil
+		vars.PartyStaminaMax = nil
+	end
+	for slot, pl in Party do
+		if vars.PlayerStaminaMax[slot] == nil or vars.PlayerStaminaMax[slot] <= 0 then
+			vars.PlayerStaminaMax[slot] = STAMINA_MAX_DEFAULT
+		end
+		if vars.PlayerStamina[slot] == nil or vars.PlayerStamina[slot] < 0 then
+			vars.PlayerStamina[slot] = vars.PlayerStaminaMax[slot]
+		end
+		vars.PlayerStamina[slot] = math.min(vars.PlayerStamina[slot], vars.PlayerStaminaMax[slot])
+	end
 end
 
 function events.NewGameDefaultParty()
@@ -94,7 +126,7 @@ local function GetStaminaBarTextureIndex()
 	return nil
 end
 
--- 在主游戏画面绘制体力条（仅 D3D 模式）
+-- 在主游戏画面绘制每个队员的体力条（仅 D3D 模式）
 local function DrawStaminaBar()
 	if not Game.IsD3D then
 		return
@@ -103,22 +135,28 @@ local function DrawStaminaBar()
 		return
 	end
 	InitStamina()
-	local cur = math.max(0, vars.PartyStamina)
-	local maxVal = math.max(1, vars.PartyStaminaMax)
-	local ratio = cur / maxVal
 	local idx = GetStaminaBarTextureIndex()
 	if not idx then
 		return
 	end
-	local x1, y1 = STAMINA_BAR_X, STAMINA_BAR_Y
-	local x2, y2 = x1 + STAMINA_BAR_W, y1 + STAMINA_BAR_H
-	-- 背景条（整条深色）
-	pcall(DrawScreenEffectD3D, idx, 0, 0, 1, 1, x1, y1, x2, y2, COLOR_BG)
-	-- 当前体力（按比例填色：绿→黄→红，BGR）
-	local fillW = STAMINA_BAR_W * ratio
-	if fillW >= 1 then
-		local fillColor = StaminaColor(ratio)
-		pcall(DrawScreenEffectD3D, idx, 0, 0, 1, 1, x1, y1, x1 + fillW, y2, fillColor)
+	local slotCount = 0
+	for slot, pl in Party do
+		slotCount = slotCount + 1
+		local cur = math.max(0, vars.PlayerStamina[slot] or 0)
+		local maxVal = math.max(1, vars.PlayerStaminaMax[slot] or STAMINA_MAX_DEFAULT)
+		local ratio = cur / maxVal
+		local column = slotCount - 1
+		local y1, y2 = STAMINA_BAR_Y, STAMINA_BAR_Y + STAMINA_BAR_H
+		local x1 = STAMINA_BAR_X + column * (STAMINA_BAR_W + STAMINA_BAR_GAP)
+		local x2 = x1 + STAMINA_BAR_W
+		-- 背景条（整条深色）
+		pcall(DrawScreenEffectD3D, idx, 0, 0, 1, 1, x1, y1, x2, y2, COLOR_BG)
+		-- 当前体力（按比例填色：绿→黄→红，BGR）
+		local fillW = STAMINA_BAR_W * ratio
+		if fillW >= 1 then
+			local fillColor = StaminaColor(ratio)
+			pcall(DrawScreenEffectD3D, idx, 0, 0, 1, 1, x1, y1, x1 + fillW, y2, fillColor)
+		end
 	end
 end
 

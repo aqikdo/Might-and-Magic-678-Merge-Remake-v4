@@ -1,6 +1,5 @@
 ExtraQuickSpells = {}
-ExtraQuickSpells.SlotsAmount = 4
-
+ExtraQuickSpells.SlotsAmount = 6
 local function NewSpellSlots()
 	local SpellSlots = {}
 	for PlayerId, Player in Party.PlayersArray do
@@ -144,7 +143,9 @@ local function DefaultKeybinds()
 		[const.Keys.F5] = 1,
 		[const.Keys.F6] = 2,
 		[const.Keys.F7] = 3,
-		[const.Keys.F8] = 4}
+		[const.Keys.F8] = 4,
+		[const.Keys.F9] = 5,
+		[const.Keys.F10] = 6}
 end
 ExtraQuickSpells.DefaultKeybinds = DefaultKeybinds
 ExtraQuickSpells.KeyBinds = DefaultKeybinds()
