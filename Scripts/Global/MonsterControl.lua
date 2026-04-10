@@ -339,87 +339,87 @@ function SummonMonsterAdjust()
 	end
 end
 
+local function process_MonsterGetClose_inloop(mon)
+	if mon.ShowAsHostile == true and mon.Hostile == true and mon.HP > 0 and GetDist(mon, Party.X, Party.Y, Party.Z) <= 512 then
+		if vars.LastCastSpell then
+			vars.LastCastSpell = math.max(Game.Time - const.Minute * 4, vars.LastCastSpell)
+		else
+			vars.LastCastSpell = Game.Time - const.Minute * 4
+		end
+		vars.MonsterGetCloseTime = Game.Time
+	end
+end
+
+local function CanBeActivated(monId, mon)
+	if mon.HP > 0 and -- alive
+	   GetDist(mon, Party.X, Party.Y, Party.Z) <= 5000 and   -- in range
+	   (Map.IsOutdoor() or Pathfinder.TraceSight(mon, Party)) and  -- can see party
+	   ((mapvars.AStayWayCoolDown == nil) or (mapvars.AStayWayCoolDown[monId] == nil) or mapvars.AStayWayCoolDown[monId] < Game.Time) and -- cool down
+	   mapvars.expand[monId] == nil then -- not expanded
+		if not mapvars.AStayWayCoolDown then
+			mapvars.AStayWayCoolDown = {}
+		end
+		mapvars.AStayWayCoolDown[monId] = Game.Time + math.random(math.ceil(const.Minute * 1.5), math.ceil(const.Minute * 2.5))
+		local pathOk
+		if Map.IsOutdoor() then
+			local w = Pathfinder.AStarWay(monId, mon, Party, nil, false)
+			pathOk = w and #w > 0
+		else
+			local w = Pathfinder.BuildWayUsingMapData(Pathfinder.AreaOfTarget(mon), Pathfinder.AreaOfTarget(Party), monId, mon, Party, false)
+			pathOk = w and #w > 0
+		end
+		return pathOk
+	else
+		return false
+	end
+end
+
+local function ActivateMonster(monId,mon)
+	mon.Active = true
+	mon.AIState = const.AIState.Active
+	mon.ShowOnMap = true
+	if mon.SpellBuffs[const.MonsterBuff.Summoned].ExpireTime < Game.Time then
+		mon.ShowAsHostile = true
+	end
+	mapvars.expand[monId] = true
+end
+
+local function DeactivateMonster(monId,mon)
+	mon.HP = mon.FullHP
+	mon.X = mon.StartX
+	mon.Y = mon.StartY
+	mon.Z = mon.StartZ
+	mon.AIState = const.AIState.Removed
+	mapvars.expand[monId] = Game.Time
+end
+
 local function ActiveMonTimer()
-	-- Party.SpellBuffs[const.PartyBuff.Invisibility].ExpireTime = 0
-	-- local MonList = Game.GetMonstersInSight()
-	-- local mon, mon1
-	local lim = Map.Monsters.count
-	-- for k, v in pairs(MonList) do
-	-- 	if v < lim then
-	-- 		mon = Map.Monsters[v]
-	-- 		mon.Active = true
-	-- 		mon.ShowOnMap = true
-	-- 		if mon.SpellBuffs[const.MonsterBuff.Summoned].ExpireTime < Game.Time then
-	-- 			mon.ShowAsHostile = true
-	-- 		end
-	-- 	end
-	-- end
-	for v, i in Map.Monsters do
-		if v < lim then
-			mon = Map.Monsters[v]
-			if Game.MonstersTxt[mon.Id].HostileType == 4 then
-				if mon.ShowAsHostile == true and mon.Hostile == true and mon.HP > 0 and GetDist(mon, Party.X, Party.Y, Party.Z) <= 512 then
-					if vars.LastCastSpell then
-						vars.LastCastSpell = math.max(Game.Time - const.Minute * 4, vars.LastCastSpell)
+	for i, mon in Map.Monsters do
+		if Game.MonstersTxt[mon.Id].HostileType == 4 then
+			process_MonsterGetClose_inloop(mon)
+
+			if mapvars.expand[i] == nil then
+				mon.AIState = const.AIState.Removed
+			elseif mapvars.expand[i] ~= nil and mapvars.expand[i] ~= true and mapvars.expand[i] < Game.Time - const.Minute * 1 then
+				mapvars.expand[i] = nil
+			end
+
+			if CanBeActivated(i, mon) then
+				vars.LastCastSpell = Game.Time
+				ActivateMonster(i, mon)
+				for ti, tmon in Map.Monsters do
+					if Map.IsOutdoor() then
+						if GetDist(tmon, mon.X, mon.Y, mon.Z) < MONSTER_EXPAND_DIST then
+							ActivateMonster(ti, tmon)
+						end
 					else
-						vars.LastCastSpell = Game.Time - const.Minute * 4
-					end
-					vars.MonsterGetCloseTime = Game.Time
-				end
-
-				if mapvars.expand[v] == nil then
-					mon.AIState = const.AIState.Removed
-				elseif mapvars.expand[v] ~= nil and mapvars.expand[v] ~= true and mapvars.expand[v]  < Game.Time - const.Minute * 1 then
-					mapvars.expand[v] = nil
-				end
-
-				if GetDist(mon, Party.X, Party.Y, Party.Z) <= 5000 and Pathfinder.TraceSight(mon, Party) then
-					if mapvars.expand[v] == nil and (vars.LastCastSpell == nil or vars.LastCastSpell < Game.Time - const.Minute * 5.5 or vars.LastCastSpell >= Game.Time - const.Minute * 5) then
-						mon.Active = true
-						mon.AIState = const.AIState.Active
-						mon.ShowOnMap = true
-						vars.LastCastSpell = Game.Time
-						
-						if mon.SpellBuffs[const.MonsterBuff.Summoned].ExpireTime < Game.Time then
-							mon.ShowAsHostile = true
+						if GetDist(tmon, mon.X, mon.Y, mon.Z) < MONSTER_EXPAND_DIST and Map.RoomFromPoint(mon.X, mon.Y, mon.Z) == Map.RoomFromPoint(tmon.X, tmon.Y, tmon.Z) then
+							ActivateMonster(ti, tmon)
 						end
-						mapvars.expand[v] = true
-						for tv, ti in Map.Monsters do
-							if Map.IsOutdoor() then
-								if tv < lim and GetDist(Map.Monsters[tv], mon.X, mon.Y, mon.Z) < MONSTER_EXPAND_DIST then
-									mon1 = Map.Monsters[tv]
-									mon1.AIState = const.AIState.Active
-									mon1.Active = true
-									mon1.ShowOnMap = true
-									if mon1.SpellBuffs[const.MonsterBuff.Summoned].ExpireTime < Game.Time then
-										mon1.ShowAsHostile = true
-									end
-									mapvars.expand[tv] = true
-								end
-							else
-								if tv < lim and GetDist(Map.Monsters[tv], mon.X, mon.Y, mon.Z) < MONSTER_EXPAND_DIST and Map.RoomFromPoint(mon.X, mon.Y, mon.Z) == Map.RoomFromPoint(Map.Monsters[tv].X, Map.Monsters[tv].Y, Map.Monsters[tv].Z) then
-									mon1 = Map.Monsters[tv]
-									mon1.AIState = const.AIState.Active
-									mon1.Active = true
-									mon1.ShowOnMap = true
-									if mon1.SpellBuffs[const.MonsterBuff.Summoned].ExpireTime < Game.Time then
-										mon1.ShowAsHostile = true
-									end
-									mapvars.expand[tv] = true
-								end
-							end
-						end
-					-- elseif mon.HP > 0 and mon.ShowAsHostile == true then
-					-- 	vars.LastCastSpell = Game.Time
 					end
-				elseif mon.HP > 0 and (vars.LastCastSpell == nil or vars.LastCastSpell < Game.Time - const.Minute * 5) then
-					mon.HP = mon.FullHP
-					mon.X = mon.StartX
-					mon.Y = mon.StartY
-					mon.Z = mon.StartZ
-					mon.AIState = const.AIState.Removed
-					mapvars.expand[v] = Game.Time
 				end
+			elseif mon.HP > 0 and mon.AIState ~= const.AIState.Removed and (vars.LastCastSpell == nil or vars.LastCastSpell < Game.Time - const.Minute * 5) then
+				DeactivateMonster(i, mon)
 			end
 		end
 	end

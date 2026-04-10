@@ -34,11 +34,26 @@ Id	Note	Continent	QuestItem	LostQBit	StartQBit	EndQBit	PostEnd	Level
 33	Battleaxe							61
 34	Dwarven Battleaxe							74
 35	Minotaur Battleaxe							87
-36	Two-Handed Axe
-37	Footman's Axe
-38	Minotaur War Axe
-39	Elite Minotaur Axe
-40	Minotaur Herdsman Axe
+36	Two-Handed Axe							1
+37	Footman's Axe							50
+38	Minotaur War Axe							60
+39	Elite Minotaur Axe							70
+40	Minotaur Herdsman Axe							97
+41	Ogre Fighting Stick							12
+42	Steel Spear							31
+43	Elven Long Spear							61
+44	War Spear							69
+45	Dragon Harpoon							91
+46	Improvised Voulge							26
+47	Halberd							39
+48	Beaked Halberd							47
+49	Minotaur Campaign Pole-axe							75
+50	Labyrinth Grapple							88
+51	Hayfork							4
+52	Infantry Fork							17
+53	Lizardman Trident							53
+54	Regnan Trident							80
+55	Triton Trident							83
 56	Hunting Bow							20
 57	Recurve Bow							71
 58	Snakewood Bow							75
@@ -49,11 +64,71 @@ Id	Note	Continent	QuestItem	LostQBit	StartQBit	EndQBit	PostEnd	Level
 63	Hunting Crossbow							40
 64	Caravaner's Crossbow							56
 65	Regnan Crossbow							87
+66	Mace							13
+67	Flail							39
+68	Temple Mace							74
+69	Reverend Sceptre							93
+70	Trollish War Mace							78
+71	Sledgehammer							28
+72	Field Hammer							51
+73	Warhammer							55
+74	Sun Hammer							82
+75	Trollish Maul							85
+79	Journey Staff							10
+80	Orb Staff							48
+81	Priestly Staff							67
+82	Serpent Staff							86
+83	Bone Staff							76
 84	Leather Jerkin							1
 85	Hardened Leather Vest							19
 86	Caravaner's Leather							40
 87	Regnan Leather							47
 88	Alvarian Leather							96
+89	Rusty Mail Vest							1
+90	Steel Chainmail							22
+91	Minotaur Chainmail							28
+92	Siertal Chainmail							70
+93	Erudine Chainmail							77
+94	Rusty Breastplate							1
+95	Banded Plate							40
+96	Minotaur Plate							60
+97	Dark Knight Plate							79
+98	Dragoning Plate							89
+99	Trollish Shield							14
+100	Thornbark Shield							24
+101	Regnan Tournament Shield							48
+102	Veteran Shield							75
+103	Dragon Hunter's Shield							91
+104	Wooden Buckler							4
+105	Caravaner's Small Shield							44
+106	Calvary Shield							58
+107	Death Head Shield							61
+108	Eldritch Shield							88
+109	Helm							8
+110	Lizardman Helm							35
+111	Full Helm							49
+112	Battle Helm							63
+113	Dragon Helm							83
+117	Leather Belt							1
+118	Sturdy Belt							28
+119	Wyvern Leather Belt							56
+120	Steel Belt							70
+121	Artificer's Belt							83
+122	Traveler's Cloak							1
+123	Moon Temple Cloak							35
+124	Alvar Cloak							56
+125	Necromancer Cloak							76
+126	Vampire Cloak							83
+127	Leather Gloves							1
+128	Troll Gauntlets							22
+129	Steel Gauntlets							42
+130	Minotaur Gauntlets							63
+131	Crusader's Gauntlets							97
+132	Walking Boots							8
+133	Hardened Leather Boots							22
+134	Regnan Boots							28
+135	Alvarian Boots							56
+136	Dragonning Boots							83
 137	Bronze Ring							1
 138	Gold Ring							21
 139	Pearl Ring							42
@@ -91,6 +166,20 @@ Id	Note	Continent	QuestItem	LostQBit	StartQBit	EndQBit	PostEnd	Level
 827	Dwarven Axe							41
 828	Steel Axe							54
 829	Minotaur Axe							67
+830	Poleaxe							11
+831	Warrior's Poleaxe							40
+832	Headsman's Poleaxe							79
+833	Crude Spear							1
+834	Soldier's spear							20
+835	Elven Spear							34
+836	Cruel Spear							64
+837	Sublime Spear							99
+838	Old Halberd							9
+839	Weighted Halberd							45
+840	Mighty Halberd							72
+841	Crude Trident							6
+842	Barbed Trident							50
+843	War Trident							96
 844	Crude Bow							10
 845	Longbow							16
 846	Elven Longbow							32
@@ -99,11 +188,65 @@ Id	Note	Continent	QuestItem	LostQBit	StartQBit	EndQBit	PostEnd	Level
 849	Crude Crossbow							1
 850	Heavy Crossbow							13
 851	Ideal Crossbow							48
+852	Crude Mace							1
+853	Spiked Mace							36
+854	Zealot Mace							24
+855	Dwarven Morningstar							20
+856	Supreme Flail							47
+857	Hammer							5
+858	War Hammer							9
+859	Dwarven Hammer							62
+863	Simple Staff							1
+864	Iron Core Staff							39
+865	Wizard Staff							57
 868	Crude Leather Armor							13
 869	Studded Leather							26
 870	Officer's Leather							54
 871	Regnan Leather							68
 872	Royal Leather							82
+873	Disheveled Chain Mail							8
+874	Quality Steel Chain Mail							35
+875	Fine Chain Mail							49
+876	Resplendent Chain Mail							84
+877	Golden Chain Mail							97
+878	Plate Armor							11
+879	Splendid Plate Armor							30
+880	Noble Plate Armor							70
+881	Goblin Shield							18
+882	Wooden Shield							2
+883	Horseman's Shield							41
+884	Sterling Shield							71
+885	Phynaxian Shield							85
+886	Wooden Buckler							1
+887	Bronze Shield							28
+888	Metal Shield							51
+889	Alloyed Shield							78
+890	Majestic Shield							81
+891	Horned Helm							15
+892	Conscript's Helm							22
+893	Full Helm							42
+894	Phynaxian Helm							70
+895	Mogred Helm							97
+902	Leather Belt							8
+903	Fine Belt							35
+904	Strong Belt							42
+905	Silver Belt							63
+906	Gilded Belt							90
+907	Leather Cloak							15
+908	Huntsman's Cloak							22
+909	Ranger's Cloak							42
+910	Elegant Cloak							70
+911	Glorious Cloak							97
+912	Gauntlets							8
+913	Steel Gauntlets							28
+914	Silver Mesh Gauntlets							49
+915	Dragon Hide Gauntlets							76
+916	Mogred Gauntlets							83
+917	Leather Boots							1
+918	Steel Plated Boots							35
+919	Ranger Boots							42
+920	Knight's Boots							70
+921	Paladin Boots							90
 922	Brass Ring							1
 923	Pearl Ring							1
 924	Platinum Ring							32
@@ -141,6 +284,20 @@ Id	Note	Continent	QuestItem	LostQBit	StartQBit	EndQBit	PostEnd	Level
 1627	War Axe							47
 1628	Dwarven Axe							80
 1629	Supreme Axe							83
+1630	Light Poleaxe							20
+1631	Heavy Poleaxe							30
+1632	Grand Poleaxe							88
+1633	Spear							15
+1634	Stout Spear							23
+1635	Serpent Spear							55
+1636	Savage Spear							58
+1637	Sacred Spear							94
+1638	Common Halberd							28
+1639	Massive Halberd							42
+1640	Elite Halberd							77
+1641	Trident							36
+1642	Ornate Trident							66
+1643	Titanic Trident							85
 1644	Crude Longbow							24
 1645	Elven Bow							52
 1646	Precision Bow							63
@@ -149,11 +306,65 @@ Id	Note	Continent	QuestItem	LostQBit	StartQBit	EndQBit	PostEnd	Level
 1649	Crossbow							4
 1650	Accurate Crossbow							28
 1651	True Crossbow							59
+1652	Simple Mace							16
+1653	Wicked Mace							43
+1654	Thunder Mace							66
+1655	Wonder Mace							70
+1656	Death Mace							89
+1657	Massive hammer							32
+1658	Dark Hammer							59
+1659	Holy Hammer							97
+1663	Staff							20
+1664	Emerald Staff							29
+1665	Power Staff							95
 1668	Leather Armor							7
 1669	Studded Leather							33
 1670	Enchanted Leather							61
 1671	Dragon Leather							75
 1672	Imperial Leather							89
+1673	Chain Mail							15
+1674	Steel Chain Mail							42
+1675	Noble Chain Mail							56
+1676	Royal Chain Mail							63
+1677	Majestic Chain Mail							91
+1678	Plate Armor							20
+1679	Steel Plate Armor							50
+1680	Golden Plate Armor							98
+1681	Kite Shield							11
+1682	Tower Shield							34
+1683	Castle Shield							65
+1684	Celestial Shield							68
+1685	Olympian Shield							98
+1686	Wooden Shield							8
+1687	Bronze Shield							21
+1688	Steel Shield							38
+1689	Spirit Shield							55
+1690	Astral Shield							95
+1691	Wooden Helm							1
+1692	Steel Helm							28
+1693	Guardian Helm							56
+1694	Defender Helm							76
+1695	Angelic Helm							90
+1702	Leather Belt							15
+1703	Mercenary Belt							22
+1704	Vanguard Belt							49
+1705	Warlord Belt							76
+1706	Sovereign Belt							97
+1707	Leather Cloak							8
+1708	Phantom Cloak							28
+1709	Elven Cloak							49
+1710	Cardinal Cloak							63
+1711	Doom's Day Cloak							90
+1712	Gauntlets							15
+1713	Knight Gauntlets							35
+1714	Paladin Gauntlets							56
+1715	Cavalier Gauntlets							70
+1716	Ultimate Gauntlets							90
+1717	Leather Boots							15
+1718	Steel Boots							49
+1719	Armored Boots							63
+1720	Sterling Boots							76
+1721	Ultimate Boots							97
 1722	Fine Ring							11
 1723	Sparkling Ring							21
 1724	Lunar Ring							21

@@ -64,8 +64,8 @@ function events.PickCorpse(t)
 	if mon.Ally == 9999 then -- no drop from reanimated monsters
 		return
 	end
-	local DropItemLevelmin = math.max(mon.Level - 3, 1)
-	local DropItemLevelmax = math.min(mon.Level + 3, 100)
+	local DropItemLevelmin = math.max(mon.Level - 5, 1)
+	local DropItemLevelmax = math.min(mon.Level + 0, 100)
 	local gaveItem = false
 	local itemName = nil
 	if math.random() <= 0.5 then

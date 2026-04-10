@@ -39,7 +39,7 @@ SpellPowerFormulas = {
 	[24] = { skill = const.Skills.Water, mult = 1.5, add = 4  }, 	-- PoisonSpray
 	[26] = { skill = const.Skills.Water, mult = 1.5, add = 4  }, 	-- IceBolt
 	[29] = { skill = const.Skills.Water, mult = 3.0, add = 8  }, 	-- AcidBurst (plan: aoe small, reduce, armor)
-	[32] = { skill = const.Skills.Water, mult = 1.5, add = 4  }, 	-- IceBlast CURRENT
+	[32] = { skill = const.Skills.Water, mult = 1.5, add = 4  }, 	-- IceBlast
 	[37] = { skill = const.Skills.Earth, mult =12.0, add = 32 }, 	-- DeadlySwarm
 	[39] = { skill = const.Skills.Earth, mult = 6.0, add = 16 }, 	-- Blades
 	[41] = { skill = const.Skills.Earth, mult = 3.0, add = 8  }, 	-- RockBlast
@@ -49,7 +49,7 @@ SpellPowerFormulas = {
 	[68] = { skill = const.Skills.Body , mult = 2.0, add = 2  }, 	-- Heal
 	[70] = { skill = const.Skills.Body , mult = 2.0, add = 5  }, 	-- Disruption ray
 	[76] = { skill = const.Skills.Body , mult = 6.0, add = 16 }, 	-- Flying Fist
-	[78] = { skill = const.Skills.Light, mult = 1.5, add = 4  }, 	-- LightBolt
+	[78] = { skill = const.Skills.Light, mult = 1.0, add = 3  }, 	-- LightBolt
 	[79] = { skill = const.Skills.Light, mult = 6.0, add = 16 }, 	-- DestroyUndead
 	[87] = { skill = const.Skills.Light, mult = 8.0, add = 20 }, 	-- Sunray
 	[90] = { skill = const.Skills.Dark , mult = 3.0, add = 8  }, 	-- ToxicCloud

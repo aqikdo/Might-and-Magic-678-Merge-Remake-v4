@@ -791,6 +791,8 @@ local function CalcRealDamage(Player,Damage,DamageKind)
 		res = res + Player.SpellBuffs[const.PlayerBuff.Glamour].Power / 10
 	end
 
+	-- Message("Damage: "..tostring(Damage).." DamageKind: "..tostring(DamageKind).." tpl: "..tostring(tpl).." ar: "..tostring(ar).." res: "..tostring(res))
+
 	--Message(tostring(tmp))
 	if DamageKind == const.Damage.Phys then
 		if Player.SpellBuffs[const.PlayerBuff.Misform].ExpireTime >= Game.Time then
@@ -1556,7 +1558,7 @@ function events.CalcStatBonusByMagic(t) -- Attribute, Resistance magic bonus
         if vars.PartyArmorDecrease.ExpireTime >= Game.Time then
             result = result - math.min(vars.PartyArmorDecrease.Power, 100)
         end
-	elseif stat >= const.Stats.FireResistance and stat <= const.Stats.MindResistance then
+	elseif stat >= const.Stats.FireResistance and stat <= const.Stats.BodyResistance then
         local bonusField = statBonusMap[stat]
         if bonusField then
             result = math.max(0, result / 5 - player[bonusField])
@@ -1763,12 +1765,12 @@ function events.CalcStatBonusByItems(t)
 		local baseArmor = 0
 		if it then
 			local tmpl = it:T()
-			baseArmor = (tmpl.Mod1DiceCount or 0) * math.max(1, tmpl.Mod1DiceSides or 1)
+			baseArmor = (tmpl.Mod1DiceCount or 0) * math.max(1, tmpl.Mod1DiceSides or 1) + (tmpl.Mod2 or 0)
 		end
 		if it and it:T().Skill == const.Skills.Leather then
 			local sk1, mas1 = SplitSkill(t.Player:GetSkill(const.Skills.Leather))
 			local sk4, mas4 = SplitSkill(t.Player:GetSkill(const.Skills.Dodging))
-			t.Result = t.Result + sk1 * 3
+			t.Result = t.Result + sk1 * 4
 			if mas4 == const.GM and not(it2 and it2:T().Skill == const.Skills.Shield) then
 				t.Result = t.Result + sk4 * 4
 			end
@@ -1789,7 +1791,7 @@ function events.CalcStatBonusByItems(t)
 		end
 		if it2 and it2:T().Skill == const.Skills.Shield then
 			local sk, mas = SplitSkill(t.Player:GetSkill(const.Skills.Shield))
-			t.Result = t.Result + sk * 3
+			t.Result = t.Result + sk * 4
 		end
 	end
 end
@@ -1820,21 +1822,16 @@ function events.CalcStatBonusBySkills(t)
 			local sk1, mas1 = SplitSkill(t.Player:GetSkill(const.Skills.Leather))
 			local sk4, mas4 = SplitSkill(t.Player:GetSkill(const.Skills.Dodging))
 			--t.Result = t.Result + sk1
-			if mas1 >= const.Master then
-				t.Result = t.Result + sk1 * 2
-			end
+			t.Result = t.Result + sk1 * 3  -- 1+3=4
 			if mas4 == const.GM and not(it2 and it2:T().Skill == const.Skills.Shield) then
 				t.Result = t.Result + sk4
 			end
 		elseif it and it:T().Skill == const.Skills.Chain then
 			local sk2, mas2 = SplitSkill(t.Player:GetSkill(const.Skills.Chain))
-			t.Result = t.Result + sk2 * 2
-			if mas2 >= const.Master then
-				t.Result = t.Result + sk2 * 2
-			end
+			t.Result = t.Result + sk2 * 5  -- 1+5=6
 		elseif it and it:T().Skill == const.Skills.Plate then
 			local sk3, mas3 = SplitSkill(t.Player:GetSkill(const.Skills.Plate))
-			t.Result = t.Result + sk3 * 4
+			t.Result = t.Result + sk3 * 7  -- 1+7=8
 		else
 			local sk4, mas4 = SplitSkill(t.Player:GetSkill(const.Skills.Dodging))
 			if not(it2 and it2:T().Skill == const.Skills.Shield) then
@@ -1846,7 +1843,7 @@ function events.CalcStatBonusBySkills(t)
 		end
 		if it2 and it2:T().Skill == const.Skills.Shield then
 			local sk, mas = SplitSkill(t.Player:GetSkill(const.Skills.Shield))
-			t.Result = t.Result + sk * 2
+			t.Result = t.Result + sk * 5
 		end
 
 		local aradj = CalculateStatAdjustment(t.Player:GetSpeed())

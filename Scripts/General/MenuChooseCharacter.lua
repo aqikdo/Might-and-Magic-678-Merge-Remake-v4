@@ -334,7 +334,9 @@ function events.GameInitialized2()
 		local ItemsBySkills		= { [1] = 1, -- sword
 									[2] = 817, -- dagger
 									[5] = 849, -- bow	
-									[9] = 84} -- leather
+									[9] = 84, -- leather
+									[10] = 89, -- chain
+									[11] = 94} -- plate
 
 		local Char = Party.PlayersArray[RosterId]
 		Char.Experience = 0
